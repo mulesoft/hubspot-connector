@@ -1,0 +1,9 @@
+org.mule.module.hubspot
+org.mule.module.hubspot.adapters
+org.mule.module.hubspot.agents
+org.mule.module.hubspot.config
+org.mule.module.hubspot.exception
+org.mule.module.hubspot.model
+org.mule.module.hubspot.process
+org.mule.module.hubspot.processors
+
