@@ -1,0 +1,48 @@
+<!-- BEGIN_INCLUDE(hubspot:authenticate) -->
+    <hubspot:authenticate userId="userId" />
+<!-- END_INCLUDE(hubspot:authenticate) -->
+<!-- BEGIN_INCLUDE(hubspot:authenticate-response) -->
+    <hubspot:authenticate-response inputRequest="#[payload]" />
+<!-- END_INCLUDE(hubspot:authenticate-response) -->
+<!-- BEGIN_INCLUDE(hubspot:has-user-access-token) -->
+    <hubspot:has-user-access-token userId="userId"  />
+<!-- END_INCLUDE(hubspot:has-user-access-token) -->
+<!-- BEGIN_INCLUDE(hubspot:get-all-contacts) -->
+    <hubspot:get-all-contacts userId="userId" />
+<!-- END_INCLUDE(hubspot:get-all-contacts) -->
+<!-- BEGIN_INCLUDE(hubspot:get-recent-contacts) -->
+    <hubspot:get-recent-contacts userId="userId" />
+<!-- END_INCLUDE(hubspot:get-recent-contacts) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contact-by-id) -->
+    <hubspot:get-contact-by-id  userId="userId" contactId="contactId" />
+<!-- END_INCLUDE(hubspot:get-contact-by-id) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contact-by-email) -->
+    <hubspot:get-contact-by-email  userId="userId" contactEmail="contactEmail" />
+<!-- END_INCLUDE(hubspot:get-contact-by-email) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contact-by-user-token) -->
+    <hubspot:get-contact-by-user-token  userId="userId" contactUserToken="contactToken" />
+<!-- END_INCLUDE(hubspot:get-contact-by-user-token) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contacts-by-query) -->
+    <hubspot:get-contacts-by-query  userId="userId" query="query" />
+<!-- END_INCLUDE(hubspot:get-contacts-by-query) -->
+<!-- BEGIN_INCLUDE(hubspot:delete-contact) -->
+    <hubspot:delete-contact  userId="userId" contactId="contactId" />
+<!-- END_INCLUDE(hubspot:delete-contact) -->
+<!-- BEGIN_INCLUDE(hubspot:update-contact) -->
+    <hubspot:update-contact  userId="userId" contactId="contactId" contactJson="contactJson" />
+<!-- END_INCLUDE(hubspot:update-contact) -->
+<!-- BEGIN_INCLUDE(hubspot:create-contact) -->
+    <hubspot:create-contact  userId="userId" contactJson="contactJson" />
+<!-- END_INCLUDE(hubspot:create-contact) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contact-statistics) -->
+    <hubspot:get-contact-statistics  userId="userId" />
+<!-- END_INCLUDE(hubspot:get-contact-statistics) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contacts-lists) -->
+    <hubspot:get-contacts-lists  userId="userId" />
+<!-- END_INCLUDE(hubspot:get-contacts-lists) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contact-list-by-id) -->
+    <hubspot:get-contact-list-by-id  userId="userId" listId="listId" />
+<!-- END_INCLUDE(hubspot:get-contact-list-by-id) -->
+<!-- BEGIN_INCLUDE(hubspot:get-dynamic-contact-lists) -->
+    <hubspot:get-dynamic-contact-lists  userId="userId" />
+<!-- END_INCLUDE(hubspot:get-dynamic-contact-lists) -->

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:hubspot="http://www.mulesoft.org/schema/mule/hubspot" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/hubspot http://www.mulesoft.org/schema/mule/hubspot/1.0/mule-hubspot.xsd 
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd ">
+    <hubspot:config name="HubSpot" callbackUrl="http://localhost:8090/authresponse" clientId="871053aa-3d78-11e2-b58f-39d6f6d520b6" hubId="217819" scope="contacts-rw" doc:name="HubSpot"/>
+    <flow name="auth_flow" doc:name="auth_flow">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8090" doc:name="HTTP" path="auth"/>
+        <hubspot:authenticate config-ref="HubSpot"  doc:name="Authenticate" userId="1"/>
+    </flow>
+    <flow name="auth_response_flow" doc:name="auth_response_flow">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8090" doc:name="HTTP" path="authresponse"/>
+        <logger message="Payload is: #[payload]" level="INFO" doc:name="Logger"/>
+        <hubspot:authenticate-response config-ref="HubSpot" inputRequest="#[payload]"  doc:name="Authenticate Response"/>
+        <echo-component doc:name="Show UserId" doc:description="This ID is supposed to be stored in a temporary DB or ObjectStore and used in the calls to the process of the connector
+"/>
+    </flow>
+    <flow name="get_all_contacts_flow" doc:name="get_all_contacts_flow">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8090" doc:name="HTTP" path="getallcontacts"/>
+        <hubspot:get-all-contacts config-ref="HubSpot" userId="1" doc:name="Get all contacts"/>
+    </flow>
+    <flow name="HubSpot_ConnectorFlow1" doc:name="HubSpot_ConnectorFlow1">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8090" path="getcontactbyid" doc:name="HTTP"/>
+        <hubspot:get-contact-by-id config-ref="HubSpot" contactId="2" userId="1" doc:name="Get contact by Id"/>
+    </flow>
+    <flow name="update_contact_flow" doc:name="update_contact_flow">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8090" path="updatecontact" doc:name="HTTP"/>
+        <hubspot:update-contact config-ref="HubSpot" contactId="2" contactJson="{&quot;properties&quot;:[{&quot;property&quot;: &quot;firstname&quot;, &quot;value&quot;: &quot;MuleUpdated&quot;}, {&quot;property&quot;: &quot;lastname&quot;, &quot;value&quot;: &quot;Muleeeeeeee&quot;}]}" userId="1" doc:name="Update Contact"/>
+    </flow>
+</mule>

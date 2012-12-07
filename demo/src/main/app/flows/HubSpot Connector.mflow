@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="HubSpot Connector">
+    <global-element type="http://www.mulesoft.org/schema/mule/hubspot/config" name="HubSpot" entity-id="HubSpot#1">
+        <properties>
+            <property value="217819" name="hubId"/>
+            <property value="http://localhost:8090/authresp" name="callbackUrl"/>
+            <property value="contacts-rw" name="scope"/>
+            <property value="hbconfig" name="name"/>
+            <property value="localhost" name="domain"/>
+            <property value="" name="path"/>
+            <property value="false" name="false"/>
+            <property value="" name="localPort"/>
+            <property value="" name="remotePort"/>
+            <property value="" name="objectStore-ref"/>
+            <property value="871053aa-3d78-11e2-b58f-39d6f6d520b6" name="clientId"/>
+            <property value="1" name="auxiliary;index"/>
+            <property name="updated"/>
+            <property-collection name="@http://www.mulesoft.org/schema/mule/hubspot/oauth-callback-config;27665695">
+                <property value="localhost" name="domain"/>
+                <property value="" name="path"/>
+                <property value="false" name="false"/>
+                <property value="" name="localPort"/>
+                <property value="" name="remotePort"/>
+            </property-collection>
+            <property-collection name="@http://www.mulesoft.org/schema/mule/hubspot/oauth-store-config;13584462">
+                <property value="" name="objectStore-ref"/>
+            </property-collection>
+        </properties>
+        <description></description>
+    </global-element>
+    <flow SubFlow="false" name="HubSpot_ConnectorFlow1" entity-id="e66774f4-140f-43b0-ad3e-96c315ebe0ee">
+        <properties>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property value="2" name="auxiliary;index"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property value="2" name="auxiliary;index"/>
+            <property value="2" name="auxiliary;index"/>
+            <property value="2" name="auxiliary;index"/>
+        </properties>
+        <lane isChoiceOtherwiseLane="false" index="0" hadOnlyOneElement="false" entity-id="compartment-lane#1">
+            <endpoint message-exchange-pattern="OneWay" direction="Inbound" type="http://www.mulesoft.org/schema/mule/http/endpoint" name="HTTP" entity-id="HTTP#1">
+                <properties>
+                    <property value="one-way" name="exchange-pattern"/>
+                    <property value="request-response" name="exchange-pattern"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="http://www.mulesoft.org/schema/mule/http/endpoint" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property name="httpLabel"/>
+                    <property value="localhost" name="host"/>
+                    <property value="8081" name="port"/>
+                    <property name="path"/>
+                    <property name="method"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property name="address"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout"/>
+                    <property name="followRedirects"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property name="user"/>
+                    <property name="password"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property name="contentType"/>
+                    <property name="keep-alive"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                    <property value="3" name="auxiliary;index"/>
+                </properties>
+            </endpoint>
+            <pattern type="http://www.mulesoft.org/schema/mule/hubspot/hubspot-connector" name="Authorize" entity-id="HubSpot#2">
+                <properties>
+                    <property value="hbconfig" name="config-ref"/>
+                    <property value="http://www.mulesoft.org/schema/mule/hubspot/authorize" name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute"/>
+                    <property value="hbconfig" name="config-ref"/>
+                    <property value="4" name="auxiliary;index"/>
+                    <property name="state"/>
+                    <property name="accessTokenUrl"/>
+                    <property name="authorizationUrl"/>
+                    <property value="4" name="auxiliary;index"/>
+                    <property value="4" name="auxiliary;index"/>
+                    <property value="4" name="auxiliary;index"/>
+                    <property value="4" name="auxiliary;index"/>
+                    <property value="4" name="auxiliary;index"/>
+                    <property value="4" name="auxiliary;index"/>
+                    <property value="4" name="auxiliary;index"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+    <description></description>
+</mule-configuration>
