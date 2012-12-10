@@ -6,7 +6,7 @@ http://www.mulesoft.org/schema/mule/hubspot http://www.mulesoft.org/schema/mule/
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd 
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd ">
-    <hubspot:config name="HubSpot" callbackUrl="http://localhost:8090/authresponse" clientId="871053aa-3d78-11e2-b58f-39d6f6d520b6" hubId="217819" scope="contacts-rw" doc:name="HubSpot"/>
+    <hubspot:config name="HubSpot" callbackUrl="callbackUrl" clientId="clientId" hubId="hubId" scope="contacts-rw" doc:name="HubSpot"/>
     <flow name="auth_flow" doc:name="auth_flow">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8090" doc:name="HTTP" path="auth"/>
         <hubspot:authenticate config-ref="HubSpot"  doc:name="Authenticate" userId="1"/>
