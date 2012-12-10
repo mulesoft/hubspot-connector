@@ -2,8 +2,8 @@
 <mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="HubSpot Connector">
     <global-element type="http://www.mulesoft.org/schema/mule/hubspot/config" name="HubSpot" entity-id="HubSpot#1">
         <properties>
-            <property value="217819" name="hubId"/>
-            <property value="http://localhost:8090/authresp" name="callbackUrl"/>
+            <property value="hubId" name="hubId"/>
+            <property value="callbackId" name="callbackUrl"/>
             <property value="contacts-rw" name="scope"/>
             <property value="hbconfig" name="name"/>
             <property value="localhost" name="domain"/>
@@ -12,7 +12,7 @@
             <property value="" name="localPort"/>
             <property value="" name="remotePort"/>
             <property value="" name="objectStore-ref"/>
-            <property value="871053aa-3d78-11e2-b58f-39d6f6d520b6" name="clientId"/>
+            <property value="clientId" name="clientId"/>
             <property value="1" name="auxiliary;index"/>
             <property name="updated"/>
             <property-collection name="@http://www.mulesoft.org/schema/mule/hubspot/oauth-callback-config;27665695">
