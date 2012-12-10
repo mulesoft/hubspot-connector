@@ -4,9 +4,9 @@
         <properties>
             <property value="HubSpot" name="name"/>
             <property value="1" name="auxiliary;index"/>
-            <property value="http://localhost:8090/authresponse" name="callbackUrl"/>
-            <property value="871053aa-3d78-11e2-b58f-39d6f6d520b6" name="clientId"/>
-            <property value="217819" name="hubId"/>
+            <property value="callbackUrl" name="callbackUrl"/>
+            <property value="clientId" name="clientId"/>
+            <property value="hubId" name="hubId"/>
             <property value="contacts-rw" name="scope"/>
             <property value="1" name="auxiliary;index"/>
             <property value="1" name="auxiliary;index"/>
