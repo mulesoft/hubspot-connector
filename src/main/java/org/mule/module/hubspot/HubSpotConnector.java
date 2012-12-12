@@ -682,6 +682,44 @@ public class HubSpotConnector
 	}
 	
 	/**
+	 * 
+	 * For a given portal and a given list, identified by its unique ID, return a list of contacts that are in that list.
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/lists/get_list_contacts">http://developers.hubspot.com/docs/methods/lists/get_list_contacts</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-contacts-in-a-list}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param ListId Unique identifier for the list that you're looking for.
+	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
+	 * @param property If you include the "property" parameter, then the properties in the "contact" object in the returned data will only include the property or properties that you request.
+	 * @param offset This parameter will offset the contacts returned to you, based on the unique ID of the contacts in a given portal. Contact unique IDs are assigned by the order that they are created in the system. This means for instance, if you specify a vidOffset offset of 5, and you have 20 contacts in the portal you're working in, the contacts with IDs 6-20 will be returned to you.
+	 * @return A JSON format response from the service
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	public String getContactsInAList(String userId, String listId, @Optional @Default("") String count, @Optional @Default("") String property, @Optional @Default("") String offset)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		checkEmptyUserId(userId);
+		if (StringUtils.isEmpty(listId))
+			throw new HubSpotConnectorException("The parameter listId cannot be empty");
+		
+		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/lists/{listid}/contacts/all").build(API_VERSION, listId);
+		
+		WebResource wr = getWebResource(userId, uri);
+		if (count != null) wr = wr.queryParam("count", count);
+		if (property != null) wr = wr.queryParam("property", property);
+		if (offset != null) wr = wr.queryParam("vidOffset", offset);
+		
+		logger.info("Requesting getContactsInAList to: " + wr.toString());
+		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
+		
+		return strResponse;
+	}
+	
+	/**
 	 * Method used to eliminate boilerplate handling exceptions when calling get(String.class) from a WebResource
 	 * 
 	 * @param wr The WebResource to call get

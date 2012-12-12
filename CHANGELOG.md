@@ -1,3 +1,7 @@
+1.0.1 Alpha
+===========
+	* Added new process Get Contacts in a List
+	
 1.0 Alpha
 =========
     * First Release. Alpha version

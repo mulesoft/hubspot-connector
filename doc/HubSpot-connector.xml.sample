@@ -46,3 +46,6 @@
 <!-- BEGIN_INCLUDE(hubspot:get-dynamic-contact-lists) -->
     <hubspot:get-dynamic-contact-lists  userId="userId" />
 <!-- END_INCLUDE(hubspot:get-dynamic-contact-lists) -->
+<!-- BEGIN_INCLUDE(hubspot:get-contacts-in-a-list) -->
+    <hubspot:get-contacts-in-a-list  userId="userId" listId="listId" />
+<!-- END_INCLUDE(hubspot:get-contacts-in-a-list) -->
