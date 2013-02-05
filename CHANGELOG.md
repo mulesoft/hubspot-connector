@@ -1,3 +1,12 @@
+1.2.1 Beta
+==========
+	* Added Unit Test for POJOs transformations
+
+1.2 Alpha
+=========
+	* Created POJOs structure. Does not affect Connector Process signatures neither configuration
+	* Added custom Serializer/Deserializer for ContactProperties
+
 1.1 Alpha
 =========
 	* Mass refactor. Does not affect Connector Process signatures neither configuration
