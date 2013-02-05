@@ -1,3 +1,7 @@
+1.1 Alpha
+=========
+	* Mass refactor. Does not affect Connector Process signatures neither configuration
+
 1.0.1 Alpha
 ===========
 	* Added new process Get Contacts in a List

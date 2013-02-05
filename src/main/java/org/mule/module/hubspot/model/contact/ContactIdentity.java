@@ -13,30 +13,38 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ContactDeleted {
-	
-	private Boolean deleted;
-	private String vid;
+public class ContactIdentity {
+	private String type;
+	private String value;
+	private Long timestamp;
 	
 	@JsonProperty
-	public Boolean getDeleted() {
-		return deleted;
+	public String getType() {
+		return type;
 	}
 	
 	@JsonProperty
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	@JsonProperty
-	public String getVid() {
-		return vid;
+	public String getValue() {
+		return value;
 	}
 	
 	@JsonProperty
-	public void setVid(String vid) {
-		this.vid = vid;
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
+	@JsonProperty
+	public Long getTimestamp() {
+		return timestamp;
+	}
 	
+	@JsonProperty
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
 }

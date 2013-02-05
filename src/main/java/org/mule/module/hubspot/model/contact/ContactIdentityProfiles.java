@@ -9,34 +9,33 @@
 
 package org.mule.module.hubspot.model.contact;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ContactDeleted {
-	
-	private Boolean deleted;
-	private String vid;
-	
-	@JsonProperty
-	public Boolean getDeleted() {
-		return deleted;
-	}
+public class ContactIdentityProfiles {
+	private Long vid;
+	private List<ContactIdentity> identities;
 	
 	@JsonProperty
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-	
-	@JsonProperty
-	public String getVid() {
+	public Long getVid() {
 		return vid;
 	}
 	
 	@JsonProperty
-	public void setVid(String vid) {
+	public void setVid(Long vid) {
 		this.vid = vid;
 	}
 	
+	@JsonProperty
+	public List<ContactIdentity> getIdentities() {
+		return identities;
+	}
 	
+	@JsonProperty
+	public void setIdentities(List<ContactIdentity> identities) {
+		this.identities = identities;
+	}
 }

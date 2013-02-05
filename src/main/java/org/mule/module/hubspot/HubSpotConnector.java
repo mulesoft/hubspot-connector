@@ -11,38 +11,24 @@
  */
 package org.mule.module.hubspot;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.mule.api.annotations.Configurable;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.OutboundHeaders;
+import org.mule.module.hubspot.client.HubSpotClient;
+import org.mule.module.hubspot.client.impl.HubSpotClientImpl;
+import org.mule.module.hubspot.credential.HubSpotCredentialsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.OAuthCredentials;
 import org.springframework.core.annotation.Order;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.api.client.WebResource;
 
 /**
  * HubSpot all-in-one marketing software helps more than 8,000 companies in 56 countries attract leads and convert them into customers. 
@@ -56,20 +42,12 @@ import com.sun.jersey.api.client.WebResource;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="1.0", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="1.2", friendlyName="HubSpot")
 public class HubSpotConnector
 {
-	static final private Log logger = LogFactory.getLog(HubSpotConnector.class);
-	
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
 	static final private String HUB_SPOT_URL_AUTH		= "https://app.hubspot.com/auth/authenticate";
-	static final private String PARAM_ACCESS_TOKEN 		= "access_token";
 	static final private String API_VERSION				= "v1";
-	static final private Pattern PATTERN_ACCESS_TOKEN	= Pattern.compile("access_token=([^&]+)&?");
-	static final private Pattern PATTERN_EXPIRES_AT		= Pattern.compile("expires_in=([^&]+)&?");
-	static final private Pattern PATTERN_REFRESH_TOKEN	= Pattern.compile("refresh_token=([^&]+)&?");
-	static final private Pattern PATTERN_USERID			= Pattern.compile("userid=([^&]+)&?");
-	static final private Pattern PATTERN_ERROR			= Pattern.compile("error=([^&]+)&?");
 	
 	/**
 	 * Your Client ID (OAuth Client ID), which identifies who you are. You can access the client_id in your app's developer dashboard under the Summary section.
@@ -109,14 +87,14 @@ public class HubSpotConnector
 	@Order(4)
 	private String callbackUrl;
 	
-	private Map<String, OAuthCredentials> credentials;
+	private HubSpotCredentialsManager credentialsManager;
 	
-	private Client jerseyClient;
+	private HubSpotClient client;
 	
 	@PostConstruct
 	public void initialize() {
-		jerseyClient = new Client();
-		credentials = new WeakHashMap<String, OAuthCredentials>();
+		credentialsManager = new HubSpotCredentialsManager();
+		client = new HubSpotClientImpl(HUB_SPOT_URL_API, HUB_SPOT_URL_AUTH, API_VERSION, clientId, hubId, scope, callbackUrl);
 	}
 
 	/**
@@ -134,25 +112,7 @@ public class HubSpotConnector
 	 */
 	@Processor
 	public String authenticate(String userId, @OutboundHeaders Map<String, Object> headers) throws HubSpotConnectorException {
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_AUTH).build();
-		WebResource wr = jerseyClient.resource(uri);
-		
-		String finalCallbackUrl = callbackUrl + (callbackUrl.indexOf('?') < 0 ? "?" : "&") + "userid=" + userId;
-				
-		wr = wr.queryParam("client_id", clientId)
-				.queryParam("portalId", hubId)
-				.queryParam("redirect_uri", finalCallbackUrl)
-				.queryParam("scope", scope);
-		
-		String authUrl = wr.getURI().toString();
-		
-		headers.put("Location", authUrl);
-		headers.put("http.status", "302");
-		
-		logger.info("Ready for authentication. Redirecting (302) to: " + authUrl);
-		
-		return authUrl;
+		return client.authenticate(userId, headers);
 	}
 	
 	/**
@@ -170,53 +130,10 @@ public class HubSpotConnector
 	@Processor
 	public String authenticateResponse(String inputRequest) throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException {
 		
-		if (StringUtils.isEmpty(inputRequest))
-			throw new HubSpotConnectorException("The parameter inputRequest can not be empty");
+		OAuthCredentials credentials = client.authenticateResponse(inputRequest);
+		credentialsManager.setCredentias(credentials);
 		
-		OAuthCredentials oACreds = new OAuthCredentials();
-		
-		// Check if the service does not respond with an error
-		Matcher m = PATTERN_ERROR.matcher(inputRequest);
-		if (m.find()) {
-			String errDesc = m.group(1);
-			if (errDesc.equals("invalid_scope")) {
-				throw new HubSpotConnectorException("The configuration is requesting a scope that the service application does not have available.");
-			} else {
-				throw new HubSpotConnectorException("The service has responded with an error message: " + errDesc);
-			}
-		}
-
-		// Save the parameters that appear in the input
-		m = PATTERN_USERID.matcher(inputRequest);
-		if (m.find()) {
-			oACreds.setUserId(m.group(1));
-		}
-
-		m = PATTERN_ACCESS_TOKEN.matcher(inputRequest);
-		if (m.find()) {
-			oACreds.setAccessToken(m.group(1));
-		}
-		
-		m = PATTERN_EXPIRES_AT.matcher(inputRequest);
-		if (m.find()) {
-			oACreds.setExpiresAt(m.group(1));
-		}
-		
-		m = PATTERN_REFRESH_TOKEN.matcher(inputRequest);
-		if (m.find()) {
-			oACreds.setRefreshToken(m.group(1));
-		}		
-		
-		// The access token is the only parameter that is absolutely required 
-		if (oACreds.getAccessToken() == null) {
-			logger.error("Cannot find the access_token in the response:" + inputRequest);
-			throw new HubSpotConnectorNoAccessTokenException("The response of the authentication process does not have an access token. Url:" + inputRequest);
-		}
-		
-		credentials.put(oACreds.getUserId(), oACreds);
-		logger.info("Stored credentials for user:" + oACreds.getUserId());
-		
-		return oACreds.getUserId();
+		return credentials.getUserId();
 	}
 	
 	/**
@@ -229,7 +146,7 @@ public class HubSpotConnector
 	 */
 	@Processor
 	public boolean hasUserAccessToken(String userId) {
-		return credentials.get(userId) != null && StringUtils.isNotEmpty(credentials.get(userId).getAccessToken());
+		return credentialsManager.hasUserAccessToken(userId);
 	}	
 	
 	//
@@ -253,18 +170,7 @@ public class HubSpotConnector
 	public String getAllContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String contactOffset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/lists/all/contacts/all").build(API_VERSION);
-
-		WebResource wr = getWebResource(userId, uri);				
-		if (count != null) wr = wr.queryParam("count", count);		
-		if (contactOffset != null) wr = wr.queryParam("vidOffset", contactOffset);
-		
-		logger.info("Requesting allContacts to: " + wr.toString());		
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-				
-		return strResponse;
+		return client.getAllContacts(credentialsManager.getCredentialsAccessToken(userId), userId, count, contactOffset);
 	}
 	
 	
@@ -289,19 +195,7 @@ public class HubSpotConnector
 	public String getRecentContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String timeOffset, @Optional @Default("") String contactOffset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/lists/recently_updated/contacts/recent").build(API_VERSION);
-		
-		WebResource wr = getWebResource(userId, uri);
-		if (count != null) 			wr = wr.queryParam("count", count);
-		if (timeOffset != null) 	wr = wr.queryParam("timeOffset", timeOffset);
-		if (contactOffset != null) 	wr = wr.queryParam("vidOffset", contactOffset);
-		
-		logger.info("Requesting recentContacts to:" + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-				
-		return strResponse;
+		return client.getRecentContacts(credentialsManager.getCredentialsAccessToken(userId), userId, count, timeOffset, contactOffset);
 	}
 	
 	
@@ -325,18 +219,7 @@ public class HubSpotConnector
 	public String getContactById(String userId, String contactId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(contactId))
-			throw new HubSpotConnectorException("The parameter contactId cannot be empty");
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/contact/vid/{contactid}/profile").build(API_VERSION, contactId);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting contactById to:" + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-		
-		return strResponse;
+		return client.getContactById(credentialsManager.getCredentialsAccessToken(userId), userId, contactId);
 	}
 	
 	/**
@@ -356,19 +239,8 @@ public class HubSpotConnector
 	@Processor
 	public String getContactByEmail(String userId, String contactEmail)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(contactEmail))
-			throw new HubSpotConnectorException("The parameter contactEmail cannot be empty");
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/contact/email/{contactemail}/profile").build(API_VERSION, contactEmail);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting contactByEmail to:" + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET); 
 				
-		return strResponse;
+		return client.getContactByEmail(credentialsManager.getCredentialsAccessToken(userId), userId, contactEmail);
 	}
 	
 	/**
@@ -389,18 +261,7 @@ public class HubSpotConnector
 	public String getContactByUserToken(String userId, String contactUserToken)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(contactUserToken))
-			throw new HubSpotConnectorException("The parameter contactUserToken cannot be empty");
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/contact/utk/{contactusertoken}/profile").build(API_VERSION, contactUserToken);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting contactByUserToken to: " +  wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-		
-		return strResponse;
+		return client.getContactByUserToken(credentialsManager.getCredentialsAccessToken(userId), userId, contactUserToken);
 	}
 	
 	/**
@@ -424,20 +285,7 @@ public class HubSpotConnector
 	public String getContactsByQuery(String userId, String query, @Optional @Default("") String count)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(query))
-			throw new HubSpotConnectorException("The parameter query cannot be empty");
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/search/query").build(API_VERSION);
-		
-		WebResource wr = getWebResource(userId, uri);
-		wr = wr.queryParam("q", query);
-		if (count != null) wr = wr.queryParam("count", count);
-		
-		logger.info("Requesting contactsByQuery to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-		
-		return strResponse;
+		return client.getContactsByQuery(credentialsManager.getCredentialsAccessToken(userId), userId, query, count);
 	}
 		
 	/**
@@ -459,18 +307,7 @@ public class HubSpotConnector
 	public String deleteContact(String userId, String contactId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(contactId))
-			throw new HubSpotConnectorException("The parameter contactId cannot be empty");
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/contact/vid/{contactid}").build(API_VERSION, contactId);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting deleteContact to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.DELETE);
-		
-		return strResponse;
+		return client.deleteContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactId);
 		
 	}
 	
@@ -500,21 +337,7 @@ public class HubSpotConnector
 	public String updateContact(String userId, String contactId, String contactJson)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(contactId))
-			throw new HubSpotConnectorException("The parameter contactId cannot be empty");
-		if (StringUtils.isEmpty(contactJson))
-			throw new HubSpotConnectorException("The parameter contactJson cannot be empty");
-		checkValidJson(contactJson);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/contact/vid/{contactid}/profile").build(API_VERSION, contactId);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting updateContact to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.POST, contactJson);
-				
-		return strResponse;
+		return client.updateContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactId, contactJson);
 	}
 	
 	/**
@@ -535,19 +358,7 @@ public class HubSpotConnector
 	public String createContact(String userId, String contactJson)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(contactJson))
-			throw new HubSpotConnectorException("The parameter contactJson cannot be empty");
-		checkValidJson(contactJson);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/contact").build(API_VERSION);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting createContact to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.POST, contactJson);
-		
-		return strResponse;
+		return client.createContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactJson);
 	}
 	
 	/**
@@ -567,16 +378,7 @@ public class HubSpotConnector
 	public String getContactStatistics(String userId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/contacts/statistics").build(API_VERSION);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting contactStatistics to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-		
-		return strResponse;
+		return client.getContactStatistics(credentialsManager.getCredentialsAccessToken(userId), userId);
 	}
 	
 	/**
@@ -599,18 +401,7 @@ public class HubSpotConnector
 	public String getContactsLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/lists").build(API_VERSION);
-		
-		WebResource wr = getWebResource(userId, uri);
-		if (count != null) wr = wr.queryParam("count", count);
-		if (offset != null) wr = wr.queryParam("offset", offset);
-		
-		logger.info("Requesting contactsLists to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-				
-		return strResponse;
+		return client.getContactsLists(credentialsManager.getCredentialsAccessToken(userId), userId, count, offset);
 	}
 	
 	/**
@@ -631,16 +422,7 @@ public class HubSpotConnector
 	public String getContactListById(String userId, String listId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/lists/{listid}").build(API_VERSION, listId);
-		
-		WebResource wr = getWebResource(userId, uri);
-		
-		logger.info("Requesting contactListById to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-		
-		return strResponse;
+		return client.getContactListById(credentialsManager.getCredentialsAccessToken(userId), userId, listId);
 	}
 	
 	/**
@@ -667,18 +449,7 @@ public class HubSpotConnector
 	public String getDynamicContactLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/lists/dynamic").build(API_VERSION);
-		
-		WebResource wr = getWebResource(userId, uri);
-		if (count != null) wr = wr.queryParam("count", count);
-		if (offset != null) wr = wr.queryParam("offset", offset);
-		
-		logger.info("Requesting dynamicContactLists to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-		
-		return strResponse;
+		return client.getDynamicContactLists(credentialsManager.getCredentialsAccessToken(userId), userId, count, offset);
 	}
 	
 	/**
@@ -690,7 +461,7 @@ public class HubSpotConnector
 	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-contacts-in-a-list}
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
-	 * @param ListId Unique identifier for the list that you're looking for.
+	 * @param listId Unique identifier for the list that you're looking for.
 	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
 	 * @param property If you include the "property" parameter, then the properties in the "contact" object in the returned data will only include the property or properties that you request.
 	 * @param offset This parameter will offset the contacts returned to you, based on the unique ID of the contacts in a given portal. Contact unique IDs are assigned by the order that they are created in the system. This means for instance, if you specify a vidOffset offset of 5, and you have 20 contacts in the portal you're working in, the contacts with IDs 6-20 will be returned to you.
@@ -699,106 +470,14 @@ public class HubSpotConnector
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
+	@Processor
 	public String getContactsInAList(String userId, String listId, @Optional @Default("") String count, @Optional @Default("") String property, @Optional @Default("") String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		checkEmptyUserId(userId);
-		if (StringUtils.isEmpty(listId))
-			throw new HubSpotConnectorException("The parameter listId cannot be empty");
-		
-		URI uri = UriBuilder.fromPath(HUB_SPOT_URL_API).path("/contacts/{apiversion}/lists/{listid}/contacts/all").build(API_VERSION, listId);
-		
-		WebResource wr = getWebResource(userId, uri);
-		if (count != null) wr = wr.queryParam("count", count);
-		if (property != null) wr = wr.queryParam("property", property);
-		if (offset != null) wr = wr.queryParam("vidOffset", offset);
-		
-		logger.info("Requesting getContactsInAList to: " + wr.toString());
-		String strResponse = webResourceGet(wr, userId, WebResourceMethods.GET);
-		
-		return strResponse;
-	}
-	
-	/**
-	 * Method used to eliminate boilerplate handling exceptions when calling get(String.class) from a WebResource
-	 * 
-	 * @param wr The WebResource to call get
-	 * @param userId The userId from the session used
-	 * @return The response of the service in String format
-	 * @throws HubSpotConnectorAccessTokenExpiredException If the service responded with a 401 means that the session has expired
-	 * @throws HubSpotConnectorException If is not a 401 it will throw this exception
-	 */
-	private String webResourceGet(WebResource wr, String userId, WebResourceMethods method) 
-			throws HubSpotConnectorAccessTokenExpiredException, HubSpotConnectorException {
-		return webResourceGet(wr, userId, method, null);
+		return client.getContactsInAList(credentialsManager.getCredentialsAccessToken(userId), userId, listId, count, property, offset);
 	}
 	
 	
-	private String webResourceGet(WebResource wr, String userId, WebResourceMethods method, String requestBody) 
-			throws HubSpotConnectorAccessTokenExpiredException, HubSpotConnectorException {
-		try {
-			return webResourceCallByEnumType(wr, method, requestBody);
-		} catch (UniformInterfaceException e) {
-			int statusCode = e.getResponse().getStatus();
-			
-			// The code 204 is returned as a successful operation with no response, but as the expected parameter is a String.class it throws a UniformInterfaceException.
-			if (statusCode == 204) {
-				return "";
-			} else if (statusCode == 401) {
-				// TODO: Add verification if it has a refresh token. If it has it call refresh process and then make again the get() call
-				throw new HubSpotConnectorAccessTokenExpiredException("The access token for the userId " + userId + "has expired", e);
-			} else {
-				throw new HubSpotConnectorException("ERROR - statusCode: " + statusCode, e);
-			}
-		}
-	}
-	
-	private String webResourceCallByEnumType(WebResource wr, WebResourceMethods method, String requestBody) {
-		if (WebResourceMethods.GET.equals(method)) {
-			return wr.get(String.class);
-		} else if (WebResourceMethods.POST.equals(method)) {
-			return wr.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, requestBody);
-		} else if (WebResourceMethods.PUT.equals(method)) {
-			return wr.put(String.class);
-		} else if (WebResourceMethods.DELETE.equals(method)) {
-			return wr.delete(String.class);
-		} else {
-			return null;
-		}
-	}
-	
-	static private enum WebResourceMethods {
-		GET,
-		POST,
-		PUT,
-		DELETE;
-	}
-	
-	private void checkValidJson(final String json) throws HubSpotConnectorException {
-	   try {
-	      final JsonParser parser = new ObjectMapper().getJsonFactory().createJsonParser(json);
-	      while (parser.nextToken() != null) {}
-	   } catch (JsonParseException jpe) {
-		   throw new HubSpotConnectorException("The contactJson contains a JSON malformed", jpe);
-	   } catch (IOException ioe) {
-		   throw new HubSpotConnectorException("The contactJson cannot be readed", ioe);
-	   }
-	}
-	
-	private WebResource getWebResource(String userId, URI uri) throws HubSpotConnectorNoAccessTokenException {
-		OAuthCredentials oACreds = credentials.get(userId);
-		
-		if (oACreds == null)
-			throw new HubSpotConnectorNoAccessTokenException("The user with id " + userId + " does not have credentials");
-		
-		return jerseyClient.resource(uri).queryParam(PARAM_ACCESS_TOKEN, oACreds.getAccessToken());
-	}
-	
-	private void checkEmptyUserId(String userId) throws HubSpotConnectorException {
-		if (StringUtils.isEmpty(userId))
-			throw new HubSpotConnectorException("The parameter UserId cannot be empty");
-	}
-
 	public String getClientId() {
 		return clientId;
 	}
@@ -829,13 +508,5 @@ public class HubSpotConnector
 
 	public void setCallbackUrl(String callbackUrl) {
 		this.callbackUrl = callbackUrl;
-	}
-
-	public Client getJerseyClient() {
-		return jerseyClient;
-	}
-
-	public void setJerseyClient(Client jerseyClient) {
-		this.jerseyClient = jerseyClient;
 	}
 }

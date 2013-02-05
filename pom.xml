@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.module</groupId>
 	<artifactId>hub-spot-connector</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>mule-module</packaging>
 	<name>HubSpot Cloud Connector</name>
 
@@ -35,6 +35,7 @@
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-module-json</artifactId>
             <version>${mule.version}</version>
+            <scope>provided</scope>
         </dependency>
 	</dependencies>
 
@@ -46,16 +47,21 @@
 
 	<repositories>
 		<repository>
-			<id>mule-ee-snapshot</id>
-			<name>EE Repository Snapshots</name>
-			<url>https://repository.mulesoft.org/nexus/content/repositories/snapshots</url>
+			<id>mulesoft-releases</id>
+			<name>MuleSoft Releases Repository</name>
+			<url>http://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
 		<repository>
-			<id>mule-ee</id>
-			<name>EE Repository Releases</name>
-			<url>https://repository.mulesoft.org/nexus/content/repositories/releases</url>
+			<id>mulesoft-snapshots</id>
+			<name>MuleSoft Snapshots Repository</name>
+			<url>http://repository.mulesoft.org/snapshots/</url>
 			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>codehaus-releases</id>
+			<name>CodeHaus Releases</name>
+			<url>http://repository.codehaus.org/</url>
 		</repository>
 	</repositories>
 </project>
