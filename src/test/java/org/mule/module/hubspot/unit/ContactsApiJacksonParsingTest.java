@@ -28,6 +28,9 @@ import org.mule.module.hubspot.model.contact.ContactList;
 import org.mule.module.hubspot.model.contact.ContactListMembership;
 import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
+import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListFilter;
+import org.mule.module.hubspot.model.list.HubSpotListLists;
 
 public class ContactsApiJacksonParsingTest {
 	
@@ -120,7 +123,56 @@ public class ContactsApiJacksonParsingTest {
 		Assert.assertTrue(cs.getLastNewContactAt().equals(1360095861638l));
 	}
 	
+	@Test
+	public void getContactListsOutput() throws JsonParseException, JsonMappingException, IOException {
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(getListPathFor("getContactListsOutput.json"));
+		
+		HubSpotListLists hbll = objMapper.readValue(input, HubSpotListLists.class);
+		HubSpotListFilter hblf = hbll.getLists().get(1).getFilters().get(0).get(0);
+		
+		Assert.assertNotNull(hbll);
+		Assert.assertEquals(hbll.getLists().size(), 3);
+		Assert.assertEquals(hbll.getLists().get(0).getListId(), "1");
+		
+		Assert.assertNotNull(hblf);
+		Assert.assertEquals(hblf.getOperator(), "IN_LIST");
+		Assert.assertEquals(hblf.getList(), "1");
+	}
+	
+	@Test
+	public void getContactListByIdOutput() throws JsonParseException, JsonMappingException, IOException {
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(getListPathFor("getContactListByIdOutput.json"));
+		
+		HubSpotList hbl = objMapper.readValue(input, HubSpotList.class);
+				
+		Assert.assertNotNull(hbl);
+		Assert.assertEquals(hbl.getPortalId(), "237093");
+		Assert.assertFalse(hbl.getDeleted());
+	}
+	
+	@Test
+	public void getDynamicContactListsOutput() throws JsonParseException, JsonMappingException, IOException {
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(getListPathFor("getDynamicContactListsOutput.json"));
+		
+		HubSpotListLists hbll = objMapper.readValue(input, HubSpotListLists.class);
+		HubSpotList hbl = hbll.getLists().get(0);
+		HubSpotListFilter hblf = hbl.getFilters().get(0).get(0);
+				
+		Assert.assertNotNull(hbll);
+		Assert.assertNotNull(hbl);
+		Assert.assertEquals(hbl.getPortalId(), "237093");
+		Assert.assertFalse(hbl.getDeleted());
+		
+		Assert.assertNotNull(hblf);
+		Assert.assertEquals(hblf.getOperator(), "IN_LIST");
+		Assert.assertEquals(hblf.getList(), "1");
+	}
+	
 	private String getContatPathFor(String jsonFile) {
 		return String.format("contacts%s%s", File.separator, jsonFile);
+	}
+	
+	private String getListPathFor(String jsonFile) {
+		return String.format("lists%s%s", File.separator, jsonFile);
 	}
 }

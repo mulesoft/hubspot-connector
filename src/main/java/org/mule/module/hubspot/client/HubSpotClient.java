@@ -21,6 +21,8 @@ import org.mule.module.hubspot.model.contact.ContactList;
 import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
+import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListLists;
 
 public interface HubSpotClient {
 	
@@ -59,15 +61,15 @@ public interface HubSpotClient {
 	public ContactStatistics getContactStatistics(String accessToken, String userId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getContactsLists(String accessToken, String userId, String count, String offset) 
+	public HubSpotListLists getContactsLists(String accessToken, String userId, String count, String offset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getContactListById(String accessToken, String userId, String listId)
+	public HubSpotList getContactListById(String accessToken, String userId, String listId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getDynamicContactLists(String accessToken, String userId, String count, String offset)
+	public HubSpotListLists getDynamicContactLists(String accessToken, String userId, String count, String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getContactsInAList(String accessToken, String userId, String listId, String count, String property, String offset)
+	public ContactList getContactsInAList(String accessToken, String userId, String listId, String count, String property, String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 }

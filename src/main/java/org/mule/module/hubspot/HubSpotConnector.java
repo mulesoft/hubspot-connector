@@ -34,6 +34,8 @@ import org.mule.module.hubspot.model.contact.ContactList;
 import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
+import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -48,7 +50,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.0", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="2.1", friendlyName="HubSpot")
 public class HubSpotConnector
 {
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -402,13 +404,13 @@ public class HubSpotConnector
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param count An integer that represents the number of lists that you want returned to your call. By default, this call will return 20 lists to you. If you want more or different list returned to you, you'll want to use the "offset" parameter.
 	 * @param offset An integer that represents where to start your list pull from. For instance, if you want to return numbered lists: 50-60, your offset should be "50" and your count parameter (seen above) should be 10. You should also note that the returned JSON (seen below) includes a "has-more" field, which lets you know if there are more lists that you can pull. If "has-more" is true, you can use this offset parameter to pull lists that weren't in your initial call.
-	 * @return A JSON format response from the service
+	 * @return A {@link HubSpotListLists} with the lists
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactsLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset) 
+	public HubSpotListLists getContactsLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getContactsLists(credentialsManager.getCredentialsAccessToken(userId), userId, count, offset);
@@ -423,13 +425,13 @@ public class HubSpotConnector
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param listId Unique identifier for the list that you're looking for.
-	 * @return A JSON format response from the service
+	 * @return A {@link HubSpotList} with the list
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactListById(String userId, String listId)
+	public HubSpotList getContactListById(String userId, String listId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getContactListById(credentialsManager.getCredentialsAccessToken(userId), userId, listId);
@@ -450,13 +452,13 @@ public class HubSpotConnector
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param count An integer that represents the number of lists that you want returned to your call. By default, this call will return 20 lists to you. If you want more or different list returned to you, you'll want to use the "offset" parameter.
 	 * @param offset An integer that represents where to start your list pull from. For instance, if you want to return numbered lists: 50-60, your offset should be "50" and your count parameter (seen above) should be 10. You should also note that the returned JSON (seen below) includes a "has-more" field, which lets you know if there are more lists that you can pull. If "has-more" is true, you can use this offset parameter to pull lists that weren't in your initial call.
-	 * @return A JSON format response from the service
+	 * @return A {@link HubSpotListLists} with the lists
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getDynamicContactLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset)
+	public HubSpotListLists getDynamicContactLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getDynamicContactLists(credentialsManager.getCredentialsAccessToken(userId), userId, count, offset);
@@ -475,13 +477,13 @@ public class HubSpotConnector
 	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
 	 * @param property If you include the "property" parameter, then the properties in the "contact" object in the returned data will only include the property or properties that you request.
 	 * @param offset This parameter will offset the contacts returned to you, based on the unique ID of the contacts in a given portal. Contact unique IDs are assigned by the order that they are created in the system. This means for instance, if you specify a vidOffset offset of 5, and you have 20 contacts in the portal you're working in, the contacts with IDs 6-20 will be returned to you.
-	 * @return A JSON format response from the service
+	 * @return A {@link ContactList} whit the contact list
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactsInAList(String userId, String listId, @Optional @Default("") String count, @Optional @Default("") String property, @Optional @Default("") String offset)
+	public ContactList getContactsInAList(String userId, String listId, @Optional @Default("") String count, @Optional @Default("") String property, @Optional @Default("") String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getContactsInAList(credentialsManager.getCredentialsAccessToken(userId), userId, listId, count, property, offset);

@@ -32,6 +32,8 @@ import org.mule.module.hubspot.model.contact.ContactList;
 import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
+import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListLists;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -90,7 +92,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		headers.put("Location", authUrl);
 		headers.put("http.status", "302");
 		
-		logger.info("Ready for authentication. Redirecting (302) to: " + authUrl);
+		logger.debug("Ready for authentication. Redirecting (302) to: " + authUrl);
 		
 		return authUrl;
 	}
@@ -143,7 +145,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 			throw new HubSpotConnectorNoAccessTokenException("The response of the authentication process does not have an access token. Url:" + inputRequest);
 		}
 		
-		logger.info("Recived credentials for user:" + oACreds.getUserId());
+		logger.debug("Recived credentials for user:" + oACreds.getUserId());
 		
 		return oACreds;
 	}
@@ -161,7 +163,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (count != null) wr = wr.queryParam("count", count);		
 		if (contactOffset != null) wr = wr.queryParam("vidOffset", contactOffset);
 		
-		logger.info("Requesting allContacts to: " + wr.toString());		
+		logger.debug("Requesting allContacts to: " + wr.toString());		
 		ContactList cl = HubSpotClientUtils.webResourceGet(ContactList.class, wr, userId, HubSpotWebResourceMethods.GET);
 		
 		return cl;
@@ -181,7 +183,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (timeOffset != null) 	wr = wr.queryParam("timeOffset", timeOffset);
 		if (contactOffset != null) 	wr = wr.queryParam("vidOffset", contactOffset);
 		
-		logger.info("Requesting recentContacts to:" + wr.toString());
+		logger.debug("Requesting recentContacts to:" + wr.toString());
 		return HubSpotClientUtils.webResourceGet(ContactList.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
@@ -198,7 +200,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting contactById to:" + wr.toString());
+		logger.debug("Requesting contactById to:" + wr.toString());
 		
 		return HubSpotClientUtils.webResourceGet(Contact.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
@@ -216,7 +218,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting contactByEmail to:" + wr.toString());
+		logger.debug("Requesting contactByEmail to:" + wr.toString());
 						
 		return HubSpotClientUtils.webResourceGet(Contact.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
@@ -234,7 +236,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting contactByUserToken to: " +  wr.toString());
+		logger.debug("Requesting contactByUserToken to: " +  wr.toString());
 		return HubSpotClientUtils.webResourceGet(Contact.class, wr, userId, HubSpotWebResourceMethods.GET);		
 	}
 
@@ -253,7 +255,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		wr = wr.queryParam("q", query);
 		if (count != null) wr = wr.queryParam("count", count);
 		
-		logger.info("Requesting contactsByQuery to: " + wr.toString());
+		logger.debug("Requesting contactsByQuery to: " + wr.toString());
 		return HubSpotClientUtils.webResourceGet(ContactQuery.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
@@ -270,7 +272,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting deleteContact to: " + wr.toString());
+		logger.debug("Requesting deleteContact to: " + wr.toString());
 		return HubSpotClientUtils.webResourceGet(ContactDeleted.class, wr, userId, HubSpotWebResourceMethods.DELETE);
 	}
 
@@ -295,7 +297,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting updateContact to: " + wr.toString());
+		logger.debug("Requesting updateContact to: " + wr.toString());
 		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.POST, contactJson);
 	}
 
@@ -319,7 +321,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting createContact to: " + wr.toString());
+		logger.debug("Requesting createContact to: " + wr.toString());
 		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.POST, contactJson);
 	}
 
@@ -333,12 +335,12 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting contactStatistics to: " + wr.toString());
+		logger.debug("Requesting contactStatistics to: " + wr.toString());
 		return HubSpotClientUtils.webResourceGet(ContactStatistics.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String getContactsLists(String accessToken, String userId,
+	public HubSpotListLists getContactsLists(String accessToken, String userId,
 			String count, String offset) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -349,14 +351,12 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (count != null) wr = wr.queryParam("count", count);
 		if (offset != null) wr = wr.queryParam("offset", offset);
 		
-		logger.info("Requesting contactsLists to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-				
-		return strResponse;
+		logger.debug("Requesting contactsLists to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(HubSpotListLists.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String getContactListById(String accessToken, String userId,
+	public HubSpotList getContactListById(String accessToken, String userId,
 			String listId) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -368,14 +368,12 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
-		logger.info("Requesting contactListById to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-		
-		return strResponse;
+		logger.debug("Requesting contactListById to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(HubSpotList.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String getDynamicContactLists(String accessToken, String userId,
+	public HubSpotListLists getDynamicContactLists(String accessToken, String userId,
 			String count, String offset) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -386,14 +384,12 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (count != null) wr = wr.queryParam("count", count);
 		if (offset != null) wr = wr.queryParam("offset", offset);
 		
-		logger.info("Requesting dynamicContactLists to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-		
-		return strResponse;
+		logger.debug("Requesting dynamicContactLists to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(HubSpotListLists.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String getContactsInAList(String accessToken, String userId,
+	public ContactList getContactsInAList(String accessToken, String userId,
 			String listId, String count, String property, String offset)
 			throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
@@ -409,10 +405,8 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (property != null) wr = wr.queryParam("property", property);
 		if (offset != null) wr = wr.queryParam("vidOffset", offset);
 		
-		logger.info("Requesting getContactsInAList to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-		
-		return strResponse;
+		logger.debug("Requesting getContactsInAList to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(ContactList.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 	
 	private WebResource getWebResource(URI uri, String accessToken) throws HubSpotConnectorNoAccessTokenException {

@@ -1,3 +1,9 @@
+2.1
+===
+	* Added more unit and integration tests
+	* Changed log level from info to debug (require extra parameters in log4j)
+	* Changed signature in operations of the Lists API from Strings (JSON Format) to POJOs
+
 2.0
 ===
 	* Added integration test for all the Contacts API
