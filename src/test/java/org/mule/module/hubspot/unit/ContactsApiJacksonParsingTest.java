@@ -53,7 +53,7 @@ public class ContactsApiJacksonParsingTest {
 		Assert.assertTrue(json.indexOf("myFirstName") >= 0);
 		Assert.assertTrue(json.indexOf("myLastName") >= 0);
 		Assert.assertTrue(json.indexOf("myemail@mydomain.com") >= 0);
-		// Cheack that the properties param has an array and not an object
+		// Check that the properties parameters has an array and not an object
 		Assert.assertTrue(json.indexOf("{\"properties\":[") >= 0);
 	}
 	
