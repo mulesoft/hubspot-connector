@@ -1,3 +1,7 @@
+1.2.2 Beta
+==========
+	* Added structure for Integration Tests
+
 1.2.1 Beta
 ==========
 	* Added Unit Test for POJOs transformations
