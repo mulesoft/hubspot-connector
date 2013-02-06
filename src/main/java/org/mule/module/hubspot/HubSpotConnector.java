@@ -11,6 +11,7 @@
  */
 package org.mule.module.hubspot;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +35,7 @@ import org.mule.module.hubspot.model.contact.ContactList;
 import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
+import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.springframework.core.annotation.Order;
@@ -50,7 +52,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.1", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="2.2", friendlyName="HubSpot")
 public class HubSpotConnector
 {
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -489,6 +491,27 @@ public class HubSpotConnector
 		return client.getContactsInAList(credentialsManager.getCredentialsAccessToken(userId), userId, listId, count, property, offset);
 	}
 	
+	/**
+	 * Properties in HubSpot are fields that have been created. By default, there are many fields that come "out of the box" in a 
+	 * HubSpot portal, but users can also create new, custom properties as they please.
+	 * This method returns all of those properties to you.
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/lists/get_list_contacts">http://developers.hubspot.com/docs/methods/lists/get_list_contacts</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-all-properties}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @return A List of {@link CustomContactProperty}
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public List<CustomContactProperty> getAllProperties(String userId)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		return client.getAllProperties(credentialsManager.getCredentialsAccessToken(userId), userId);
+	}
 	
 	public String getClientId() {
 		return clientId;

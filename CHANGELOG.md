@@ -1,3 +1,8 @@
+2.2
+===
+	* Added new Operation for the Contact Properties API: getAllProperties
+	* Added unit and integration tests
+
 2.1
 ===
 	* Added more unit and integration tests

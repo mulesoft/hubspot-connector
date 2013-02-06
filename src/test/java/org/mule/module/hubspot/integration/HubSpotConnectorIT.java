@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -34,6 +35,9 @@ import org.mule.module.hubspot.model.contact.ContactPropertiesLifecycleStage;
 import org.mule.module.hubspot.model.contact.ContactPropertiesNumberOfEmployees;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
+import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
+import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListLists;
 
 public class HubSpotConnectorIT {
 
@@ -85,18 +89,9 @@ public class HubSpotConnectorIT {
 	public void createRetrieveDeleteContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		// 1. Create a new contact
-		ContactProperties cp = new ContactProperties();
-		long date = (new Date()).getTime();
-		String email = String.format("%d@mulesoft.com", date);
+		ContactProperties cp;
 		
-		cp.setEmail(email);
-		cp.setFirstname("theFirstName");
-		cp.setLastname("theLastName");
-		cp.setNumemployees(ContactPropertiesNumberOfEmployees._25_50);
-		cp.setLifecyclestage(ContactPropertiesLifecycleStage.LEAD);
-		cp.setCity("beautifulCity");
-		
-		connector.createContact(USER_ID, cp);
+		String email = createNewContact();
 		
 		// 2. Retrieve the contact by email and check that all the properties setted are stablished
 		Contact c = connector.getContactByEmail(USER_ID, email);
@@ -138,6 +133,9 @@ public class HubSpotConnectorIT {
 	
 	@Test
 	public void getContacts() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		createNewContact();
+		
 		ContactList cl = connector.getAllContacts(USER_ID, null, null);
 		
 		Assert.assertNotNull(cl);
@@ -164,7 +162,55 @@ public class HubSpotConnectorIT {
 		ContactStatistics cs = connector.getContactStatistics(USER_ID);
 		
 		Assert.assertNotNull(cs);
-		Assert.assertTrue(cs.getContacts() > 0l);
-		Assert.assertTrue(cs.getLastNewContactAt() > 0l);
+		Assert.assertTrue(cs.getContacts() >= 0l);
+		Assert.assertTrue(cs.getLastNewContactAt() >= 0l);
+	}
+	
+	@Test
+	public void getLists() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		HubSpotListLists hsll = connector.getContactsLists(USER_ID, null, null);
+		
+		Assert.assertNotNull(hsll);
+		Assert.assertEquals(hsll.getLists().size(), 3);
+		
+		HubSpotList hsl = connector.getContactListById(USER_ID, "1");		
+		
+		Assert.assertNotNull(hsl);
+		Assert.assertEquals(hsl.getPortalId(), "237093");
+		
+		hsll = connector.getDynamicContactLists(USER_ID, null, null);
+		
+		Assert.assertNotNull(hsll);
+		Assert.assertEquals(hsll.getLists().size(), 1);
+		
+		ContactList cl = connector.getContactsInAList(USER_ID, "1", null, null, null);
+		
+		Assert.assertNotNull(cl);
+		Assert.assertTrue(cl.getContacts().size() > 0);		
+	}
+	
+	@Test
+	public void getContactProperties() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		List<CustomContactProperty> lccp = connector.getAllProperties(USER_ID);
+		
+		Assert.assertNotNull(lccp);
+		Assert.assertTrue(lccp.size() > 0);
+	}
+	
+	private String createNewContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		ContactProperties cp = new ContactProperties();
+		long date = (new Date()).getTime();
+		String email = String.format("%d@mulesoft.com", date);
+		
+		cp.setEmail(email);
+		cp.setFirstname("theFirstName");
+		cp.setLastname("theLastName");
+		cp.setNumemployees(ContactPropertiesNumberOfEmployees._25_50);
+		cp.setLifecyclestage(ContactPropertiesLifecycleStage.LEAD);
+		cp.setCity("beautifulCity");
+		
+		connector.createContact(USER_ID, cp);
+		
+		return email;
 	}
 }

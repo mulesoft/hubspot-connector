@@ -10,6 +10,8 @@
 package org.mule.module.hubspot.client.impl;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +34,7 @@ import org.mule.module.hubspot.model.contact.ContactList;
 import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
+import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 
@@ -409,7 +412,23 @@ public class HubSpotClientImpl implements HubSpotClient {
 		return HubSpotClientUtils.webResourceGet(ContactList.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 	
+	@Override
+	public List<CustomContactProperty> getAllProperties(String accessToken, String userId)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/properties").build(APIVersion);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		logger.debug("Requesting getAllProperties to: " + wr.toString());
+		CustomContactProperty[] cpl = HubSpotClientUtils.webResourceGet(CustomContactProperty[].class, wr, userId, HubSpotWebResourceMethods.GET);
+				
+		return cpl != null ? Arrays.asList(cpl) : null;
+	}
+	
 	private WebResource getWebResource(URI uri, String accessToken) throws HubSpotConnectorNoAccessTokenException {
 		return jerseyClient.resource(uri).queryParam(PARAM_ACCESS_TOKEN, accessToken);
-	}
+	}	
 }
