@@ -1,3 +1,7 @@
+2.2.1
+=====
+	* Added support for Custom Properties inside Contact. Added Map customProperties.
+
 2.2
 ===
 	* Added new Operation for the Contact Properties API: getAllProperties

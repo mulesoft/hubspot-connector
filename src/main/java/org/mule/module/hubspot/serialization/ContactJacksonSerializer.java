@@ -30,6 +30,8 @@ public class ContactJacksonSerializer extends JsonSerializer<ContactProperties> 
 			SerializerProvider provider) throws IOException,
 			JsonProcessingException {
 
+		if (value == null) return;
+		
 		PropertyDescriptor[] propertyDescriptor;
 		try {
 			propertyDescriptor = Introspector.getBeanInfo(ContactProperties.class).getPropertyDescriptors();
@@ -44,27 +46,40 @@ public class ContactJacksonSerializer extends JsonSerializer<ContactProperties> 
 		for (PropertyDescriptor pd : propertyDescriptor) {			
 			// Check that has a read method for properties
 			if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
-				try {
-					propVal = pd.getReadMethod().invoke(value);
-				} catch (Exception e) {
-					throw new IOException(e);
-				}
 				
-				if (propVal != null) {
-					jgen.writeStartObject();
-					jgen.writeStringField("property", pd.getName());
+				// For custom properties
+				if ("customProperties".equals(pd.getName())) {
+					if (value.getCustomProperties() != null) {
+						for (String key : value.getCustomProperties().keySet()) {
+							jgen.writeStartObject();
+							jgen.writeStringField("property", key);
+							jgen.writeStringField("value", value.getCustomProperties().get(key));
+							jgen.writeEndObject();
+						}
+					}
+				} else {
+					try {
+						propVal = pd.getReadMethod().invoke(value);
+					} catch (Exception e) {
+						throw new IOException(e);
+					}
 					
-					if (propVal instanceof Long) {						
-						jgen.writeNumberField("value", (Long) propVal);
-					} else if (propVal instanceof String) {
-						jgen.writeStringField("value", (String) propVal);
-					} else if (propVal instanceof ContactPropertiesLifecycleStage) {
-						jgen.writeStringField("value", ((ContactPropertiesLifecycleStage) propVal).getValue());
-					} else if (propVal instanceof ContactPropertiesNumberOfEmployees) {
-						jgen.writeStringField("value", ((ContactPropertiesNumberOfEmployees) propVal).getValue());
-					} 
-					
-					jgen.writeEndObject();
+					if (propVal != null) {
+						jgen.writeStartObject();
+						jgen.writeStringField("property", pd.getName());
+						
+						if (propVal instanceof Long) {						
+							jgen.writeNumberField("value", (Long) propVal);
+						} else if (propVal instanceof String) {
+							jgen.writeStringField("value", (String) propVal);
+						} else if (propVal instanceof ContactPropertiesLifecycleStage) {
+							jgen.writeStringField("value", ((ContactPropertiesLifecycleStage) propVal).getValue());
+						} else if (propVal instanceof ContactPropertiesNumberOfEmployees) {
+							jgen.writeStringField("value", ((ContactPropertiesNumberOfEmployees) propVal).getValue());
+						} 
+						
+						jgen.writeEndObject();
+					}
 				}
 			}
 		}	

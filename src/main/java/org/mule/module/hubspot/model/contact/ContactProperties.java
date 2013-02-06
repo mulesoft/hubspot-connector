@@ -9,6 +9,8 @@
 
 package org.mule.module.hubspot.model.contact;
 
+import java.util.Map;
+
 
 public class ContactProperties {
 	
@@ -34,6 +36,12 @@ public class ContactProperties {
 	private String industry;
 	private String twitterhandle;
 	private String twitterprofilephoto;
+	/**
+	 * If the property is not included in the attributes in this class, it will be added as a customProperties key, value pair.
+	 * <p>
+	 * Also for the create/update, you can add properties in here that are custom and will be sended to the service
+	 */
+	private Map<String, String> customProperties;
 	
 	public ContactProperties() {}
 
@@ -213,5 +221,11 @@ public class ContactProperties {
 		this.annualrevenue = annualrevenue;
 	}
 
-	
+	public Map<String, String> getCustomProperties() {
+		return customProperties;
+	}
+
+	public void setCustomProperties(Map<String, String> customProperties) {
+		this.customProperties = customProperties;
+	}	
 }

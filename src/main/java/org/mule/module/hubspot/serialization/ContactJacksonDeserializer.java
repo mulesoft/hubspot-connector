@@ -13,6 +13,8 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
@@ -32,6 +34,7 @@ public class ContactJacksonDeserializer extends
 			JsonProcessingException {
 
 		ContactProperties cp = new ContactProperties();
+		Map<String, String> customProperties = new HashMap<String, String>();
 
 		PropertyDescriptor[] propertyDescriptor;
 		try {
@@ -72,43 +75,48 @@ public class ContactJacksonDeserializer extends
 										propertyValue = jp.getText();
 										
 										PropertyDescriptor pd = findPropertyDescriptorByName(propertyDescriptor, propertyName);
-										if (pd != null && pd.getWriteMethod() != null && !"class".equals(pd.getName())) {
-											Class<?> classType = pd.getPropertyType();
-											if (classType.equals(Long.class)) {
-												try {
-													pd.getWriteMethod().invoke(cp, Long.parseLong(propertyValue));
-												} catch (NumberFormatException e) {
-													throw new IOException(e);
-												} catch (Exception e) {
-													throw new IOException(e);
-												}
-											} else if (classType.equals(String.class)) {
-												try {
-													pd.getWriteMethod().invoke(cp, propertyValue);
-												} catch (NumberFormatException e) {
-													throw new IOException(e);
-												} catch (Exception e) {
-													throw new IOException(e);
-												}
-											} else if (classType.equals(ContactPropertiesLifecycleStage.class)) {
-												try {
-													pd.getWriteMethod().invoke(cp, ContactPropertiesLifecycleStage.getFromString(propertyValue));
-												} catch (NumberFormatException e) {
-													throw new IOException(e);
-												} catch (Exception e) {
-													throw new IOException(e);
-												}
-											} else if (classType.equals(ContactPropertiesNumberOfEmployees.class)) {
-												try {
-													pd.getWriteMethod().invoke(cp, ContactPropertiesNumberOfEmployees.getFromString(propertyValue));
-												} catch (NumberFormatException e) {
-													throw new IOException(e);
-												} catch (Exception e) {
-													throw new IOException(e);
-												}
-											} 
+										if (pd != null) {
+											if (pd.getWriteMethod() != null && !"class".equals(pd.getName())) {
+												Class<?> classType = pd.getPropertyType();
+												if (classType.equals(Long.class)) {
+													try {
+														pd.getWriteMethod().invoke(cp, Long.parseLong(propertyValue));
+													} catch (NumberFormatException e) {
+														throw new IOException(e);
+													} catch (Exception e) {
+														throw new IOException(e);
+													}
+												} else if (classType.equals(String.class)) {
+													try {
+														pd.getWriteMethod().invoke(cp, propertyValue);
+													} catch (NumberFormatException e) {
+														throw new IOException(e);
+													} catch (Exception e) {
+														throw new IOException(e);
+													}
+												} else if (classType.equals(ContactPropertiesLifecycleStage.class)) {
+													try {
+														pd.getWriteMethod().invoke(cp, ContactPropertiesLifecycleStage.getFromString(propertyValue));
+													} catch (NumberFormatException e) {
+														throw new IOException(e);
+													} catch (Exception e) {
+														throw new IOException(e);
+													}
+												} else if (classType.equals(ContactPropertiesNumberOfEmployees.class)) {
+													try {
+														pd.getWriteMethod().invoke(cp, ContactPropertiesNumberOfEmployees.getFromString(propertyValue));
+													} catch (NumberFormatException e) {
+														throw new IOException(e);
+													} catch (Exception e) {
+														throw new IOException(e);
+													}
+												}											
+											}
+										// Its a custom property
+										} else {
+											customProperties.put(propertyName, propertyValue);
 										}
-									}
+									} 
 								} else if (jp.getCurrentName().equalsIgnoreCase("versions")) {
 									// "properties": { "PROPERTY_NAME" : { "versions" : [ ... ] } }
 									if (jp.nextToken().equals(JsonToken.START_ARRAY)) {
@@ -129,7 +137,9 @@ public class ContactJacksonDeserializer extends
 				}	
 			}
 		}
-
+		
+		cp.setCustomProperties(customProperties);
+		
 		return cp;
 	}
 	

@@ -12,6 +12,7 @@ package org.mule.module.hubspot.unit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -119,11 +120,16 @@ public class ContactsApiJacksonParsingTest {
 
 		Contact c = objMapper.readValue(input, Contact.class); 
 		ContactProperties cp = c.getProperties();
+		Map<String, String> customProperties = cp.getCustomProperties();
 		
 		Assert.assertNotNull(c);
+		Assert.assertNotNull(cp);
 		Assert.assertFalse(StringUtils.isEmpty(cp.getFirstname()));
 		Assert.assertFalse(StringUtils.isEmpty(cp.getLastname()));
 		Assert.assertFalse(StringUtils.isEmpty(cp.getEmail()));
+		
+		Assert.assertTrue(customProperties.size() >= 2);
+		Assert.assertEquals("valueOfCustomTwo", customProperties.get("customTwo"));
 	}
 	
 	@Test

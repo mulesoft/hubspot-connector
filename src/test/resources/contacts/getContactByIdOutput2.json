@@ -5,6 +5,32 @@
    "profile-token":"AO_T-mNzMCCbg2GpRUh1uiweEx9CbVR1WUIPwS_9daOp1Oazmqt1gVTW9LbbwuZaIvsff_w9R4mGLF_Buxz0EqL8Z6M5CKuhUgYwKukBc-oTn5L5JWntMmejjkH2Z7hFMGkJmGeuPVbK",
    "profile-url":"https://app.hubspot.com/contacts/233267/lists/public/contact/_AO_T-mNzMCCbg2GpRUh1uiweEx9CbVR1WUIPwS_9daOp1Oazmqt1gVTW9LbbwuZaIvsff_w9R4mGLF_Buxz0EqL8Z6M5CKuhUgYwKukBc-oTn5L5JWntMmejjkH2Z7hFMGkJmGeuPVbK/",
    "properties":{
+	 "customOne":{
+         "value":"valueOfCustomOne",
+         "versions":[
+            {
+               "value":"",
+               "source-type":"WAL_INCREMENTAL",
+               "source-id":"iwsmp",
+               "source-label":null,
+               "timestamp":1359589920009,
+               "selected":false
+            }
+         ]
+      },
+      "customTwo":{
+         "value":"valueOfCustomTwo",
+         "versions":[
+            {
+               "value":"",
+               "source-type":"WAL_INCREMENTAL",
+               "source-id":"iwsmp",
+               "source-label":null,
+               "timestamp":1359589920009,
+               "selected":false
+            }
+         ]
+      },
       "twitterhandle":{
          "value":"",
          "versions":[
