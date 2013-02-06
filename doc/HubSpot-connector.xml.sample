@@ -29,10 +29,14 @@
     <hubspot:delete-contact  userId="userId" contactId="contactId" />
 <!-- END_INCLUDE(hubspot:delete-contact) -->
 <!-- BEGIN_INCLUDE(hubspot:update-contact) -->
-    <hubspot:update-contact  userId="userId" contactId="contactId" contactJson="contactJson" />
+    <hubspot:update-contact  userId="userId" contactId="contactId">
+        <hubspot:contact-properties email="user@mulesoft.com" />
+    </hubspot:update-contact>
 <!-- END_INCLUDE(hubspot:update-contact) -->
 <!-- BEGIN_INCLUDE(hubspot:create-contact) -->
-    <hubspot:create-contact  userId="userId" contactJson="contactJson" />
+    <hubspot:create-contact  userId="userId">
+        <hubspot:contact-properties email="user@mulesoft.com" />
+    </hubspot:create-contact> 
 <!-- END_INCLUDE(hubspot:create-contact) -->
 <!-- BEGIN_INCLUDE(hubspot:get-contact-statistics) -->
     <hubspot:get-contact-statistics  userId="userId" />

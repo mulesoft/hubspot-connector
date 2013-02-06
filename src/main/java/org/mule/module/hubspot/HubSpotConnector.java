@@ -28,6 +28,12 @@ import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredExcep
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.OAuthCredentials;
+import org.mule.module.hubspot.model.contact.Contact;
+import org.mule.module.hubspot.model.contact.ContactDeleted;
+import org.mule.module.hubspot.model.contact.ContactList;
+import org.mule.module.hubspot.model.contact.ContactProperties;
+import org.mule.module.hubspot.model.contact.ContactQuery;
+import org.mule.module.hubspot.model.contact.ContactStatistics;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -42,7 +48,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="1.2.1", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="2.0", friendlyName="HubSpot")
 public class HubSpotConnector
 {
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -161,13 +167,13 @@ public class HubSpotConnector
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
 	 * @param contactOffset This parameter will offset the contacts returned to you, based on the unique ID of the contacts in a given portal. Contact unique IDs are assigned by the order that they are created in the system. This means for instance, if you specify a vidOffset offset of 5, and you have 20 contacts in the portal you're working in, the contacts with IDs 6-20 will be returned to you.
-	 * @return A JSON format response from the service
+	 * @return A {@link ContactList} containing all the contacts
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getAllContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String contactOffset) 
+	public ContactList getAllContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String contactOffset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getAllContacts(credentialsManager.getCredentialsAccessToken(userId), userId, count, contactOffset);
@@ -186,13 +192,13 @@ public class HubSpotConnector
 	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
 	 * @param timeOffset Used in conjunction with the vidOffset paramter to page through the recent contacts. Every call to this endpoint will return a time-offset value. This value is used in the timeOffset parameter of the next call to get the next page of contacts.
 	 * @param contactOffset Used in conjunction with the timeOffset paramter to page through the recent contacts. Every call to this endpoint will return a vid-offset value. This value is used in the vidOffset parameter of the next call to get the next page of contacts.
-	 * @return A JSON format response from the service
+	 * @return A {@link ContactList} containing all the contacts
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getRecentContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String timeOffset, @Optional @Default("") String contactOffset)
+	public ContactList getRecentContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String timeOffset, @Optional @Default("") String contactOffset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getRecentContacts(credentialsManager.getCredentialsAccessToken(userId), userId, count, timeOffset, contactOffset);
@@ -210,13 +216,13 @@ public class HubSpotConnector
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param contactId Unique identifier for a particular contact. In HubSpot's contact system, contact ID's are called "vid".
-	 * @return A JSON format response from the service
+	 * @return The {@link Contact} representation
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactById(String userId, String contactId)
+	public Contact getContactById(String userId, String contactId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getContactById(credentialsManager.getCredentialsAccessToken(userId), userId, contactId);
@@ -231,13 +237,13 @@ public class HubSpotConnector
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param contactEmail The email address for the contact that you're searching for.
-	 * @return A JSON format response from the service
+	 * @return The {@link Contact} representation
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactByEmail(String userId, String contactEmail)
+	public Contact getContactByEmail(String userId, String contactEmail)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 				
 		return client.getContactByEmail(credentialsManager.getCredentialsAccessToken(userId), userId, contactEmail);
@@ -252,13 +258,13 @@ public class HubSpotConnector
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param contactUserToken The user token (HubSpot cookie) for the contact that you're searching for.
-	 * @return A JSON format response from the service
+	 * @return The {@link Contact} representation
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactByUserToken(String userId, String contactUserToken)
+	public Contact getContactByUserToken(String userId, String contactUserToken)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getContactByUserToken(credentialsManager.getCredentialsAccessToken(userId), userId, contactUserToken);
@@ -276,13 +282,13 @@ public class HubSpotConnector
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param query The search term for what you're searching for. You can use all of a word or just parts of a word as well. For example, if you we're searching for contacts with "hubspot" in their name or email, searching for "hub" would also return contacts with "hubspot" in their email address.
 	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
-	 * @return A JSON format response from the service
+	 * @return A {@link ContactQuery} with the contacts
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactsByQuery(String userId, String query, @Optional @Default("") String count)
+	public ContactQuery getContactsByQuery(String userId, String query, @Optional @Default("") String count)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getContactsByQuery(credentialsManager.getCredentialsAccessToken(userId), userId, query, count);
@@ -298,13 +304,13 @@ public class HubSpotConnector
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param contactId You must pass the Contact's ID that you're archiving in the request URL.
-	 * @return A JSON format response from the service
+	 * @return A {@link ContactDeleted} representing the data when the contact is deleted
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String deleteContact(String userId, String contactId)
+	public ContactDeleted deleteContact(String userId, String contactId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.deleteContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactId);
@@ -327,17 +333,19 @@ public class HubSpotConnector
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param contactId You must pass the Contact's ID that you're updating in the request URL
-	 * @param contactJson This is JSON that represents a contact that you're updating. <b>Important:</b> use " and not ' in your JSON.
-	 * @return A JSON format response from the service
+	 * @param contactProperties The properties of the Contact that will have the one to be created
+	 * @return The {@link ContactProperties} that was provided as input param
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String updateContact(String userId, String contactId, String contactJson)
+	public ContactProperties updateContact(String userId, String contactId, ContactProperties contactProperties)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		return client.updateContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactId, contactJson);
+		client.updateContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactId, contactProperties);
+		
+		return contactProperties;
 	}
 	
 	/**
@@ -348,17 +356,19 @@ public class HubSpotConnector
 	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:create-contact}
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
-	 * @param contactJson This is JSON that represents a contact that you're creating. <b>Important:</b> use " and not ' in your JSON. <b>Note:</b> The property email is mandatory.
-	 * @return A JSON format response from the service
+	 * @param contactProperties The properties that want to modify of an existing contact
+	 * @return The {@link ContactProperties} that was provided as input param 
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String createContact(String userId, String contactJson)
+	public ContactProperties createContact(String userId, ContactProperties contactProperties)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		return client.createContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactJson);
+		client.createContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactProperties);
+		
+		return contactProperties;
 	}
 	
 	/**
@@ -369,13 +379,13 @@ public class HubSpotConnector
 	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-contact-statistics}
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
-	 * @return A JSON format response from the service
+	 * @return A {@link ContactStatistics} representation of the response of statistics
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public String getContactStatistics(String userId)
+	public ContactStatistics getContactStatistics(String userId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getContactStatistics(credentialsManager.getCredentialsAccessToken(userId), userId);

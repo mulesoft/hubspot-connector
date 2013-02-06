@@ -1,3 +1,8 @@
+2.0
+===
+	* Added integration test for all the Contacts API
+	* Changed signature in operations of the Contacts API from Strings (JSON Format) to POJOs
+
 1.2.2 Beta
 ==========
 	* Added structure for Integration Tests

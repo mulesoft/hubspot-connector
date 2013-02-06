@@ -26,6 +26,12 @@ import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.HubSpotWebResourceMethods;
 import org.mule.module.hubspot.model.OAuthCredentials;
+import org.mule.module.hubspot.model.contact.Contact;
+import org.mule.module.hubspot.model.contact.ContactDeleted;
+import org.mule.module.hubspot.model.contact.ContactList;
+import org.mule.module.hubspot.model.contact.ContactProperties;
+import org.mule.module.hubspot.model.contact.ContactQuery;
+import org.mule.module.hubspot.model.contact.ContactStatistics;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -143,7 +149,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 	}
 
 	@Override
-	public String getAllContacts(String accessToken, String userId,
+	public ContactList getAllContacts(String accessToken, String userId,
 			String count, String contactOffset)
 			throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
@@ -156,13 +162,13 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (contactOffset != null) wr = wr.queryParam("vidOffset", contactOffset);
 		
 		logger.info("Requesting allContacts to: " + wr.toString());		
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-				
-		return strResponse;
+		ContactList cl = HubSpotClientUtils.webResourceGet(ContactList.class, wr, userId, HubSpotWebResourceMethods.GET);
+		
+		return cl;
 	}
 
 	@Override
-	public String getRecentContacts(String accessToken, String userId,
+	public ContactList getRecentContacts(String accessToken, String userId,
 			String count, String timeOffset, String contactOffset)
 			throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
@@ -176,13 +182,11 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (contactOffset != null) 	wr = wr.queryParam("vidOffset", contactOffset);
 		
 		logger.info("Requesting recentContacts to:" + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-				
-		return strResponse;
+		return HubSpotClientUtils.webResourceGet(ContactList.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String getContactById(String accessToken, String userId,
+	public Contact getContactById(String accessToken, String userId,
 			String contactId) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -195,13 +199,12 @@ public class HubSpotClientImpl implements HubSpotClient {
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.info("Requesting contactById to:" + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
 		
-		return strResponse;
+		return HubSpotClientUtils.webResourceGet(Contact.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String getContactByEmail(String accessToken, String userId,
+	public Contact getContactByEmail(String accessToken, String userId,
 			String contactEmail) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -214,13 +217,12 @@ public class HubSpotClientImpl implements HubSpotClient {
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.info("Requesting contactByEmail to:" + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET); 
-				
-		return strResponse;
+						
+		return HubSpotClientUtils.webResourceGet(Contact.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String getContactByUserToken(String accessToken, String userId,
+	public Contact getContactByUserToken(String accessToken, String userId,
 			String contactUserToken) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -233,13 +235,11 @@ public class HubSpotClientImpl implements HubSpotClient {
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.info("Requesting contactByUserToken to: " +  wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-		
-		return strResponse;
+		return HubSpotClientUtils.webResourceGet(Contact.class, wr, userId, HubSpotWebResourceMethods.GET);		
 	}
 
 	@Override
-	public String getContactsByQuery(String accessToken, String userId,
+	public ContactQuery getContactsByQuery(String accessToken, String userId,
 			String query, String count) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -254,13 +254,11 @@ public class HubSpotClientImpl implements HubSpotClient {
 		if (count != null) wr = wr.queryParam("count", count);
 		
 		logger.info("Requesting contactsByQuery to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-		
-		return strResponse;
+		return HubSpotClientUtils.webResourceGet(ContactQuery.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override
-	public String deleteContact(String accessToken, String userId,
+	public ContactDeleted deleteContact(String accessToken, String userId,
 			String contactId) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -273,58 +271,60 @@ public class HubSpotClientImpl implements HubSpotClient {
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.info("Requesting deleteContact to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.DELETE);
-		
-		return strResponse;
+		return HubSpotClientUtils.webResourceGet(ContactDeleted.class, wr, userId, HubSpotWebResourceMethods.DELETE);
 	}
 
 	@Override
-	public String updateContact(String accessToken, String userId,
-			String contactId, String contactJson)
+	public void updateContact(String accessToken, String userId,
+			String contactId, ContactProperties contactProperties)
 			throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
 		
 		if (StringUtils.isEmpty(contactId))
 			throw new HubSpotConnectorException("The parameter contactId cannot be empty");
-		if (StringUtils.isEmpty(contactJson))
-			throw new HubSpotConnectorException("The parameter contactJson cannot be empty");
+		if (contactProperties == null)
+			throw new HubSpotConnectorException("The parameter contactProperties cannot be null");		
 		
-		HubSpotClientUtils.checkValidJson(contactJson);
+		Contact contact = new Contact();
+		contact.setProperties(contactProperties);
 		
+		String contactJson = HubSpotClientUtils.transformObjectToJson(contact);
+			
 		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/contact/vid/{contactid}/profile").build(APIVersion, contactId);
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.info("Requesting updateContact to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.POST, contactJson);
-				
-		return strResponse;
+		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.POST, contactJson);
 	}
 
 	@Override
-	public String createContact(String accessToken, String userId,
-			String contactJson) throws HubSpotConnectorException,
+	public void createContact(String accessToken, String userId,
+			ContactProperties contactProperties) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
 		
-		if (StringUtils.isEmpty(contactJson))
-			throw new HubSpotConnectorException("The parameter contactJson cannot be empty");
+		if (contactProperties == null)
+			throw new HubSpotConnectorException("The parameter contactProperties cannot be null");		
+		if (StringUtils.isEmpty(contactProperties.getEmail()))
+			throw new HubSpotConnectorException("The property email in contactProperties cannot be empty");
 		
-		HubSpotClientUtils.checkValidJson(contactJson);
+		Contact contact = new Contact();
+		contact.setProperties(contactProperties);
+		
+		String contactJson = HubSpotClientUtils.transformObjectToJson(contact);
 		
 		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/contact").build(APIVersion);
 		
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.info("Requesting createContact to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.POST, contactJson);
-		
-		return strResponse;
+		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.POST, contactJson);
 	}
 
 	@Override
-	public String getContactStatistics(String accessToken, String userId)
+	public ContactStatistics getContactStatistics(String accessToken, String userId)
 			throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -334,9 +334,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.info("Requesting contactStatistics to: " + wr.toString());
-		String strResponse = HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.GET);
-		
-		return strResponse;
+		return HubSpotClientUtils.webResourceGet(ContactStatistics.class, wr, userId, HubSpotWebResourceMethods.GET);
 	}
 
 	@Override

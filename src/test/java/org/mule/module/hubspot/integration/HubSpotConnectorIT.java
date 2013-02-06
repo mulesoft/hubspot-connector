@@ -11,16 +11,29 @@ package org.mule.module.hubspot.integration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import junit.framework.Assert;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
+import org.junit.Test;
 import org.mule.api.ConnectionException;
 import org.mule.module.hubspot.HubSpotConnector;
+import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
+import org.mule.module.hubspot.model.contact.Contact;
+import org.mule.module.hubspot.model.contact.ContactDeleted;
+import org.mule.module.hubspot.model.contact.ContactList;
+import org.mule.module.hubspot.model.contact.ContactProperties;
+import org.mule.module.hubspot.model.contact.ContactPropertiesLifecycleStage;
+import org.mule.module.hubspot.model.contact.ContactPropertiesNumberOfEmployees;
+import org.mule.module.hubspot.model.contact.ContactQuery;
+import org.mule.module.hubspot.model.contact.ContactStatistics;
 
 public class HubSpotConnectorIT {
 
@@ -54,10 +67,104 @@ public class HubSpotConnectorIT {
 			String url = connector.authenticate(USER_ID, m);
 			
 			throw new RuntimeException(
-					"Call this url and gather the response as the authresult: "
+					"Call this url and gather the URL response as the authresult: "
 							+ url);
 		} else {
 			connector.authenticateResponse(authResult);
 		}
+	}
+	
+	/**
+	 * 1. create a new Contact (OP: createContact)
+	 * 2. retrieve contact by email (OP: getContactByEmail)
+	 * 3. update the contact (OP: updateContact)
+	 * 4. retrieve contact by id (OP: getContactById)
+	 * 5. delete contact by id (OP: 
+	 */
+	@Test
+	public void createRetrieveDeleteContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		// 1. Create a new contact
+		ContactProperties cp = new ContactProperties();
+		long date = (new Date()).getTime();
+		String email = String.format("%d@mulesoft.com", date);
+		
+		cp.setEmail(email);
+		cp.setFirstname("theFirstName");
+		cp.setLastname("theLastName");
+		cp.setNumemployees(ContactPropertiesNumberOfEmployees._25_50);
+		cp.setLifecyclestage(ContactPropertiesLifecycleStage.LEAD);
+		cp.setCity("beautifulCity");
+		
+		connector.createContact(USER_ID, cp);
+		
+		// 2. Retrieve the contact by email and check that all the properties setted are stablished
+		Contact c = connector.getContactByEmail(USER_ID, email);
+		Assert.assertNotNull(c);
+		
+		cp = c.getProperties();
+		Assert.assertNotNull(cp);		
+		Assert.assertFalse(StringUtils.isEmpty(c.getVid()));
+		Assert.assertEquals(cp.getFirstname(), "theFirstName");
+		Assert.assertEquals(cp.getLastname(), "theLastName");
+		Assert.assertEquals(cp.getNumemployees(), ContactPropertiesNumberOfEmployees._25_50);
+		Assert.assertEquals(cp.getLifecyclestage(), ContactPropertiesLifecycleStage.LEAD);
+		Assert.assertEquals(cp.getCity(), "beautifulCity");
+		
+		// 3. Update the lastname of the contact
+		cp = new ContactProperties();
+		cp.setLastname("lastNameModified");
+		
+		connector.updateContact(USER_ID, c.getVid(), cp);
+		
+		// 4. Retrieve again the same contact but this time by ID, and check that the lastname holds the modified value
+		c = connector.getContactById(USER_ID, c.getVid());
+		
+		Assert.assertNotNull(c);
+		
+		cp = c.getProperties();
+		
+		Assert.assertNotNull(cp);
+		Assert.assertEquals(cp.getLastname(), "lastNameModified");
+		
+		// 5. Delete the contact by his ID and check the response
+		ContactDeleted cd = connector.deleteContact(USER_ID, c.getVid());
+		
+		Assert.assertNotNull(cd);
+		Assert.assertTrue(cd.getDeleted());
+		Assert.assertEquals(cd.getVid(), c.getVid());
+	}
+	
+	
+	@Test
+	public void getContacts() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		ContactList cl = connector.getAllContacts(USER_ID, null, null);
+		
+		Assert.assertNotNull(cl);
+		Assert.assertTrue(cl.getContacts().size() > 0);
+		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getProperties().getFirstname()));
+		
+		cl = connector.getRecentContacts(USER_ID, null, null, null);
+		
+		Assert.assertNotNull(cl);
+		Assert.assertTrue(cl.getContacts().size() > 0);
+		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getProperties().getFirstname()));
+		
+		String q = "mule";
+		ContactQuery cq = connector.getContactsByQuery(USER_ID, q, null);
+		
+		Assert.assertNotNull(cq);
+		Assert.assertEquals(cq.getQuery(), q);
+		Assert.assertTrue(cq.getContacts().size() > 0);
+		Assert.assertFalse(StringUtils.isEmpty(cq.getContacts().get(0).getProperties().getFirstname()));
+	}
+	
+	@Test
+	public void getStatistics() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		ContactStatistics cs = connector.getContactStatistics(USER_ID);
+		
+		Assert.assertNotNull(cs);
+		Assert.assertTrue(cs.getContacts() > 0l);
+		Assert.assertTrue(cs.getLastNewContactAt() > 0l);
 	}
 }

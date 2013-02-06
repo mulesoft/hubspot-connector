@@ -15,6 +15,12 @@ import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredExcep
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.OAuthCredentials;
+import org.mule.module.hubspot.model.contact.Contact;
+import org.mule.module.hubspot.model.contact.ContactDeleted;
+import org.mule.module.hubspot.model.contact.ContactList;
+import org.mule.module.hubspot.model.contact.ContactProperties;
+import org.mule.module.hubspot.model.contact.ContactQuery;
+import org.mule.module.hubspot.model.contact.ContactStatistics;
 
 public interface HubSpotClient {
 	
@@ -22,35 +28,35 @@ public interface HubSpotClient {
 	
 	public OAuthCredentials authenticateResponse(String inputRequest) throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException;
 	
-	public String getAllContacts(String accessToken, String userId, String count, String contactOffset) 
+	public ContactList getAllContacts(String accessToken, String userId, String count, String contactOffset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getRecentContacts(String accessToken, String userId, String count, String timeOffset, String contactOffset)
+	public ContactList getRecentContacts(String accessToken, String userId, String count, String timeOffset, String contactOffset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
 	
-	public String getContactById(String accessToken, String userId, String contactId)
+	public Contact getContactById(String accessToken, String userId, String contactId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getContactByEmail(String accessToken, String userId, String contactEmail)
+	public Contact getContactByEmail(String accessToken, String userId, String contactEmail)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getContactByUserToken(String accessToken, String userId, String contactUserToken)
+	public Contact getContactByUserToken(String accessToken, String userId, String contactUserToken)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getContactsByQuery(String accessToken, String userId, String query, String count)
+	public ContactQuery getContactsByQuery(String accessToken, String userId, String query, String count)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 		
-	public String deleteContact(String accessToken, String userId, String contactId)
+	public ContactDeleted deleteContact(String accessToken, String userId, String contactId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String updateContact(String accessToken, String userId, String contactId, String contactJson)
+	public void updateContact(String accessToken, String userId, String contactId, ContactProperties contactProperties)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String createContact(String accessToken, String userId, String contactJson)
+	public void createContact(String accessToken, String userId, ContactProperties contactProperties)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public String getContactStatistics(String accessToken, String userId)
+	public ContactStatistics getContactStatistics(String accessToken, String userId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
 	public String getContactsLists(String accessToken, String userId, String count, String offset) 
