@@ -21,7 +21,7 @@ import org.mule.module.hubspot.serialization.ContactJacksonSerializer;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Contact {
 
-	private ContactProperties properties;
+	private ContactProperties contactProperties;
 	private List<ContactListMembership> listMemberships;
 	private List<ContactIdentityProfiles> identityProfiles;
 	private String vid;
@@ -34,14 +34,14 @@ public class Contact {
 
 	@JsonProperty("properties")
 	@JsonSerialize(using = ContactJacksonSerializer.class)
-	public ContactProperties getProperties() {
-		return properties;
+	public ContactProperties getContactProperties() {
+		return contactProperties;
 	}
 
 	@JsonProperty("properties")	
 	@JsonDeserialize(using = ContactJacksonDeserializer.class)
-	public void setProperties(ContactProperties properties) {
-		this.properties = properties;
+	public void setContactProperties(ContactProperties contactProperties) {
+		this.contactProperties = contactProperties;
 	}
 
 	@JsonProperty

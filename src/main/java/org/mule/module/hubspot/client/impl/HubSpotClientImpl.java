@@ -292,7 +292,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 			throw new HubSpotConnectorException("The parameter contactProperties cannot be null");		
 		
 		Contact contact = new Contact();
-		contact.setProperties(contactProperties);
+		contact.setContactProperties(contactProperties);
 		
 		String contactJson = HubSpotClientUtils.transformObjectToJson(contact);
 			
@@ -316,7 +316,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 			throw new HubSpotConnectorException("The property email in contactProperties cannot be empty");
 		
 		Contact contact = new Contact();
-		contact.setProperties(contactProperties);
+		contact.setContactProperties(contactProperties);
 		
 		String contactJson = HubSpotClientUtils.transformObjectToJson(contact);
 		

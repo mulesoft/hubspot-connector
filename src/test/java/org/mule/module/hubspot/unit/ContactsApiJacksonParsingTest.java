@@ -51,15 +51,17 @@ public class ContactsApiJacksonParsingTest {
 		cp.setLastname("myLastName");
 		
 		Contact c = new Contact();
-		c.setProperties(cp);
+		c.setContactProperties(cp);
 		
 		String json = objMapper.writeValueAsString(c);
 		
 		Assert.assertTrue(json.indexOf("myFirstName") >= 0);
 		Assert.assertTrue(json.indexOf("myLastName") >= 0);
 		Assert.assertTrue(json.indexOf("myemail@mydomain.com") >= 0);
+
+        System.out.println("json = "+json);
 		// Check that the properties parameters has an array and not an object
-		Assert.assertTrue(json.indexOf("{\"properties\":[") >= 0);
+		Assert.assertTrue(json.indexOf("\"properties\":[") >= 0);
 	}
 	
 	@Test
@@ -79,7 +81,7 @@ public class ContactsApiJacksonParsingTest {
 		
 		ContactList cl = objMapper.readValue(input, ContactList.class); 
 		Contact c = cl.getContacts().get(0);
-		ContactProperties cp = c.getProperties();
+		ContactProperties cp = c.getContactProperties();
 		
 		Assert.assertNotNull(cl);
 		Assert.assertNotNull(c);
@@ -93,7 +95,7 @@ public class ContactsApiJacksonParsingTest {
 		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(getContatPathFor("getContactByIdOutput.json"));
 
 		Contact c = objMapper.readValue(input, Contact.class); 
-		ContactProperties cp = c.getProperties();
+		ContactProperties cp = c.getContactProperties();
 		ContactIdentityProfiles cip = c.getIdentityProfiles().get(0);
 		ContactListMembership clm = c.getListMemberships().get(0);
 		
@@ -119,7 +121,7 @@ public class ContactsApiJacksonParsingTest {
 		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(getContatPathFor("getContactByIdOutput2.json"));
 
 		Contact c = objMapper.readValue(input, Contact.class); 
-		ContactProperties cp = c.getProperties();
+		ContactProperties cp = c.getContactProperties();
 		Map<String, String> customProperties = cp.getCustomProperties();
 		
 		Assert.assertNotNull(c);

@@ -97,7 +97,7 @@ public class HubSpotConnectorIT {
 		Contact c = connector.getContactByEmail(USER_ID, email);
 		Assert.assertNotNull(c);
 		
-		cp = c.getProperties();
+		cp = c.getContactProperties();
 		Assert.assertNotNull(cp);		
 		Assert.assertFalse(StringUtils.isEmpty(c.getVid()));
 		Assert.assertEquals(cp.getFirstname(), "theFirstName");
@@ -117,7 +117,7 @@ public class HubSpotConnectorIT {
 		
 		Assert.assertNotNull(c);
 		
-		cp = c.getProperties();
+		cp = c.getContactProperties();
 		
 		Assert.assertNotNull(cp);
 		Assert.assertEquals(cp.getLastname(), "lastNameModified");
@@ -140,13 +140,13 @@ public class HubSpotConnectorIT {
 		
 		Assert.assertNotNull(cl);
 		Assert.assertTrue(cl.getContacts().size() > 0);
-		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getProperties().getFirstname()));
+		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getContactProperties().getFirstname()));
 		
 		cl = connector.getRecentContacts(USER_ID, null, null, null);
 		
 		Assert.assertNotNull(cl);
 		Assert.assertTrue(cl.getContacts().size() > 0);
-		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getProperties().getFirstname()));
+		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getContactProperties().getFirstname()));
 		
 		String q = "mule";
 		ContactQuery cq = connector.getContactsByQuery(USER_ID, q, null);
@@ -154,7 +154,7 @@ public class HubSpotConnectorIT {
 		Assert.assertNotNull(cq);
 		Assert.assertEquals(cq.getQuery(), q);
 		Assert.assertTrue(cq.getContacts().size() > 0);
-		Assert.assertFalse(StringUtils.isEmpty(cq.getContacts().get(0).getProperties().getFirstname()));
+		Assert.assertFalse(StringUtils.isEmpty(cq.getContacts().get(0).getContactProperties().getFirstname()));
 	}
 	
 	@Test
