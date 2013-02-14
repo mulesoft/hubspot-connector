@@ -1,3 +1,7 @@
+2.2.2
+=====
+	* Added static method inside ContactPropertiesNumberOfEmployees getValueFrom
+
 2.2.1
 =====
 	* Added support for Custom Properties inside Contact. Added Map customProperties.
