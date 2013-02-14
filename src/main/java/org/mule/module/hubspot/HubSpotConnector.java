@@ -36,6 +36,10 @@ import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
 import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
+import org.mule.module.hubspot.model.email.EmailSubscription;
+import org.mule.module.hubspot.model.email.EmailSubscriptionStatus;
+import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
+import org.mule.module.hubspot.model.email.EmailSubscriptionStatusStatuses;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.springframework.core.annotation.Order;
@@ -52,7 +56,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.2.2", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="2.3", friendlyName="HubSpot")
 public class HubSpotConnector
 {
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -511,6 +515,70 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		return client.getAllProperties(credentialsManager.getCredentialsAccessToken(userId), userId);
+	}
+	
+	
+	/**
+	 * For a given portal, return all email subscription types that have been created in the portal.
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/email/get_subscriptions">http://developers.hubspot.com/docs/methods/email/get_subscriptions</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-email-subscriptions}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @return A {@link EmailSubscription} with the subscriptions data
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public EmailSubscription getEmailSubscriptions(String userId)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		return client.getEmailSubscriptions(credentialsManager.getCredentialsAccessToken(userId), userId);
+	}
+	
+	/**
+	 * For a given portal, return all email subscription information for the given email address and portal.
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/email/get_status">http://developers.hubspot.com/docs/methods/email/get_status</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-email-subscription-status}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param email The email to check the current status subscription
+	 * @return A {@link EmailSubscriptionStatus} with the status subscription
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public EmailSubscriptionStatus getEmailSubscriptionStatus(String userId, String email)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		return client.getEmailSubscriptionStatus(credentialsManager.getCredentialsAccessToken(userId), userId, email);
+	}
+	
+	/**
+	 * For a given email address and portal, update the email type subscription status.
+	 * <b>NOTE: it is only possible to opt email addresses OUT of subscription and there is NO UNDO for this operation.</b>
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/email/update_status">http://developers.hubspot.com/docs/methods/email/update_status</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:update-email-subscription-status}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param email The email to update the current status subscription
+	 * @param statuses A List of {@link EmailSubscriptionStatusStatuses} to be modified
+	 * @return The status of the operation {@link EmailSubscriptionStatusResult}
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor	
+	public EmailSubscriptionStatusResult updateEmailSubscriptionStatus(String userId, String email, List<EmailSubscriptionStatusStatuses> statuses)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		return client.updateEmailSubscriptionStatus(credentialsManager.getCredentialsAccessToken(userId), userId, email, statuses);
 	}
 	
 	public String getClientId() {

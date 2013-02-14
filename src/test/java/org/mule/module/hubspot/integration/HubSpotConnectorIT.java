@@ -36,6 +36,7 @@ import org.mule.module.hubspot.model.contact.ContactPropertiesNumberOfEmployees;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
 import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
+import org.mule.module.hubspot.model.email.EmailSubscription;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 
@@ -195,6 +196,15 @@ public class HubSpotConnectorIT {
 		
 		Assert.assertNotNull(lccp);
 		Assert.assertTrue(lccp.size() > 0);
+	}
+	
+	@Test
+	public void getEmailSubscriptions() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		EmailSubscription es = connector.getEmailSubscriptions(USER_ID);
+		
+		Assert.assertNotNull(es);
+		Assert.assertNotNull(es.getSubscriptionDefinitions());
+		Assert.assertTrue(es.getSubscriptionDefinitions().size() > 0);
 	}
 	
 	private String createNewContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {

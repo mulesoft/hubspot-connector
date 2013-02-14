@@ -56,3 +56,14 @@
 <!-- BEGIN_INCLUDE(hubspot:get-all-properties) -->
     <hubspot:get-all-properties  userId="userId" />
 <!-- END_INCLUDE(hubspot:get-all-properties) -->
+<!-- BEGIN_INCLUDE(hubspot:get-email-subscriptions) -->
+    <hubspot:get-email-subscriptions userId="userId" />
+<!-- END_INCLUDE(hubspot:get-email-subscriptions) -->
+<!-- BEGIN_INCLUDE(hubspot:get-email-subscription-status) -->
+    <hubspot:get-email-subscription-status userId="userId" email="email" />
+<!-- END_INCLUDE(hubspot:get-email-subscription-status) -->
+<!-- BEGIN_INCLUDE(hubspot:update-email-subscription-status) -->
+    <hubspot:update-email-subscription-status userId="userId" email="email">
+        <hubspot:statuses ref="statuses" />
+    </hubspot:update-email-subscription-status>
+<!-- END_INCLUDE(hubspot:update-email-subscription-status) -->

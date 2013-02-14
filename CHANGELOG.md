@@ -1,3 +1,7 @@
+2.3
+===
+	* Added operations for all the Email API
+
 2.2.2
 =====
 	* Added static method inside ContactPropertiesNumberOfEmployees getValueFrom

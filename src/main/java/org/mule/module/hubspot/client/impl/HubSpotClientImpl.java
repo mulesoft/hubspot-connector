@@ -35,6 +35,10 @@ import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
 import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
+import org.mule.module.hubspot.model.email.EmailSubscription;
+import org.mule.module.hubspot.model.email.EmailSubscriptionStatus;
+import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
+import org.mule.module.hubspot.model.email.EmailSubscriptionStatusStatuses;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 
@@ -430,5 +434,66 @@ public class HubSpotClientImpl implements HubSpotClient {
 	
 	private WebResource getWebResource(URI uri, String accessToken) throws HubSpotConnectorNoAccessTokenException {
 		return jerseyClient.resource(uri).queryParam(PARAM_ACCESS_TOKEN, accessToken);
-	}	
+	}
+
+	@Override
+	public EmailSubscription getEmailSubscriptions(String accessToken,
+			String userId) throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/email/{apiversion}/public/subscriptions").build(APIVersion);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		logger.debug("Requesting getEmailSubscriptions to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(EmailSubscription.class, wr, userId, HubSpotWebResourceMethods.GET);
+	}
+
+	@Override
+	public EmailSubscriptionStatus getEmailSubscriptionStatus(
+			String accessToken, String userId, String email)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+
+		if (StringUtils.isEmpty(email))
+			throw new HubSpotConnectorException("The parameter email cannot be empty");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/email/{apiversion}/public/subscriptions/{email}").build(APIVersion, email);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		logger.debug("Requesting getEmailSubscriptionStatus to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(EmailSubscriptionStatus.class, wr, userId, HubSpotWebResourceMethods.GET);
+	}
+
+	@Override
+	public EmailSubscriptionStatusResult updateEmailSubscriptionStatus(
+			String accessToken, String userId, String email,
+			List<EmailSubscriptionStatusStatuses> statuses)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		if (StringUtils.isEmpty(email))
+			throw new HubSpotConnectorException("The parameter email cannot be empty");
+		
+		if (statuses == null || statuses.size() == 0)
+			throw new HubSpotConnectorException("The parameter statuses cannot be empty");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/email/{apiversion}/public/subscriptions/{email}").build(APIVersion, email);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		EmailSubscriptionStatus ess = new EmailSubscriptionStatus();
+		ess.setSubscriptionStatuses(statuses);
+		
+		String json = HubSpotClientUtils.transformObjectToJson(ess);
+		
+		logger.debug("Requesting getEmailSubscriptionStatus to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(EmailSubscriptionStatusResult.class, wr, userId, HubSpotWebResourceMethods.POST, json);
+	}
+
+
 }
