@@ -219,7 +219,8 @@ public class HubSpotConnectorIT {
 		cp.setLifecyclestage(ContactPropertiesLifecycleStage.LEAD);
 		cp.setCity("beautifulCity");
 		
-		connector.createContact(USER_ID, cp);
+		Contact c = connector.createContact(USER_ID, cp);
+		c.toString();
 		
 		return email;
 	}

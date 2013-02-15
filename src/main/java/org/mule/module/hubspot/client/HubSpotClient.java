@@ -61,7 +61,7 @@ public interface HubSpotClient {
 	public void updateContact(String accessToken, String userId, String contactId, ContactProperties contactProperties)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public void createContact(String accessToken, String userId, ContactProperties contactProperties)
+	public Contact createContact(String accessToken, String userId, ContactProperties contactProperties)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
 	public ContactStatistics getContactStatistics(String accessToken, String userId)

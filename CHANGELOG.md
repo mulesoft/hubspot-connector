@@ -1,3 +1,7 @@
+2.3.1
+=====
+	* Create Contact returns a Contact entity instead of ContactProperties
+
 2.3
 ===
 	* Added operations for all the Email API

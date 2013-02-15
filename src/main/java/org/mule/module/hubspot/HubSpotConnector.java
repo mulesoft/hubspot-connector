@@ -56,7 +56,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.3", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="2.3.1", friendlyName="HubSpot")
 public class HubSpotConnector
 {
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -365,18 +365,16 @@ public class HubSpotConnector
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
 	 * @param contactProperties The properties that want to modify of an existing contact
-	 * @return The {@link ContactProperties} that was provided as input param 
+	 * @return The {@link Contact} newly created 
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public ContactProperties createContact(String userId, ContactProperties contactProperties)
+	public Contact createContact(String userId, ContactProperties contactProperties)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		client.createContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactProperties);
-		
-		return contactProperties;
+		return client.createContact(credentialsManager.getCredentialsAccessToken(userId), userId, contactProperties);
 	}
 	
 	/**

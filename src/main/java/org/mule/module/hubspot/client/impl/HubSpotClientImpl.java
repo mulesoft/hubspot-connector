@@ -309,7 +309,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 	}
 
 	@Override
-	public void createContact(String accessToken, String userId,
+	public Contact createContact(String accessToken, String userId,
 			ContactProperties contactProperties) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
 			HubSpotConnectorAccessTokenExpiredException {
@@ -329,7 +329,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		WebResource wr = getWebResource(uri, accessToken);
 		
 		logger.debug("Requesting createContact to: " + wr.toString());
-		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.POST, contactJson);
+		return HubSpotClientUtils.webResourceGet(Contact.class, wr, userId, HubSpotWebResourceMethods.POST, contactJson);
 	}
 
 	@Override
