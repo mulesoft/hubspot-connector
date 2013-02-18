@@ -11,6 +11,7 @@ package org.mule.module.hubspot.integration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
 import org.mule.module.hubspot.model.email.EmailSubscription;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
+import org.mule.util.store.SimpleMemoryObjectStore;
 
 public class HubSpotConnectorIT {
 
@@ -64,6 +66,7 @@ public class HubSpotConnectorIT {
 		connector.setHubId(prop.getProperty("hubspot.it.hubid"));
 		connector.setScope(prop.getProperty("hubspot.it.scope"));
 		connector.setCallbackUrl(prop.getProperty("hubspot.it.callbackurl"));
+		connector.setObjectStore(new SimpleMemoryObjectStore<Serializable>());
 		connector.initialize();
 		
 		if (StringUtils.isEmpty(authResult)) {

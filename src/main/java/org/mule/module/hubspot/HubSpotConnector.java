@@ -22,6 +22,8 @@ import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.OutboundHeaders;
+import org.mule.api.config.MuleProperties;
+import org.mule.api.store.ObjectStore;
 import org.mule.module.hubspot.client.HubSpotClient;
 import org.mule.module.hubspot.client.impl.HubSpotClientImpl;
 import org.mule.module.hubspot.credential.HubSpotCredentialsManager;
@@ -56,7 +58,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.3.1", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="2.3.2", friendlyName="HubSpot")
 public class HubSpotConnector
 {
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -101,13 +103,19 @@ public class HubSpotConnector
 	@Order(4)
 	private String callbackUrl;
 	
+	@SuppressWarnings("rawtypes")
+	@Configurable
+	@Order(5)
+	@Default(MuleProperties.DEFAULT_USER_OBJECT_STORE_NAME)
+	private ObjectStore objectStore;
+	
 	private HubSpotCredentialsManager credentialsManager;
 	
 	private HubSpotClient client;
 	
 	@PostConstruct
 	public void initialize() {
-		credentialsManager = new HubSpotCredentialsManager();
+		credentialsManager = new HubSpotCredentialsManager(objectStore);
 		client = new HubSpotClientImpl(HUB_SPOT_URL_API, HUB_SPOT_URL_AUTH, API_VERSION, clientId, hubId, scope, callbackUrl);
 	}
 
@@ -609,5 +617,15 @@ public class HubSpotConnector
 
 	public void setCallbackUrl(String callbackUrl) {
 		this.callbackUrl = callbackUrl;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public ObjectStore getObjectStore() {
+		return objectStore;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public void setObjectStore(ObjectStore objectStore) {
+		this.objectStore = objectStore;
 	}
 }

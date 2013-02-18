@@ -9,10 +9,11 @@
 
 package org.mule.module.hubspot.credential;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import org.apache.commons.lang.StringUtils;
+import org.mule.api.store.ObjectAlreadyExistsException;
+import org.mule.api.store.ObjectStore;
+import org.mule.api.store.ObjectStoreException;
+import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.OAuthCredentials;
 
@@ -21,10 +22,12 @@ import org.mule.module.hubspot.model.OAuthCredentials;
  */
 public class HubSpotCredentialsManager {
 
-	private Map<String, OAuthCredentials> credentialsMap;
+	@SuppressWarnings("rawtypes")
+	private ObjectStore credentialsMap;
 		
-	public HubSpotCredentialsManager() {
-		credentialsMap = new WeakHashMap<String, OAuthCredentials>();
+	@SuppressWarnings("rawtypes")
+	public HubSpotCredentialsManager(ObjectStore objStore) {
+		credentialsMap = objStore;
 	}
 	
 	/**
@@ -35,11 +38,14 @@ public class HubSpotCredentialsManager {
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have credentials, throw this exception
 	 */
 	public OAuthCredentials getCredentials(String userId) throws HubSpotConnectorNoAccessTokenException {
-		OAuthCredentials oACreds = credentialsMap.get(userId);
-		
-		if (oACreds == null)
+		OAuthCredentials oACreds;
+
+		try {
+			oACreds = (OAuthCredentials) credentialsMap.retrieve(userId);
+		} catch (ObjectStoreException e) {
 			throw new HubSpotConnectorNoAccessTokenException("The user with id " + userId + " does not have credentials");
-		
+		}
+				
 		return oACreds;
 	}
 	
@@ -59,8 +65,20 @@ public class HubSpotCredentialsManager {
 	 *  
 	 * @param credentials The credentials of the user {@link OAuthCredentials}
 	 */
-	public void setCredentias(OAuthCredentials credentials) {
-		this.credentialsMap.put(credentials.getUserId(), credentials);
+	@SuppressWarnings("unchecked")
+	public void setCredentias(OAuthCredentials credentials) throws HubSpotConnectorException {
+		try {
+			credentialsMap.store(credentials.getUserId(), credentials);
+		} catch (ObjectAlreadyExistsException ex) { 
+			try {
+				credentialsMap.remove(credentials.getUserId());
+				credentialsMap.store(credentials.getUserId(), credentials);
+			} catch (ObjectStoreException e) {
+				throw new HubSpotConnectorException("Error trying to overwrite credential", ex);
+			}			
+		} catch (ObjectStoreException e) {
+			throw new HubSpotConnectorException("Error trying to store credential", e);
+		}
 	}
 	
 	/**
@@ -70,7 +88,14 @@ public class HubSpotCredentialsManager {
 	 * @return true if the user has credentials, false otherwise
 	 */
 	public boolean hasUserAccessToken(String userId) {
-		OAuthCredentials credentials = credentialsMap.get(userId);
-		return credentials != null && StringUtils.isNotEmpty(credentials.getAccessToken());
+		try {
+			if (credentialsMap.contains(userId) && StringUtils.isNotEmpty(((OAuthCredentials)credentialsMap.retrieve(userId)).getAccessToken())) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (ObjectStoreException e) {
+			return false;
+		}
 	}
 }

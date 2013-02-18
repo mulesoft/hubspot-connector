@@ -1,3 +1,7 @@
+2.3.2
+=====
+	* Added support for ObjectStore for storing the credentials. Also a configurable param for defining the Object Store to use (objectStore)
+
 2.3.1
 =====
 	* Create Contact returns a Contact entity instead of ContactProperties
