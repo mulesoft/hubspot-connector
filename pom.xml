@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.module</groupId>
-	<artifactId>hub-spot-connector</artifactId>
+	<artifactId>hubspot-connector</artifactId>
 	<version>2.4-SNAPSHOT</version>
-	<packaging>mule-module</packaging>
+	<packaging>mule-modules</packaging>
 	<name>HubSpot Cloud Connector</name>
 
 	<parent>
@@ -67,9 +67,9 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:git:git://github.com:mulesoft/hub-spot-connector.git</connection>
-		<developerConnection>scm:git:git@github.com:mulesoft/hub-spot-connector.git</developerConnection>
-		<url>http://github.com/mulesoft/hub-spot-connector</url>
+		<connection>scm:git:git://github.com:mulesoft/hubspot-connector.git</connection>
+		<developerConnection>scm:git:git@github.com:mulesoft/hubspot-connector.git</developerConnection>
+		<url>http://github.com/mulesoft/hubspot-connector</url>
 	</scm>
 
 	<repositories>
