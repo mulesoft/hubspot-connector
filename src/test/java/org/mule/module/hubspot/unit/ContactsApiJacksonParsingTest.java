@@ -192,7 +192,7 @@ public class ContactsApiJacksonParsingTest {
 	
 	@Test
 	public void getAllContactPropertiesFromAPortalOutput() throws JsonParseException, JsonMappingException, IOException {
-		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(getContactPropertyPathFor("getAllContactPropertiesFromAPortalOutput.json"));
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(getContactPropertyPathFor("getAllContactPropertiesOutput.json"));
 		
 		CustomContactProperty[] lcp = objMapper.readValue(input, CustomContactProperty[].class);
 		CustomContactProperty cp = lcp[0];

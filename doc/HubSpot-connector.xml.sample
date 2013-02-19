@@ -53,9 +53,6 @@
 <!-- BEGIN_INCLUDE(hubspot:get-contacts-in-a-list) -->
     <hubspot:get-contacts-in-a-list  userId="userId" listId="listId" />
 <!-- END_INCLUDE(hubspot:get-contacts-in-a-list) -->
-<!-- BEGIN_INCLUDE(hubspot:get-all-properties) -->
-    <hubspot:get-all-properties  userId="userId" />
-<!-- END_INCLUDE(hubspot:get-all-properties) -->
 <!-- BEGIN_INCLUDE(hubspot:get-email-subscriptions) -->
     <hubspot:get-email-subscriptions userId="userId" />
 <!-- END_INCLUDE(hubspot:get-email-subscriptions) -->
@@ -67,3 +64,35 @@
         <hubspot:statuses ref="statuses" />
     </hubspot:update-email-subscription-status>
 <!-- END_INCLUDE(hubspot:update-email-subscription-status) -->
+<!-- BEGIN_INCLUDE(hubspot:get-all-custom-properties) -->
+    <hubspot:get-all-custom-properties userId="userId" />
+<!-- END_INCLUDE(hubspot:get-all-custom-properties) -->
+<!-- BEGIN_INCLUDE(hubspot:create-custom-property) -->
+    <hubspot:create-custom-property userId="userId">
+        <hubspot:contact-property ref="customProperty" />
+    </hubspot:create-custom-property>
+<!-- END_INCLUDE(hubspot:create-custom-property) -->
+<!-- BEGIN_INCLUDE(hubspot:update-custom-property) -->
+    <hubspot:update-custom-property userId="userId" propertyName="propertyName">
+        <hubspot:contact-property ref="customProperty" />
+    </hubspot:update-custom-property>
+<!-- END_INCLUDE(hubspot:update-custom-property) -->
+<!-- BEGIN_INCLUDE(hubspot:delete-custom-property) -->
+    <hubspot:delete-custom-property userId="userId" contactPropertyName="propertyName" />
+<!-- END_INCLUDE(hubspot:delete-custom-property) -->
+<!-- BEGIN_INCLUDE(hubspot:get-custom-property-group) -->
+    <hubspot:get-custom-property-group userId="userId" groupName="groupName" />
+<!-- END_INCLUDE(hubspot:get-custom-property-group) -->
+<!-- BEGIN_INCLUDE(hubspot:create-custom-property-group) -->
+    <hubspot:create-custom-property-group userId="userId">
+        <hubspot:custom-contact-property-group ref="customContactPropertyGroup" />
+    </hubspot:create-custom-property-group>
+<!-- END_INCLUDE(hubspot:create-custom-property-group) -->
+<!-- BEGIN_INCLUDE(hubspot:update-custom-property-group) -->
+    <hubspot:update-custom-property-group userId="userId" groupName="groupName">
+        <hubspot:custom-contact-property-group ref="customContactPropertyGroup" />
+    </hubspot:update-custom-property-group>
+<!-- END_INCLUDE(hubspot:update-custom-property-group) -->
+<!-- BEGIN_INCLUDE(hubspot:delete-custom-property-group) -->
+    <hubspot:delete-custom-property-group userId="userId" groupName="groupName" />
+<!-- END_INCLUDE(hubspot:delete-custom-property-group) -->

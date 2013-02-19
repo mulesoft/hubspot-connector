@@ -37,6 +37,9 @@ import org.mule.module.hubspot.model.contact.ContactPropertiesNumberOfEmployees;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
 import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
+import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyFieldType;
+import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyGroup;
+import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyType;
 import org.mule.module.hubspot.model.email.EmailSubscription;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
@@ -74,9 +77,7 @@ public class HubSpotConnectorIT {
 			Map<String, Object> m = new HashMap<String, Object>();
 			String url = connector.authenticate(USER_ID, m);
 			
-			throw new RuntimeException(
-					"Call this url and gather the URL response as the authresult: "
-							+ url);
+			throw new RuntimeException("Call this url and gather the URL response as the authresult: " + url);
 		} else {
 			connector.authenticateResponse(authResult);
 		}
@@ -89,7 +90,7 @@ public class HubSpotConnectorIT {
 	 * 4. retrieve contact by id (OP: getContactById)
 	 * 5. delete contact by id (OP: 
 	 */
-	@Test
+	//@Test
 	public void createRetrieveDeleteContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		// 1. Create a new contact
@@ -135,7 +136,7 @@ public class HubSpotConnectorIT {
 	}
 	
 	
-	@Test
+	//@Test
 	public void getContacts() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		createNewContact();
@@ -161,7 +162,7 @@ public class HubSpotConnectorIT {
 		Assert.assertFalse(StringUtils.isEmpty(cq.getContacts().get(0).getContactProperties().getFirstname()));
 	}
 	
-	@Test
+	//@Test
 	public void getStatistics() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		ContactStatistics cs = connector.getContactStatistics(USER_ID);
 		
@@ -170,7 +171,7 @@ public class HubSpotConnectorIT {
 		Assert.assertTrue(cs.getLastNewContactAt() >= 0l);
 	}
 	
-	@Test
+	//@Test
 	public void getLists() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		HubSpotListLists hsll = connector.getContactsLists(USER_ID, null, null);
 		
@@ -193,21 +194,78 @@ public class HubSpotConnectorIT {
 		Assert.assertTrue(cl.getContacts().size() > 0);		
 	}
 	
-	@Test
-	public void getContactProperties() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		List<CustomContactProperty> lccp = connector.getAllProperties(USER_ID);
-		
-		Assert.assertNotNull(lccp);
-		Assert.assertTrue(lccp.size() > 0);
-	}
-	
-	@Test
+	//@Test
 	public void getEmailSubscriptions() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		EmailSubscription es = connector.getEmailSubscriptions(USER_ID);
 		
 		Assert.assertNotNull(es);
 		Assert.assertNotNull(es.getSubscriptionDefinitions());
 		Assert.assertTrue(es.getSubscriptionDefinitions().size() > 0);
+	}
+	
+	@Test
+	public void getContactProperties() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		List<CustomContactProperty> lccp = connector.getAllCustomProperties(USER_ID);
+		
+		Assert.assertNotNull(lccp);
+		Assert.assertTrue(lccp.size() > 0);
+		
+		long date = (new Date()).getTime();
+		final String GROUP_PREPOSITION = "ccpg_";
+		final String PROP_PREPOSITION = "ccp_";
+		
+		// Create Custom Property Group
+		CustomContactPropertyGroup ccpg = new CustomContactPropertyGroup();
+		ccpg.setName(GROUP_PREPOSITION + date);
+		ccpg.setDisplayOrder(5);
+		ccpg.setDisplayName("Im the group!");
+				
+		ccpg = connector.createCustomPropertyGroup(USER_ID, ccpg);
+		
+		Assert.assertNotNull(ccpg);
+		Assert.assertEquals(GROUP_PREPOSITION + date, ccpg.getName());		
+		
+		// Create Custom Property
+		CustomContactProperty ccp = new CustomContactProperty();
+		
+		ccp.setName(PROP_PREPOSITION + date);
+		ccp.setGroupName(GROUP_PREPOSITION + date);
+		ccp.setFieldType(CustomContactPropertyFieldType.TEXT);
+		ccp.setType(CustomContactPropertyType.STRING);
+		ccp.setLabel("Im the label");
+		ccp.setFormField(true);
+		
+		ccp = connector.createCustomProperty(USER_ID, ccp);
+				
+		Assert.assertNotNull(ccp);
+		Assert.assertEquals(PROP_PREPOSITION + date, ccp.getName());
+		Assert.assertEquals(GROUP_PREPOSITION + date, ccp.getGroupName());
+		
+		// Update the property		
+		ccp = new CustomContactProperty();
+		ccp.setLabel("Im the new label");
+		
+		ccp = connector.updateCustomProperty(USER_ID, PROP_PREPOSITION + date, ccp);
+		
+		Assert.assertNotNull(ccp);
+		Assert.assertEquals("Im the new label", ccp.getLabel());
+		
+		// Delete the property
+		connector.deleteCustomProperty(USER_ID, ccp.getName());
+		
+		// Update Property Group
+		ccpg = new CustomContactPropertyGroup();
+		ccpg.setDisplayName("Im the new group name");
+				
+		connector.updateCustomPropertyGroup(USER_ID, GROUP_PREPOSITION + date, ccpg);
+		
+		// Retrieve the Property Group
+		ccpg = connector.getCustomPropertyGroup(USER_ID, GROUP_PREPOSITION + date);
+		
+		Assert.assertNotNull(ccpg);
+		Assert.assertEquals("Im the new group name", ccpg.getDisplayName());
+		
+		connector.deleteCustomPropertyGroup(USER_ID, ccpg.getName());
 	}
 	
 	private String createNewContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {

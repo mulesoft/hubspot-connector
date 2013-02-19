@@ -15,10 +15,12 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.mule.module.hubspot.serialization.ContactJacksonDeserializer;
 import org.mule.module.hubspot.serialization.ContactJacksonSerializer;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class Contact {
 
 	private ContactProperties contactProperties;

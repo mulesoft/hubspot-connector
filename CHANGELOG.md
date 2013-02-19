@@ -1,3 +1,8 @@
+2.4
+===
+	* Renamed operation from getAllProperties to getAllCustomProperties
+	* Addded opertaions for all the Custom Properties API
+
 2.3.2
 =====
 	* Added support for ObjectStore for storing the credentials. Also a configurable param for defining the Object Store to use (objectStore)

@@ -38,6 +38,7 @@ import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
 import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
+import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyGroup;
 import org.mule.module.hubspot.model.email.EmailSubscription;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatus;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
@@ -58,7 +59,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.3.2", friendlyName="HubSpot")
+@Connector(name="hubspot", schemaVersion="2.4", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
 	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -103,8 +104,12 @@ public class HubSpotConnector
 	@Order(4)
 	private String callbackUrl;
 	
+	/**
+	 * The object store to store the user credentials
+	 */
 	@SuppressWarnings("rawtypes")
 	@Configurable
+	@Optional
 	@Order(5)
 	@Default(MuleProperties.DEFAULT_USER_OBJECT_STORE_NAME)
 	private ObjectStore objectStore;
@@ -502,29 +507,6 @@ public class HubSpotConnector
 	}
 	
 	/**
-	 * Properties in HubSpot are fields that have been created. By default, there are many fields that come "out of the box" in a 
-	 * HubSpot portal, but users can also create new, custom properties as they please.
-	 * This method returns all of those properties to you.
-	 * <p>
-	 * API link: <a href="http://developers.hubspot.com/docs/methods/lists/get_list_contacts">http://developers.hubspot.com/docs/methods/lists/get_list_contacts</a>
-	 * <p>
-	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-all-properties}
-	 * 
-	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
-	 * @return A List of {@link CustomContactProperty}
-	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
-	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
-	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
-	 */
-	@Processor
-	public List<CustomContactProperty> getAllProperties(String userId)
-			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		
-		return client.getAllProperties(credentialsManager.getCredentialsAccessToken(userId), userId);
-	}
-	
-	
-	/**
 	 * For a given portal, return all email subscription types that have been created in the portal.
 	 * <p>
 	 * API link: <a href="http://developers.hubspot.com/docs/methods/email/get_subscriptions">http://developers.hubspot.com/docs/methods/email/get_subscriptions</a>
@@ -585,6 +567,194 @@ public class HubSpotConnector
 	public EmailSubscriptionStatusResult updateEmailSubscriptionStatus(String userId, String email, List<EmailSubscriptionStatusStatuses> statuses)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		return client.updateEmailSubscriptionStatus(credentialsManager.getCredentialsAccessToken(userId), userId, email, statuses);
+	}
+	
+	/**
+	 * Properties in HubSpot are fields that have been created. By default, there are many fields that come "out of the box" in a 
+	 * HubSpot portal, but users can also create new, custom properties as they please.
+	 * This method returns all of those properties to you.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/get_properties">https://developers.hubspot.com/docs/methods/contacts/get_properties</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-all-custom-properties}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @return A List of {@link CustomContactProperty}
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public List<CustomContactProperty> getAllCustomProperties(String userId)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		return client.getAllCustomProperties(credentialsManager.getCredentialsAccessToken(userId), userId);
+	}
+
+	/**
+	 * Create a new property in HubSpot. Properties in HubSpot are fields that have been created. By default, there are many fields that come "out of the box" in a HubSpot portal, but users can also create new, custom properties as they please.
+	 * <p>
+	 * This method enables you to create a new property. If you try to create a property whose name already exists in the system, you'll get an HTTP 409 exception thrown from the API.
+	 * <p>
+	 * Currently, there is a 1,000 property limit that you can have in any given portal.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/create_property">https://developers.hubspot.com/docs/methods/contacts/create_property</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:create-custom-property}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param contactProperty The {@link CustomContactProperty} to be created
+	 * @return The {@link CustomContactProperty} created
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public CustomContactProperty createCustomProperty(String userId, CustomContactProperty contactProperty)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		return client.createCustomProperty(credentialsManager.getCredentialsAccessToken(userId), userId, contactProperty);
+	}
+	
+	/**
+	 * Update an existing property in HubSpot. This method lets you update one of many properties of a contact in HubSpot.T
+	 * <p>
+	 * To update a contact property, you should make an HTTP POST call to this endpoint with some JSON in the request payload. This JSON should contain property attributes that you want to add to or update. See the sample JSON below for an example of this snippet of JSON.
+	 * <p>
+	 * Remember, if a property doesn't yet exist, you can create a new custom property through the API by using the 'Create Property' method.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/update_property">https://developers.hubspot.com/docs/methods/contacts/update_property</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:update-custom-property}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param propertyName The name of the Custom Property to be updated
+	 * @param contactProperty The {@link contactProperty} to be created
+	 * @return The {@link contactProperty} recently created
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public CustomContactProperty updateCustomProperty(String userId, String propertyName, CustomContactProperty contactProperty)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		return client.updateCustomProperty(credentialsManager.getCredentialsAccessToken(userId), userId, propertyName, contactProperty);
+	}
+	
+	/**
+	 * Delete an existing property in HubSpot. This method lets you delete one of many properties of a contact in HubSpot.
+	 * <p>
+	 * To delete a contact property, you should make an HTTP DELETE call to this endpoint with the name of the property you're deleting in the request URL.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/delete_property">https://developers.hubspot.com/docs/methods/contacts/delete_property</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:delete-custom-property}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param contactPropertyName The name of the custom property to be deleted
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public void deleteCustomProperty(String userId, String contactPropertyName)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		client.deleteCustomProperty(credentialsManager.getCredentialsAccessToken(userId), userId, contactPropertyName);
+	}
+
+	/**
+	 * For a given portal, return all contact property groups that have been created in the portal.
+	 * <p>
+	 * Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more flexible way.
+	 * <p>
+	 * There are certain property groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email Inforamtion' are examples.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/get_groups">https://developers.hubspot.com/docs/methods/contacts/get_groups</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-custom-property-group}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param groupName The name of the group to be retrieved
+	 * @return A {@link CustomContactPropertyGroup}
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public CustomContactPropertyGroup getCustomPropertyGroup(String userId, String groupName)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		return client.getCustomPropertyGroup(credentialsManager.getCredentialsAccessToken(userId), userId, groupName);
+	}
+	
+	/**
+	 * For a given portal, create a new contact proprerty group.
+	 * <p>
+	 * Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more flexible way.
+	 * <p>
+	 * There are certain propery groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email Inforamtion' are examples. This method lets you create your own custom property group in a portal.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/create_group">https://developers.hubspot.com/docs/methods/contacts/create_group</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:create-custom-property-group}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param customContactPropertyGroup A {@link CustomContactPropertyGroup} to be created
+	 * @return The {@link CustomContactPropertyGroup} recently created
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public CustomContactPropertyGroup createCustomPropertyGroup(String userId, CustomContactPropertyGroup customContactPropertyGroup)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		return client.createCustomPropertyGroup(credentialsManager.getCredentialsAccessToken(userId), userId, customContactPropertyGroup);
+	}
+	
+	/**
+	 * For a given portal, update a contact property group.
+	 * <p>
+	 * Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more flexible way.
+	 * <p>
+	 * There are certain property groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email Inforamtion' are examples. This method lets you update your own custom property group in a portal.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/update_group">https://developers.hubspot.com/docs/methods/contacts/update_group</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:update-custom-property-group}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param groupName The name of the Custom Contact Property Group to be updated
+	 * @param customContactPropertyGroup A {@link CustomContactPropertyGroup} to be created
+	 * @return The {@link CustomContactPropertyGroup} recently created
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public CustomContactPropertyGroup updateCustomPropertyGroup(String userId, String groupName, CustomContactPropertyGroup customContactPropertyGroup)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		return client.updateCustomPropertyGroup(credentialsManager.getCredentialsAccessToken(userId), userId, groupName, customContactPropertyGroup);
+	}
+	
+	/**
+	 * For a given portal, delete a contact property group based on the name of the group.
+	 * <p>
+	 * Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more flexible way.
+	 * <p>
+	 * There are certain property groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email Inforamtion' are examples. This method lets you delete your own custom property group in a portal. You can also create new groups, update existing groups, or just get group and the properties in each group.
+	 * <p>
+	 * API link: <a href="https://developers.hubspot.com/docs/methods/contacts/delete_group">https://developers.hubspot.com/docs/methods/contacts/delete_group</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:delete-custom-property-group}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param groupName The name of the group to be deleted
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public void deleteCustomPropertyGroup(String userId, String groupName)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		client.deleteCustomPropertyGroup(credentialsManager.getCredentialsAccessToken(userId), userId, groupName);
 	}
 	
 	public String getClientId() {

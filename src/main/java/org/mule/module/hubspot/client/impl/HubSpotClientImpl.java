@@ -35,6 +35,7 @@ import org.mule.module.hubspot.model.contact.ContactProperties;
 import org.mule.module.hubspot.model.contact.ContactQuery;
 import org.mule.module.hubspot.model.contact.ContactStatistics;
 import org.mule.module.hubspot.model.contactproperty.CustomContactProperty;
+import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyGroup;
 import org.mule.module.hubspot.model.email.EmailSubscription;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatus;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
@@ -78,6 +79,11 @@ public class HubSpotClientImpl implements HubSpotClient {
 		this.callbackUrl 	= callbackUrl; 
 		
 		jerseyClient = new Client();
+	}
+	
+	
+	private WebResource getWebResource(URI uri, String accessToken) throws HubSpotConnectorNoAccessTokenException {
+		return jerseyClient.resource(uri).queryParam(PARAM_ACCESS_TOKEN, accessToken);
 	}
 	
 	@Override
@@ -417,26 +423,6 @@ public class HubSpotClientImpl implements HubSpotClient {
 	}
 	
 	@Override
-	public List<CustomContactProperty> getAllProperties(String accessToken, String userId)
-			throws HubSpotConnectorException,
-			HubSpotConnectorNoAccessTokenException,
-			HubSpotConnectorAccessTokenExpiredException {
-		
-		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/properties").build(APIVersion);
-		
-		WebResource wr = getWebResource(uri, accessToken);
-		
-		logger.debug("Requesting getAllProperties to: " + wr.toString());
-		CustomContactProperty[] cpl = HubSpotClientUtils.webResourceGet(CustomContactProperty[].class, wr, userId, HubSpotWebResourceMethods.GET);
-				
-		return cpl != null ? Arrays.asList(cpl) : null;
-	}
-	
-	private WebResource getWebResource(URI uri, String accessToken) throws HubSpotConnectorNoAccessTokenException {
-		return jerseyClient.resource(uri).queryParam(PARAM_ACCESS_TOKEN, accessToken);
-	}
-
-	@Override
 	public EmailSubscription getEmailSubscriptions(String accessToken,
 			String userId) throws HubSpotConnectorException,
 			HubSpotConnectorNoAccessTokenException,
@@ -495,5 +481,176 @@ public class HubSpotClientImpl implements HubSpotClient {
 		return HubSpotClientUtils.webResourceGet(EmailSubscriptionStatusResult.class, wr, userId, HubSpotWebResourceMethods.POST, json);
 	}
 
+	@Override
+	public List<CustomContactProperty> getAllCustomProperties(String accessToken, String userId)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/properties").build(APIVersion);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		logger.debug("Requesting getAllProperties to: " + wr.toString());
+		CustomContactProperty[] cpl = HubSpotClientUtils.webResourceGet(CustomContactProperty[].class, wr, userId, HubSpotWebResourceMethods.GET);
+				
+		return cpl != null ? Arrays.asList(cpl) : null;
+	}
 
+
+	@Override
+	public CustomContactProperty createCustomProperty(String accessToken, String userId,
+			CustomContactProperty contactProperty)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		if (contactProperty == null)
+			throw new HubSpotConnectorException("The parameter contactProperty cannot be empty");
+		
+		if (StringUtils.isEmpty(contactProperty.getName()))
+			throw new HubSpotConnectorException("The parameter contactProperty must have a name");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/properties/{propertyname}").build(APIVersion, contactProperty.getName());
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		String json = HubSpotClientUtils.transformObjectToJson(contactProperty);
+		
+		logger.debug("Requesting createCustomProperty to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(CustomContactProperty.class, wr, userId, HubSpotWebResourceMethods.PUT, json);
+	}
+
+
+	@Override
+	public CustomContactProperty updateCustomProperty(String accessToken,
+			String userId, String propertyName, CustomContactProperty contactProperty)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		if (contactProperty == null)
+			throw new HubSpotConnectorException("The parameter contactProperty cannot be empty");
+		
+		if (StringUtils.isEmpty(propertyName))
+			throw new HubSpotConnectorException("The parameter propertyName cannot be empty");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/properties/{propertyname}").build(APIVersion, propertyName);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		String json = HubSpotClientUtils.transformObjectToJson(contactProperty);
+		
+		logger.debug("Requesting updateCustomProperty to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(CustomContactProperty.class, wr, userId, HubSpotWebResourceMethods.POST, json);
+	}
+
+
+	@Override
+	public void deleteCustomProperty(String accessToken, String userId,
+			String contactPropertyName) throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		if (StringUtils.isEmpty(contactPropertyName))
+			throw new HubSpotConnectorException("The parameter contactPropertyName must have a name");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/properties/{propertyname}").build(APIVersion, contactPropertyName);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		logger.debug("Requesting deleteCustomProperty to: " + wr.toString());
+		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.DELETE);
+		
+	}
+
+
+	@Override
+	public CustomContactPropertyGroup getCustomPropertyGroup(
+			String accessToken, String userId, String groupName)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		if (StringUtils.isEmpty(groupName))
+			throw new HubSpotConnectorException("The parameter groupName must have a name");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/groups/{groupname}").build(APIVersion, groupName);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		logger.debug("Requesting getCustomPropertyGroup to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(CustomContactPropertyGroup.class, wr, userId, HubSpotWebResourceMethods.GET);
+	}
+
+
+	@Override
+	public CustomContactPropertyGroup createCustomPropertyGroup(
+			String accessToken, String userId,
+			CustomContactPropertyGroup customContactPropertyGroup)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+
+		if (customContactPropertyGroup == null)
+			throw new HubSpotConnectorException("The parameter customContactPropertyGroup cannot be empty");
+		
+		if (StringUtils.isEmpty(customContactPropertyGroup.getName()))
+			throw new HubSpotConnectorException("The parameter customContactPropertyGroup must have a name");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/groups/{groupname}").build(APIVersion, customContactPropertyGroup.getName());
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		String json = HubSpotClientUtils.transformObjectToJson(customContactPropertyGroup);
+		
+		logger.debug("Requesting createCustomPropertyGroup to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(CustomContactPropertyGroup.class, wr, userId, HubSpotWebResourceMethods.PUT, json);
+	}
+
+
+	@Override
+	public CustomContactPropertyGroup updateCustomPropertyGroup(
+			String accessToken, String userId, String groupName,
+			CustomContactPropertyGroup customContactPropertyGroup)
+			throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		if (customContactPropertyGroup == null)
+			throw new HubSpotConnectorException("The parameter customContactPropertyGroup cannot be empty");
+		
+		if (StringUtils.isEmpty(groupName))
+			throw new HubSpotConnectorException("The parameter groupName cannot be empty");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/groups/{groupname}").build(APIVersion, groupName);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		String json = HubSpotClientUtils.transformObjectToJson(customContactPropertyGroup);
+		
+		logger.debug("Requesting createCustomPropertyGroup to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(CustomContactPropertyGroup.class, wr, userId, HubSpotWebResourceMethods.POST, json);
+		
+	}
+
+
+	@Override
+	public void deleteCustomPropertyGroup(String accessToken, String userId,
+			String groupName) throws HubSpotConnectorException,
+			HubSpotConnectorNoAccessTokenException,
+			HubSpotConnectorAccessTokenExpiredException {
+		
+		if (StringUtils.isEmpty(groupName))
+			throw new HubSpotConnectorException("The parameter groupName must have a name");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/groups/{groupname}").build(APIVersion, groupName);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		logger.debug("Requesting deleteCustomPropertyGroup to: " + wr.toString());
+		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.DELETE);
+	}
+	
+	
 }

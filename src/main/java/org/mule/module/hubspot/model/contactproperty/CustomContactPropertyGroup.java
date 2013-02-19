@@ -9,6 +9,8 @@
 
 package org.mule.module.hubspot.model.contactproperty;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -16,30 +18,32 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class CustomContactPropertyOptions {
+public class CustomContactPropertyGroup {
 
-	private String label;
-	private String value;
+	private String name;
+	private String displayName;
 	private Integer displayOrder;
+	private Long portalId;
+	private List<CustomContactProperty> properties;
 	
 	@JsonProperty
-	public String getLabel() {
-		return label;
+	public String getName() {
+		return name;
 	}
 	
 	@JsonProperty
-	public void setLabel(String label) {
-		this.label = label;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@JsonProperty
-	public String getValue() {
-		return value;
+	public String getDisplayName() {
+		return displayName;
 	}
 	
 	@JsonProperty
-	public void setValue(String value) {
-		this.value = value;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 	
 	@JsonProperty
@@ -50,5 +54,25 @@ public class CustomContactPropertyOptions {
 	@JsonProperty
 	public void setDisplayOrder(Integer displayOrder) {
 		this.displayOrder = displayOrder;
+	}
+	
+	@JsonProperty
+	public Long getPortalId() {
+		return portalId;
+	}
+	
+	@JsonProperty
+	public void setPortalId(Long portalId) {
+		this.portalId = portalId;
+	}
+	
+	@JsonProperty
+	public List<CustomContactProperty> getProperties() {
+		return properties;
+	}
+	
+	@JsonProperty
+	public void setProperties(List<CustomContactProperty> properties) {
+		this.properties = properties;
 	}
 }

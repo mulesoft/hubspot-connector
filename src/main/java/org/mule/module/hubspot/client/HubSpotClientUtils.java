@@ -103,13 +103,13 @@ public class HubSpotClientUtils {
 	
 	static private String webResourceCallByEnumType(WebResource wr, HubSpotWebResourceMethods method, String requestBody) {
 		if (HubSpotWebResourceMethods.GET.equals(method)) {
-			return wr.get(String.class);
+			return wr.type(MediaType.APPLICATION_JSON_TYPE).get(String.class);
 		} else if (HubSpotWebResourceMethods.POST.equals(method)) {
 			return wr.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, requestBody);
 		} else if (HubSpotWebResourceMethods.PUT.equals(method)) {
-			return wr.put(String.class);
+			return wr.type(MediaType.APPLICATION_JSON_TYPE).put(String.class, requestBody);
 		} else if (HubSpotWebResourceMethods.DELETE.equals(method)) {
-			return wr.delete(String.class);
+			return wr.type(MediaType.APPLICATION_JSON_TYPE).delete(String.class);
 		} else {
 			return null;
 		}

@@ -9,6 +9,9 @@
 
 package org.mule.module.hubspot.model.contact;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonValue;
+
 public enum ContactPropertiesNumberOfEmployees {
 	_1_5("1-5"),
 	_5_25("5-25"),
@@ -24,6 +27,7 @@ public enum ContactPropertiesNumberOfEmployees {
 		this.value = value;
 	}
 	
+	@JsonValue
 	public String getValue() {
 		return value;
 	}
@@ -54,6 +58,7 @@ public enum ContactPropertiesNumberOfEmployees {
 		}
 	}
 	
+	@JsonCreator
 	static public ContactPropertiesNumberOfEmployees getFromString(String value) {
 		for (ContactPropertiesNumberOfEmployees obj : ContactPropertiesNumberOfEmployees.values()) {
 			if (obj.getValue().equalsIgnoreCase(value)) {

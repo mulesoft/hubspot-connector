@@ -13,17 +13,20 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class CustomContactProperty {
 
 	private String name;
 	private String label;
 	private String description;
 	private String groupName;
-	private String type;
-	private String fieldType;
-	private String formField;
+	private CustomContactPropertyType type;
+	private CustomContactPropertyFieldType fieldType;
+	private Boolean formField;
 	private Integer displayOrder;
 	private Boolean readOnlyValue;
 	private Boolean readOnlyDefinition;
@@ -74,35 +77,15 @@ public class CustomContactProperty {
 	}
 	
 	@JsonProperty
-	public String getType() {
-		return type;
-	}
-	
-	@JsonProperty
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	@JsonProperty
-	public String getFieldType() {
-		return fieldType;
-	}
-	
-	@JsonProperty
-	public void setFieldType(String fieldType) {
-		this.fieldType = fieldType;
-	}
-	
-	@JsonProperty
-	public String getFormField() {
+	public Boolean getFormField() {
 		return formField;
 	}
-	
+
 	@JsonProperty
-	public void setFormField(String formField) {
+	public void setFormField(Boolean formField) {
 		this.formField = formField;
 	}
-	
+
 	@JsonProperty
 	public Integer getDisplayOrder() {
 		return displayOrder;
@@ -182,5 +165,25 @@ public class CustomContactProperty {
 	@JsonProperty
 	public void setOptions(List<CustomContactPropertyOptions> options) {
 		this.options = options;
+	}
+
+	@JsonProperty
+	public CustomContactPropertyType getType() {
+		return type;
+	}
+
+	@JsonProperty
+	public void setType(CustomContactPropertyType type) {
+		this.type = type;
+	}
+
+	@JsonProperty
+	public CustomContactPropertyFieldType getFieldType() {
+		return fieldType;
+	}
+
+	@JsonProperty
+	public void setFieldType(CustomContactPropertyFieldType fieldType) {
+		this.fieldType = fieldType;
 	}
 }

@@ -7,24 +7,24 @@
  * place, you may not use the software.
  */
 
-package org.mule.module.hubspot.model.contact;
+package org.mule.module.hubspot.model.contactproperty;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonValue;
 
-public enum ContactPropertiesLifecycleStage {
-	SUBSCRIBER("subscriber"),
-	LEAD("lead"),
-	MARKETING_QUALIFIED_LEAD("marketingqualifiedlead"),
-	SALES_QUALIFIED_LEAD("salesqualifiedlead"),
-	OPORTUNITY("opportunity"),
-	CUSTOMER("customer"),
-	EVANGELIST("evangelist"),
-	OTHER("other");
+public enum CustomContactPropertyFieldType {
+	TEXTAREA("textarea"),
+	SELECT("select"),
+	TEXT("text"),
+	DATE("date"),
+	FILE("file"),
+	NUMBER("number"),
+	RADIO("radio"),
+	CHECKBOX("checkbox");
 	
 	private String value;
 	
-	private ContactPropertiesLifecycleStage(String value) {
+	private CustomContactPropertyFieldType(String value) {
 		this.value = value;
 	}
 	
@@ -35,8 +35,8 @@ public enum ContactPropertiesLifecycleStage {
 	
 	
 	@JsonCreator
-	static public ContactPropertiesLifecycleStage getFromString(String value) {
-		for (ContactPropertiesLifecycleStage obj : ContactPropertiesLifecycleStage.values()) {
+	static public CustomContactPropertyFieldType getFromString(String value) {
+		for (CustomContactPropertyFieldType obj : CustomContactPropertyFieldType.values()) {
 			if (obj.getValue().equalsIgnoreCase(value)) {
 				return obj;
 			}
