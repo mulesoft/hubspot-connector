@@ -71,11 +71,14 @@ public class HubSpotConnectorIT {
 		connector.setCallbackUrl(prop.getProperty("hubspot.it.callbackurl"));
 		connector.setObjectStore(new SimpleMemoryObjectStore<Serializable>());
 		connector.initialize();
+		try {
+			connector.authenticate(USER_ID, null, null, null, null, null);
+		} catch (Throwable e) {} // Expected exception because we are not passing a map for the headers. Only intention is to initialize the client
 		
 		if (StringUtils.isEmpty(authResult)) {
 			
 			Map<String, Object> m = new HashMap<String, Object>();
-			String url = connector.authenticate(USER_ID, m);
+			String url = connector.authenticate(USER_ID, null, null, null, null, m);
 			
 			throw new RuntimeException("Call this url and gather the URL response as the authresult: " + url);
 		} else {
@@ -90,7 +93,7 @@ public class HubSpotConnectorIT {
 	 * 4. retrieve contact by id (OP: getContactById)
 	 * 5. delete contact by id (OP: 
 	 */
-	//@Test
+	@Test
 	public void createRetrieveDeleteContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		// 1. Create a new contact
@@ -136,7 +139,7 @@ public class HubSpotConnectorIT {
 	}
 	
 	
-	//@Test
+	@Test
 	public void getContacts() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		createNewContact();
@@ -162,7 +165,7 @@ public class HubSpotConnectorIT {
 		Assert.assertFalse(StringUtils.isEmpty(cq.getContacts().get(0).getContactProperties().getFirstname()));
 	}
 	
-	//@Test
+	@Test
 	public void getStatistics() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		ContactStatistics cs = connector.getContactStatistics(USER_ID);
 		
@@ -171,7 +174,7 @@ public class HubSpotConnectorIT {
 		Assert.assertTrue(cs.getLastNewContactAt() >= 0l);
 	}
 	
-	//@Test
+	@Test
 	public void getLists() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		HubSpotListLists hsll = connector.getContactsLists(USER_ID, null, null);
 		
@@ -194,7 +197,7 @@ public class HubSpotConnectorIT {
 		Assert.assertTrue(cl.getContacts().size() > 0);		
 	}
 	
-	//@Test
+	@Test
 	public void getEmailSubscriptions() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		EmailSubscription es = connector.getEmailSubscriptions(USER_ID);
 		

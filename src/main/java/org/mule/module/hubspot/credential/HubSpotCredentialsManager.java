@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mule.api.store.ObjectAlreadyExistsException;
 import org.mule.api.store.ObjectStore;
 import org.mule.api.store.ObjectStoreException;
+import org.mule.module.hubspot.client.HubSpotClient;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.OAuthCredentials;
@@ -64,6 +65,7 @@ public class HubSpotCredentialsManager {
 	 * Store the credentials for the user. The user ID is inside the Credentials object
 	 *  
 	 * @param credentials The credentials of the user {@link OAuthCredentials}
+	 * @throws HubSpotConnectorException If the value cannot be saved or overwriten in the Object Store
 	 */
 	@SuppressWarnings("unchecked")
 	public void setCredentias(OAuthCredentials credentials) throws HubSpotConnectorException {
@@ -79,6 +81,43 @@ public class HubSpotCredentialsManager {
 		} catch (ObjectStoreException e) {
 			throw new HubSpotConnectorException("Error trying to store credential", e);
 		}
+	}
+	
+	/**
+	 * Retrieve the client from the Credentials
+	 * 
+	 * @param userId The ID of the user of which we want to get the credentials
+	 * @return The {@link AHubSpotClient} stored in the credentials
+	 * @throws HubSpotConnectorException If the value cannot be saved or overwritten in the Object Store
+	 * @throws HubSpotConnectorNoAccessTokenException 
+	 */
+	public HubSpotClient getClient(String userId) throws HubSpotConnectorException {
+		
+		try {
+			return getCredentials(userId).getClient();
+		} catch (HubSpotConnectorNoAccessTokenException e) {
+			throw new HubSpotConnectorException(e);
+		}
+		
+	}
+	
+	/**
+	 * Save the client into the credentials, or create an empty one with only the credentials
+	 * 
+	 * @param userId The ID of the user of which we want to get the credentials
+	 * @param client The {@link AHubSpotClient} to store in the credentials
+	 * @throws HubSpotConnectorException If the value cannot be saved or overwritten in the Object Store
+	 */
+	public void setClient(String userId, HubSpotClient client) throws HubSpotConnectorException {
+		try {
+			getCredentials(userId).setClient(client);
+		} catch (HubSpotConnectorNoAccessTokenException e) {
+			OAuthCredentials credentials = new OAuthCredentials();
+			credentials.setClient(client);
+			credentials.setUserId(userId);
+			setCredentias(credentials);
+		}
+
 	}
 	
 	/**
