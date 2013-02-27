@@ -1,3 +1,8 @@
+2.5
+===
+	* Added config parameters to the authenticate operation in order to add more Multi Tenancy flexibility
+	* Minor modifications in the Integration Tests
+
 2.4
 ===
 	* Renamed operation from getAllProperties to getAllCustomProperties
