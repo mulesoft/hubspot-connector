@@ -11,13 +11,10 @@ package org.mule.module.hubspot.model;
 
 import java.io.Serializable;
 
-import org.mule.module.hubspot.client.HubSpotClient;
-
 public class OAuthCredentials implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	private HubSpotClient client;
 	private String userId;
 	private String accessToken;
 	private String expiresAt;
@@ -58,12 +55,6 @@ public class OAuthCredentials implements Serializable {
 	public void setExpiresAt(String expiresAt) {
 		this.expiresAt = expiresAt;
 	}
-
-	public HubSpotClient getClient() {
-		return client;
-	}
-
-	public void setClient(HubSpotClient client) {
-		this.client = client;
-	}		
+	
+	
 }

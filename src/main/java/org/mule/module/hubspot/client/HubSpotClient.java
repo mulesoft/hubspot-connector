@@ -15,6 +15,7 @@ import java.util.Map;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
+import org.mule.module.hubspot.model.OAuthCredentials;
 import org.mule.module.hubspot.model.contact.Contact;
 import org.mule.module.hubspot.model.contact.ContactDeleted;
 import org.mule.module.hubspot.model.contact.ContactList;
@@ -33,6 +34,8 @@ import org.mule.module.hubspot.model.list.HubSpotListLists;
 public interface HubSpotClient {
 	
 	public String authenticate(String userId, Map<String, Object> headers) throws HubSpotConnectorException;
+	
+	public OAuthCredentials authenticateResponse(String inputRequest) throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException;
 	
 	public ContactList getAllContacts(String accessToken, String userId, String count, String contactOffset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
