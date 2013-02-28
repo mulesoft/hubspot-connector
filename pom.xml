@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.module</groupId>
-	<artifactId>hub-spot-connector</artifactId>
-	<version>2.5-SNAPSHOT</version>
+	<artifactId>mule-module-hubspot</artifactId>
+	<version>2.5.1-SNAPSHOT</version>
 	<packaging>mule-module</packaging>
 	<name>HubSpot Cloud Connector</name>
 

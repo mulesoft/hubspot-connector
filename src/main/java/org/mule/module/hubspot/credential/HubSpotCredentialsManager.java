@@ -13,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mule.api.store.ObjectAlreadyExistsException;
 import org.mule.api.store.ObjectStore;
 import org.mule.api.store.ObjectStoreException;
-import org.mule.module.hubspot.client.HubSpotClient;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.OAuthCredentials;
@@ -84,40 +83,14 @@ public class HubSpotCredentialsManager {
 	}
 	
 	/**
-	 * Retrieve the client from the Credentials
+	 * Retrieves the clientId from the credentials for the tenant
 	 * 
-	 * @param userId The ID of the user of which we want to get the credentials
-	 * @return The {@link AHubSpotClient} stored in the credentials
-	 * @throws HubSpotConnectorException If the value cannot be saved or overwritten in the Object Store
-	 * @throws HubSpotConnectorNoAccessTokenException 
+	 * @param userId The UserId that has the credentials
+	 * @return The clientID
+	 * @throws HubSpotConnectorNoAccessTokenException If the userId does not have credentials stored
 	 */
-	public HubSpotClient getClient(String userId) throws HubSpotConnectorException {
-		
-		try {
-			return getCredentials(userId).getClient();
-		} catch (HubSpotConnectorNoAccessTokenException e) {
-			throw new HubSpotConnectorException(e);
-		}
-		
-	}
-	
-	/**
-	 * Save the client into the credentials, or create an empty one with only the credentials
-	 * 
-	 * @param userId The ID of the user of which we want to get the credentials
-	 * @param client The {@link AHubSpotClient} to store in the credentials
-	 * @throws HubSpotConnectorException If the value cannot be saved or overwritten in the Object Store
-	 */
-	public void setClient(String userId, HubSpotClient client) throws HubSpotConnectorException {
-		try {
-			getCredentials(userId).setClient(client);
-		} catch (HubSpotConnectorNoAccessTokenException e) {
-			OAuthCredentials credentials = new OAuthCredentials();
-			credentials.setClient(client);
-			credentials.setUserId(userId);
-			setCredentias(credentials);
-		}
-
+	public String getCredentialsClientId(String userId) throws HubSpotConnectorNoAccessTokenException {
+		return getCredentials(userId).getClientId();
 	}
 	
 	/**

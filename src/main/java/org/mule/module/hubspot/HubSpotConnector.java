@@ -26,6 +26,7 @@ import org.mule.api.config.MuleProperties;
 import org.mule.api.store.ObjectStore;
 import org.mule.module.hubspot.client.HubSpotClient;
 import org.mule.module.hubspot.client.HubSpotClientUtils;
+import org.mule.module.hubspot.client.HubSpotClientsManager;
 import org.mule.module.hubspot.client.impl.HubSpotClientImpl;
 import org.mule.module.hubspot.credential.HubSpotCredentialsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
@@ -60,12 +61,12 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.5", friendlyName="HubSpot", minMuleVersion="3.3.0")
+@Connector(name="hubspot", schemaVersion="2.5.1", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
-	static final private String HUB_SPOT_URL_API 		= "http://hubapi.com";
-	static final private String HUB_SPOT_URL_AUTH		= "https://app.hubspot.com/auth/authenticate";
-	static final private String API_VERSION				= "v1";
+	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
+	static final public String HUB_SPOT_URL_AUTH		= "https://app.hubspot.com/auth/authenticate";
+	static final public String API_VERSION				= "v1";
 	
 	/**
 	 * Your Client ID (OAuth Client ID), which identifies who you are. You can access the client_id in your app's developer dashboard under the Summary section.
@@ -129,11 +130,28 @@ public class HubSpotConnector
 	
 	private HubSpotCredentialsManager credentialsManager;
 	
-//	private HubSpotClient client;
-	
+	private HubSpotClientsManager clientsManager;
+		
+	public HubSpotCredentialsManager getCredentialsManager() {
+		return credentialsManager;
+	}
+
+	public void setCredentialsManager(HubSpotCredentialsManager credentialsManager) {
+		this.credentialsManager = credentialsManager;
+	}
+
+	public HubSpotClientsManager getClientsManager() {
+		return clientsManager;
+	}
+
+	public void setClientsManager(HubSpotClientsManager clientsManager) {
+		this.clientsManager = clientsManager;
+	}
+
 	@PostConstruct
 	public void initialize() {
-		credentialsManager = new HubSpotCredentialsManager(objectStore);		
+		credentialsManager = new HubSpotCredentialsManager(objectStore);
+		clientsManager = new HubSpotClientsManager();
 	}
 
 	/**
@@ -153,11 +171,12 @@ public class HubSpotConnector
 	 * @param headers This are added implicitly by Studio. The headers of the HTTP inbound, so it can establish a redirect code (302)
 	 * @return The URL where the user will be redirected
 	 * @throws HubSpotConnectorException If occur some error trying to generate the URL or the userId is empty it will throw this exception.
+	 * @throws HubSpotConnectorNoAccessTokenException If there is not an access_token in the response it will throw this exception.
 	 */
 	@Processor
 	public String authenticate(String userId, @Optional String callbackUrl, @Optional String clientId, 
 			@Optional String hubId, @Optional String scope, @OutboundHeaders Map<String, Object> headers) 
-		throws HubSpotConnectorException {
+		throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException {
 		
 		// By default it tries to use the parameters passed to the authenticate,
 		HubSpotClient client = new HubSpotClientImpl(
@@ -169,7 +188,14 @@ public class HubSpotConnector
 				(scope != null ? scope : this.scope), 
 				(callbackUrl != null ? callbackUrl : this.callbackUrl));
 		
-		credentialsManager.setClient(userId, client);
+		// Save the client for the tenant
+		clientsManager.addClient(userId, client);
+		
+		// Save the clientId
+		OAuthCredentials credentials = credentialsManager.hasUserAccessToken(userId) ? credentialsManager.getCredentials(userId) : new OAuthCredentials();
+		credentials.setUserId(userId);
+		credentials.setClientId((clientId != null ? clientId : this.clientId));
+		credentialsManager.setCredentias(credentials);
 		
 		return client.authenticate(userId, headers);
 	}
@@ -190,14 +216,14 @@ public class HubSpotConnector
 	public String authenticateResponse(String inputRequest) throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException {
 		
 		OAuthCredentials credentials = HubSpotClientUtils.authenticateResponse(inputRequest);
-		// There should be (if called first to the authenticate operation) a credential with the client in the CredentialsManager
-		HubSpotClient client = credentialsManager.getClient(credentials.getUserId());
-		// The client is created in the authenticate. If it doesn't exists, it means that this user hasn't pass yet for the Authenticate operation
-		if (client == null) 
+		
+		// The clientId must be stored in order for a further refresh token
+		try {
+			credentials.setClientId(credentialsManager.getCredentialsClientId(credentials.getUserId()));
+		} catch (HubSpotConnectorNoAccessTokenException e) {
 			throw new HubSpotConnectorException(String.format("Authenticate operation must be called first for user %s before authenticateResponse", credentials.getUserId()));
-				
-		credentials.setClient(client);
-		// Then override the credential with the one having full data
+		}
+		
 		credentialsManager.setCredentias(credentials);
 		
 		return credentials.getUserId();
@@ -238,8 +264,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);		
 		
-		return cred.getClient().getAllContacts(cred.getAccessToken(), userId, count, contactOffset);
+		return client.getAllContacts(cred.getAccessToken(), userId, count, contactOffset);
 	}
 	
 	
@@ -265,8 +292,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getRecentContacts(cred.getAccessToken(), userId, count, timeOffset, contactOffset);
+		return client.getRecentContacts(cred.getAccessToken(), userId, count, timeOffset, contactOffset);
 	}
 	
 	
@@ -291,8 +319,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactById(cred.getAccessToken(), userId, contactId);
+		return client.getContactById(cred.getAccessToken(), userId, contactId);
 	}
 	
 	/**
@@ -314,8 +343,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactByEmail(cred.getAccessToken(), userId, contactEmail);
+		return client.getContactByEmail(cred.getAccessToken(), userId, contactEmail);
 	}
 	
 	/**
@@ -337,8 +367,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactByUserToken(cred.getAccessToken(), userId, contactUserToken);
+		return client.getContactByUserToken(cred.getAccessToken(), userId, contactUserToken);
 	}
 	
 	/**
@@ -363,8 +394,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactsByQuery(cred.getAccessToken(), userId, query, count);
+		return client.getContactsByQuery(cred.getAccessToken(), userId, query, count);
 	}
 		
 	/**
@@ -387,8 +419,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().deleteContact(cred.getAccessToken(), userId, contactId);
+		return client.deleteContact(cred.getAccessToken(), userId, contactId);
 		
 	}
 	
@@ -419,8 +452,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		cred.getClient().updateContact(cred.getAccessToken(), userId, contactId, contactProperties);
+		client.updateContact(cred.getAccessToken(), userId, contactId, contactProperties);
 		
 		return contactProperties;
 	}
@@ -444,8 +478,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().createContact(cred.getAccessToken(), userId, contactProperties);
+		return client.createContact(cred.getAccessToken(), userId, contactProperties);
 	}
 	
 	/**
@@ -466,8 +501,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactStatistics(cred.getAccessToken(), userId);
+		return client.getContactStatistics(cred.getAccessToken(), userId);
 	}
 	
 	/**
@@ -491,8 +527,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactsLists(cred.getAccessToken(), userId, count, offset);
+		return client.getContactsLists(cred.getAccessToken(), userId, count, offset);
 	}
 	
 	/**
@@ -514,8 +551,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactListById(cred.getAccessToken(), userId, listId);
+		return client.getContactListById(cred.getAccessToken(), userId, listId);
 	}
 	
 	/**
@@ -543,8 +581,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getDynamicContactLists(cred.getAccessToken(), userId, count, offset);
+		return client.getDynamicContactLists(cred.getAccessToken(), userId, count, offset);
 	}
 	
 	/**
@@ -570,8 +609,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getContactsInAList(cred.getAccessToken(), userId, listId, count, property, offset);
+		return client.getContactsInAList(cred.getAccessToken(), userId, listId, count, property, offset);
 	}
 	
 	/**
@@ -592,8 +632,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getEmailSubscriptions(cred.getAccessToken(), userId);
+		return client.getEmailSubscriptions(cred.getAccessToken(), userId);
 	}
 	
 	/**
@@ -615,8 +656,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getEmailSubscriptionStatus(cred.getAccessToken(), userId, email);
+		return client.getEmailSubscriptionStatus(cred.getAccessToken(), userId, email);
 	}
 	
 	/**
@@ -640,8 +682,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().updateEmailSubscriptionStatus(cred.getAccessToken(), userId, email, statuses);
+		return client.updateEmailSubscriptionStatus(cred.getAccessToken(), userId, email, statuses);
 	}
 	
 	/**
@@ -664,8 +707,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getAllCustomProperties(cred.getAccessToken(), userId);
+		return client.getAllCustomProperties(cred.getAccessToken(), userId);
 	}
 
 	/**
@@ -691,8 +735,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().createCustomProperty(cred.getAccessToken(), userId, contactProperty);
+		return client.createCustomProperty(cred.getAccessToken(), userId, contactProperty);
 	}
 	
 	/**
@@ -719,8 +764,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().updateCustomProperty(cred.getAccessToken(), userId, propertyName, contactProperty);
+		return client.updateCustomProperty(cred.getAccessToken(), userId, propertyName, contactProperty);
 	}
 	
 	/**
@@ -743,8 +789,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		cred.getClient().deleteCustomProperty(cred.getAccessToken(), userId, contactPropertyName);
+		client.deleteCustomProperty(cred.getAccessToken(), userId, contactPropertyName);
 	}
 
 	/**
@@ -770,8 +817,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().getCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
+		return client.getCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
 	}
 	
 	/**
@@ -797,8 +845,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().createCustomPropertyGroup(cred.getAccessToken(), userId, customContactPropertyGroup);
+		return client.createCustomPropertyGroup(cred.getAccessToken(), userId, customContactPropertyGroup);
 	}
 	
 	/**
@@ -825,8 +874,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return cred.getClient().updateCustomPropertyGroup(cred.getAccessToken(), userId, groupName, customContactPropertyGroup);
+		return client.updateCustomPropertyGroup(cred.getAccessToken(), userId, groupName, customContactPropertyGroup);
 	}
 	
 	/**
@@ -851,8 +901,9 @@ public class HubSpotConnector
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		cred.getClient().deleteCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
+		client.deleteCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
 	}
 	
 	public String getClientId() {

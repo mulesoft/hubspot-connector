@@ -9,10 +9,18 @@
 
 package org.mule.module.hubspot.unit;
 
-import org.junit.Test;
-import org.mule.module.hubspot.model.contact.ContactPropertiesNumberOfEmployees;
+import java.io.Serializable;
 
 import junit.framework.Assert;
+
+import org.junit.Test;
+import org.mule.api.transformer.TransformerException;
+import org.mule.module.hubspot.HubSpotConnector;
+import org.mule.module.hubspot.exception.HubSpotConnectorException;
+import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
+import org.mule.module.hubspot.model.contact.ContactPropertiesNumberOfEmployees;
+import org.mule.transformer.simple.SerializableToByteArray;
+import org.mule.util.store.SimpleMemoryObjectStore;
 
 public class HubSpotConnectorTest {
 	
@@ -32,5 +40,27 @@ public class HubSpotConnectorTest {
 		Assert.assertEquals(ContactPropertiesNumberOfEmployees._500_1000, ContactPropertiesNumberOfEmployees.getFromInteger(1000));
 		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1001));
 		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1000001));
+	}
+	
+	@Test
+	public void serializeObjectStore() throws TransformerException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException {
+		
+		HubSpotConnector connector = new HubSpotConnector();
+		connector.setClientId("");
+		connector.setHubId("");
+		connector.setScope("");
+		connector.setCallbackUrl("");
+		connector.setObjectStore(new SimpleMemoryObjectStore<Serializable>());
+		connector.initialize();
+		try {
+			connector.authenticate("1", null, null, null, null, null);
+		} catch (Throwable e) {} // Expected exception because we are not passing a map for the headers. Only intention is to initialize the client
+		
+		connector.authenticateResponse("http://localhost:8090/authresponse?userid=1&access_token=9&expires_in=28800");
+				
+		SerializableToByteArray serializer = new SerializableToByteArray();
+		Object result = serializer.doTransform(connector.getObjectStore(), "UTF-8");
+		
+		Assert.assertNotNull(result);
 	}
 }

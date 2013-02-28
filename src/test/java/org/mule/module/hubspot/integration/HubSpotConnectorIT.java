@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mule.api.ConnectionException;
 import org.mule.module.hubspot.HubSpotConnector;
+import org.mule.module.hubspot.client.HubSpotClientsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
@@ -85,6 +86,9 @@ public class HubSpotConnectorIT {
 			connector.authenticateResponse(authResult);
 		}
 	}
+	
+	
+	
 	
 	/**
 	 * 1. create a new Contact (OP: createContact)
@@ -271,6 +275,16 @@ public class HubSpotConnectorIT {
 		connector.deleteCustomPropertyGroup(USER_ID, ccpg.getName());
 	}
 	
+	/*
+	 * 
+	 * A shutdown application consist in persist the credentialsManager data but erase the clientsManager data
+	 */
+	@Test
+	public void simulateShutdownApplication() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		connector.setClientsManager(new HubSpotClientsManager());		
+		getContacts();
+	}
+		
 	private String createNewContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		ContactProperties cp = new ContactProperties();
 		long date = (new Date()).getTime();

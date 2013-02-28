@@ -1,3 +1,9 @@
+2.5.1
+=====
+	* Added test for case ObjectStore serialization
+	* Moved client out of the ObjectStore and gestionated in memory
+	* Added clientId to the OAuthCredentials
+
 2.5
 ===
 	* Added config parameters to the authenticate operation in order to add more Multi Tenancy flexibility
