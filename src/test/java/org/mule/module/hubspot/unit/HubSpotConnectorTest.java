@@ -14,6 +14,7 @@ import java.io.Serializable;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.mule.api.store.ObjectStoreException;
 import org.mule.api.transformer.TransformerException;
 import org.mule.module.hubspot.HubSpotConnector;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
@@ -43,7 +44,7 @@ public class HubSpotConnectorTest {
 	}
 	
 	@Test
-	public void serializeObjectStore() throws TransformerException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException {
+	public void serializeObjectStore() throws TransformerException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, ObjectStoreException {
 		
 		HubSpotConnector connector = new HubSpotConnector();
 		connector.setClientId("");
@@ -59,7 +60,7 @@ public class HubSpotConnectorTest {
 		connector.authenticateResponse("http://localhost:8090/authresponse?userid=1&access_token=9&expires_in=28800");
 				
 		SerializableToByteArray serializer = new SerializableToByteArray();
-		Object result = serializer.doTransform(connector.getObjectStore(), "UTF-8");
+		Object result = serializer.doTransform(connector.getObjectStore().retrieve("1"), "UTF-8");
 		
 		Assert.assertNotNull(result);
 	}
