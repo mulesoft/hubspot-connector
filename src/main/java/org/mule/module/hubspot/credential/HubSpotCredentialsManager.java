@@ -93,6 +93,10 @@ public class HubSpotCredentialsManager {
 		return getCredentials(userId).getClientId();
 	}
 	
+	public String getCredentialsHubId(String userId) throws HubSpotConnectorNoAccessTokenException {
+		return getCredentials(userId).getHubId();
+	}
+	
 	/**
 	 * Indicates if certain user has or not credentials
 	 * 

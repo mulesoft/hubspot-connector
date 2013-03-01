@@ -203,7 +203,7 @@ public class HubSpotConnectorIT {
 	
 	@Test
 	public void getEmailSubscriptions() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		EmailSubscription es = connector.getEmailSubscriptions(USER_ID);
+		EmailSubscription es = connector.getEmailSubscriptions(USER_ID, null);
 		
 		Assert.assertNotNull(es);
 		Assert.assertNotNull(es.getSubscriptionDefinitions());

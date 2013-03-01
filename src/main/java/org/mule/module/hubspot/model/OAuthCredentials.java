@@ -16,6 +16,7 @@ public class OAuthCredentials implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String clientId;
+	private String hubId;
 	private String userId;
 	private String accessToken;
 	private String expiresAt;
@@ -64,4 +65,12 @@ public class OAuthCredentials implements Serializable {
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
-}
+
+	public String getHubId() {
+		return hubId;
+	}
+
+	public void setHubId(String hubId) {
+		this.hubId = hubId;
+	}
+ }

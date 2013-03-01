@@ -61,7 +61,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.5.1", friendlyName="HubSpot", minMuleVersion="3.3.0")
+@Connector(name="hubspot", schemaVersion="2.6", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -194,7 +194,8 @@ public class HubSpotConnector
 		// Save the clientId
 		OAuthCredentials credentials = credentialsManager.hasUserAccessToken(userId) ? credentialsManager.getCredentials(userId) : new OAuthCredentials();
 		credentials.setUserId(userId);
-		credentials.setClientId((clientId != null ? clientId : this.clientId));
+		credentials.setClientId(clientId != null ? clientId : this.clientId);
+		credentials.setHubId(hubId != null ? hubId : this.hubId);
 		credentialsManager.setCredentias(credentials);
 		
 		return client.authenticate(userId, headers);
@@ -217,9 +218,10 @@ public class HubSpotConnector
 		
 		OAuthCredentials credentials = HubSpotClientUtils.authenticateResponse(inputRequest);
 		
-		// The clientId must be stored in order for a further refresh token
+		// The clientId and hubId must be stored in order for a further refresh token
 		try {
 			credentials.setClientId(credentialsManager.getCredentialsClientId(credentials.getUserId()));
+			credentials.setHubId(credentialsManager.getCredentialsHubId(credentials.getUserId()));
 		} catch (HubSpotConnectorNoAccessTokenException e) {
 			throw new HubSpotConnectorException(String.format("Authenticate operation must be called first for user %s before authenticateResponse", credentials.getUserId()));
 		}
@@ -622,19 +624,20 @@ public class HubSpotConnector
 	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-email-subscriptions}
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param hubId (portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)
 	 * @return A {@link EmailSubscription} with the subscriptions data
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
 	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public EmailSubscription getEmailSubscriptions(String userId)
+	public EmailSubscription getEmailSubscriptions(String userId, @Optional String hubId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return client.getEmailSubscriptions(cred.getAccessToken(), userId);
+		return client.getEmailSubscriptions(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()));
 	}
 	
 	/**
@@ -645,6 +648,7 @@ public class HubSpotConnector
 	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-email-subscription-status}
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param hubId (portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)
 	 * @param email The email to check the current status subscription
 	 * @return A {@link EmailSubscriptionStatus} with the status subscription
 	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
@@ -652,13 +656,13 @@ public class HubSpotConnector
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor
-	public EmailSubscriptionStatus getEmailSubscriptionStatus(String userId, String email)
+	public EmailSubscriptionStatus getEmailSubscriptionStatus(String userId, @Optional String hubId, String email)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return client.getEmailSubscriptionStatus(cred.getAccessToken(), userId, email);
+		return client.getEmailSubscriptionStatus(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email);
 	}
 	
 	/**
@@ -670,6 +674,7 @@ public class HubSpotConnector
 	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:update-email-subscription-status}
 	 * 
 	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param hubId (portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)
 	 * @param email The email to update the current status subscription
 	 * @param statuses A List of {@link EmailSubscriptionStatusStatuses} to be modified
 	 * @return The status of the operation {@link EmailSubscriptionStatusResult}
@@ -678,13 +683,39 @@ public class HubSpotConnector
 	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
 	 */
 	@Processor	
-	public EmailSubscriptionStatusResult updateEmailSubscriptionStatus(String userId, String email, List<EmailSubscriptionStatusStatuses> statuses)
+	public EmailSubscriptionStatusResult updateEmailSubscriptionStatus(String userId, @Optional String hubId, String email, List<EmailSubscriptionStatusStatuses> statuses)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
-		return client.updateEmailSubscriptionStatus(cred.getAccessToken(), userId, email, statuses);
+		return client.updateEmailSubscriptionStatus(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email, statuses);
+	}
+	
+	/**
+	 * For a given email address and portal, update the email type subscription unsuscribing from all emails
+	 * <b>NOTE: it is only possible to opt email addresses OUT of subscription and there is NO UNDO for this operation.</b>
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/email/update_status">http://developers.hubspot.com/docs/methods/email/update_status</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:update-email-subscription-status-unsubscribe-from-all}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param hubId (portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)
+	 * @param email The email to update the current status subscription
+	 * @return The status of the operation {@link EmailSubscriptionStatusResult}
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be throwns
+	 */
+	@Processor
+	public EmailSubscriptionStatusResult updateEmailSubscriptionStatusUnsubscribeFromAll(String userId, @Optional String hubId, String email)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
+		
+		return client.updateEmailSubscriptionStatusUnsubscribeFromAll(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email);
 	}
 	
 	/**

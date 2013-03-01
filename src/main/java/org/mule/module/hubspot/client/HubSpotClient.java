@@ -77,13 +77,16 @@ public interface HubSpotClient {
 	public ContactList getContactsInAList(String accessToken, String userId, String listId, String count, String property, String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 		
-	public EmailSubscription getEmailSubscriptions(String accessToken, String userId)
+	public EmailSubscription getEmailSubscriptions(String accessToken, String userId, String hubId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public EmailSubscriptionStatus getEmailSubscriptionStatus(String accessToken, String userId, String email)
+	public EmailSubscriptionStatus getEmailSubscriptionStatus(String accessToken, String userId, String hubId, String email)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public EmailSubscriptionStatusResult updateEmailSubscriptionStatus(String accessToken, String userId, String email, List<EmailSubscriptionStatusStatuses> statuses)
+	public EmailSubscriptionStatusResult updateEmailSubscriptionStatus(String accessToken, String userId, String hubId, String email, List<EmailSubscriptionStatusStatuses> statuses)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
+	
+	public EmailSubscriptionStatusResult updateEmailSubscriptionStatusUnsubscribeFromAll(String accessToken, String userId, String hubId, String email) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
 	public List<CustomContactProperty> getAllCustomProperties(String accessToken, String userId) 

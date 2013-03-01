@@ -1,3 +1,8 @@
+2.6
+===
+	* Added hubId (PortalId) in all the Email API operations as @Optional parameter
+	* Added new email operation updateEmailSubscriptionStatusUnsubscribeFromAll
+
 2.5.1
 =====
 	* Added test for case ObjectStore serialization

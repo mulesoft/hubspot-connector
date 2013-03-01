@@ -64,6 +64,9 @@
         <hubspot:statuses ref="statuses" />
     </hubspot:update-email-subscription-status>
 <!-- END_INCLUDE(hubspot:update-email-subscription-status) -->
+<!-- BEGIN_INCLUDE(hubspot:update-email-subscription-status-unsubscribe-from-all) -->
+    <hubspot:update-email-subscription-status-unsubscribe-from-all userId="userId" email="email" />
+<!-- END_INCLUDE(hubspot:update-email-subscription-status-unsubscribe-from-all) -->
 <!-- BEGIN_INCLUDE(hubspot:get-all-custom-properties) -->
     <hubspot:get-all-custom-properties userId="userId" />
 <!-- END_INCLUDE(hubspot:get-all-custom-properties) -->
