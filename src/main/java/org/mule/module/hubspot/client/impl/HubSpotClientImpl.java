@@ -459,7 +459,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		String json = HubSpotClientUtils.transformObjectToJson(essufa);
 		
 		logger.debug("Requesting updateEmailSubscriptionStatusUnsubscribeFromAll to: " + wr.toString());
-		return HubSpotClientUtils.webResourceGet(EmailSubscriptionStatusResult.class, wr, userId, HubSpotWebResourceMethods.POST, json);
+		return HubSpotClientUtils.webResourceGet(EmailSubscriptionStatusResult.class, wr, userId, HubSpotWebResourceMethods.PUT, json);
 	}
 	
 
