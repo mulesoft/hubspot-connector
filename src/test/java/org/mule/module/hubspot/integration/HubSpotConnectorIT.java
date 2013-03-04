@@ -43,6 +43,7 @@ import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyGroup;
 import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyType;
 import org.mule.module.hubspot.model.email.EmailSubscription;
 import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.mule.util.store.SimpleMemoryObjectStore;
 
@@ -283,6 +284,44 @@ public class HubSpotConnectorIT {
 	public void simulateShutdownApplication() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		connector.setClientsManager(new HubSpotClientsManager());		
 		getContacts();
+	}
+	
+	@Test
+	public void addAndRemoveContactFromLists() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		// Create a new contact
+		String email = createNewContact();
+		
+		// Retrieve the contact by email and check that all the properties setted are stablished
+		Contact c = connector.getContactByEmail(USER_ID, email);
+		Assert.assertNotNull(c);
+		
+		// Retrieve all the email lists and use one that is not dynamic
+		HubSpotListLists hsll = connector.getContactsLists(USER_ID, null, null);
+		Assert.assertNotNull(hsll);
+		
+		for (HubSpotList hbl : hsll.getLists()) {
+			// It must be a non dynamic list
+			if (!hbl.getDynamic()) {
+				String listId = hbl.getListId();
+				
+				HubSpotListAddContactToListResponse hslactlr = connector.addExistingContactInAList(USER_ID, listId, c.getVid());
+				
+				Assert.assertNotNull(hslactlr);
+				Assert.assertNotNull(hslactlr.getUpdated());
+				Assert.assertEquals(1, hslactlr.getUpdated().size());
+				Assert.assertEquals(Integer.valueOf(c.getVid()), hslactlr.getUpdated().get(0));
+				
+				break;
+			}
+		}
+			
+		
+		// Delete the contact by his ID and check the response
+		ContactDeleted cd = connector.deleteContact(USER_ID, c.getVid());
+		
+		Assert.assertNotNull(cd);
+		Assert.assertTrue(cd.getDeleted());
+		Assert.assertEquals(cd.getVid(), c.getVid());		
 	}
 		
 	private String createNewContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {

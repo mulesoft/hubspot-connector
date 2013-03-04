@@ -46,6 +46,7 @@ import org.mule.module.hubspot.model.email.EmailSubscriptionStatus;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusStatuses;
 import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.springframework.core.annotation.Order;
 
@@ -61,7 +62,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.6", friendlyName="HubSpot", minMuleVersion="3.3.0")
+@Connector(name="hubspot", schemaVersion="2.6.1", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -935,6 +936,33 @@ public class HubSpotConnector
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
 		client.deleteCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
+	}
+	
+	/**
+	 * Add a contact record that has already been created in the system to a contact list.
+	 * <p>
+	 * Please note that you cannot manually add (via this API call) contacts to dynamic lists - they can only be updated by the contacts app.
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/lists/add_contact_to_list">http://developers.hubspot.com/docs/methods/lists/add_contact_to_list</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:add-existing-contact-in-a-list}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param listId You need to include the ID for the list you're adding the lead to. You can search for lists using the get lists method.
+	 * @param contactId The contact ID of the contact that you're adding to the list.
+	 * @return A {@link HubSpotListAddContactToListResponse} In the "updated" attribute, you'll also get the contact ID of the contact that you've just added to the list
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public HubSpotListAddContactToListResponse addExistingContactInAList(String userId, String listId, String contactId)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
+		
+		return client.addExistingContactInAList(cred.getAccessToken(), userId, listId, contactId);
 	}
 	
 	public String getClientId() {

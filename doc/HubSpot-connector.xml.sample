@@ -53,6 +53,9 @@
 <!-- BEGIN_INCLUDE(hubspot:get-contacts-in-a-list) -->
     <hubspot:get-contacts-in-a-list  userId="userId" listId="listId" />
 <!-- END_INCLUDE(hubspot:get-contacts-in-a-list) -->
+<!-- BEGIN_INCLUDE(hubspot:add-existing-contact-in-a-list) -->
+    <hubspot:add-existing-contact-in-a-list  userId="userId" listId="listId" contactId="contactId" />
+<!-- END_INCLUDE(hubspot:add-existing-contact-in-a-list) -->
 <!-- BEGIN_INCLUDE(hubspot:get-email-subscriptions) -->
     <hubspot:get-email-subscriptions userId="userId" />
 <!-- END_INCLUDE(hubspot:get-email-subscriptions) -->

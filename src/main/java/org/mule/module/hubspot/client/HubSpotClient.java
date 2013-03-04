@@ -28,6 +28,7 @@ import org.mule.module.hubspot.model.email.EmailSubscriptionStatus;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusStatuses;
 import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 
 public interface HubSpotClient {
@@ -75,6 +76,9 @@ public interface HubSpotClient {
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
 	public ContactList getContactsInAList(String accessToken, String userId, String listId, String count, String property, String offset)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
+	
+	public HubSpotListAddContactToListResponse addExistingContactInAList(String accessToken, String userId, String listId, String contactId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 		
 	public EmailSubscription getEmailSubscriptions(String accessToken, String userId, String hubId)

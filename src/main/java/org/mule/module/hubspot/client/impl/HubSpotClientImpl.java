@@ -11,6 +11,7 @@ package org.mule.module.hubspot.client.impl;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusStatuses;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusUnsuscribeFromAll;
 import org.mule.module.hubspot.model.list.HubSpotList;
+import org.mule.module.hubspot.model.list.HubSpotListAddContactToList;
+import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 
 import com.sun.jersey.api.client.Client;
@@ -615,6 +618,40 @@ public class HubSpotClientImpl implements HubSpotClient {
 		return HubSpotClientUtils.webResourceGet(CustomContactPropertyGroup.class, wr, userId, HubSpotWebResourceMethods.POST, json);
 		
 	}
+	
+
+	@Override
+	public HubSpotListAddContactToListResponse addExistingContactInAList(String accessToken, String userId, String listId, String contactId)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		if (StringUtils.isEmpty(listId))
+			throw new HubSpotConnectorException("The parameter listId cannot be empty");
+		
+		if (StringUtils.isEmpty(contactId))
+			throw new HubSpotConnectorException("The parameter contactId cannot be empty");
+		
+		int num = 0;
+		try {
+			num = Integer.parseInt(contactId);
+		} catch (NumberFormatException e) {
+			throw new HubSpotConnectorException("The parameter contactId must be a number", e);
+		}
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/lists/{listid}/add").build(APIVersion, listId);
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		HubSpotListAddContactToList hslactl = new HubSpotListAddContactToList();
+		hslactl.setVids(new LinkedList<Integer>());
+		hslactl.getVids().add(num);
+		
+		String json = HubSpotClientUtils.transformObjectToJson(hslactl);
+		
+		logger.debug("Requesting addExistingContactInAList to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(HubSpotListAddContactToListResponse.class, wr, userId, HubSpotWebResourceMethods.POST, json);
+	}
+
+
 
 
 	@Override
@@ -633,7 +670,4 @@ public class HubSpotClientImpl implements HubSpotClient {
 		logger.debug("Requesting deleteCustomPropertyGroup to: " + wr.toString());
 		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.DELETE);
 	}
-
-
-	
 }

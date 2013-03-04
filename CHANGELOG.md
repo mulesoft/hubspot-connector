@@ -1,3 +1,8 @@
+2.6.1
+=====
+	* Added new operation addExistingContactInAList form List API
+	* Added integration tests for new operation
+
 2.6
 ===
 	* Added hubId (PortalId) in all the Email API operations as @Optional parameter
