@@ -188,7 +188,7 @@ public class HubSpotConnectorIT {
 		HubSpotListLists hsll = connector.getContactsLists(USER_ID, null, null);
 		
 		Assert.assertNotNull(hsll);
-		Assert.assertEquals(hsll.getLists().size(), 3);
+		Assert.assertTrue(hsll.getLists().size() > 3);
 		
 		HubSpotList hsl = connector.getContactListById(USER_ID, "1");		
 		
@@ -198,7 +198,7 @@ public class HubSpotConnectorIT {
 		hsll = connector.getDynamicContactLists(USER_ID, null, null);
 		
 		Assert.assertNotNull(hsll);
-		Assert.assertEquals(hsll.getLists().size(), 1);
+		Assert.assertTrue(hsll.getLists().size() > 1);
 		
 		ContactList cl = connector.getContactsInAList(USER_ID, "1", null, null, null);
 		
