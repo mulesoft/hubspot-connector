@@ -1,3 +1,7 @@
+2.6.2
+=====
+	* Added new operation createContactList from List API
+	
 2.6.1
 =====
 	* Added new operation addExistingContactInAList form List API

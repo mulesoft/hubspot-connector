@@ -47,7 +47,9 @@ import org.mule.module.hubspot.model.email.EmailSubscriptionStatusResult;
 import org.mule.module.hubspot.model.email.EmailSubscriptionStatusStatuses;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
+import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
+import org.mule.module.hubspot.model.list.HubSpotNewList;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -62,7 +64,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.6.1", friendlyName="HubSpot", minMuleVersion="3.3.0")
+@Connector(name="hubspot", schemaVersion="2.6.2", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -963,6 +965,31 @@ public class HubSpotConnector
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
 		return client.addExistingContactInAList(cred.getAccessToken(), userId, listId, contactId);
+	}
+	
+	/**
+	 * Create a new list in a given HubSpot portal to populate with contacts.
+	 * <p>
+	 * API link: <a href="http://developers.hubspot.com/docs/methods/lists/create_list">http://developers.hubspot.com/docs/methods/lists/create_list</a>
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:create-contact-list}
+	 *  
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param list the new {@link HubSpotNewList} to be created. <b>Required fields:</b>name, portalId.
+	 * @param filters the list of {@link HubSpotListFilters} that the list can have
+	 * @return The newly created instance of {@link HubSpotList}
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public HubSpotList createContactList(String userId, HubSpotNewList list, @Optional List<HubSpotListFilters> filters)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		OAuthCredentials cred = credentialsManager.getCredentials(userId);
+		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
+		
+		return client.createContactList(cred.getAccessToken(), userId, list, filters);
 	}
 	
 	public String getClientId() {

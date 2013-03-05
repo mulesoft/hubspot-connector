@@ -42,7 +42,10 @@ import org.mule.module.hubspot.model.email.EmailSubscriptionStatusUnsuscribeFrom
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListAddContactToList;
 import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
+import org.mule.module.hubspot.model.list.HubSpotListFilter;
+import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
+import org.mule.module.hubspot.model.list.HubSpotNewList;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -651,7 +654,60 @@ public class HubSpotClientImpl implements HubSpotClient {
 		return HubSpotClientUtils.webResourceGet(HubSpotListAddContactToListResponse.class, wr, userId, HubSpotWebResourceMethods.POST, json);
 	}
 
+	@Override
+	public HubSpotList createContactList(String accessToken, String userId, HubSpotNewList list, List<HubSpotListFilters> filters)
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		if (list == null)
+			throw new HubSpotConnectorException("The parameter list cannot be empty");
+		
+		if (StringUtils.isEmpty(list.getName()))
+			throw new HubSpotConnectorException("The parameter list must have a name");
+		
+		if (StringUtils.isEmpty(list.getPortalId()))
+			throw new HubSpotConnectorException("The parameter list must have a portalId");
+		
+		if (list.getDynamic() && filters == null)
+			throw new HubSpotConnectorException("A dynamic list must have filters");
 
+		URI uri = UriBuilder.fromPath(urlAPI).path("/contacts/{apiversion}/lists").build(APIVersion);
+
+		// FIXME: Once the bug in devkit is fixed, the signature of the method must be changed to List<List<HubSpotFilter>> - Jira: http://www.mulesoft.org/jira/browse/DEVKIT-313
+		
+		// Pass the data of HubSpotNewList and filters to a HubSpotList object
+		HubSpotList hbl = new HubSpotList();
+
+		hbl.setPortalId(list.getPortalId());
+		hbl.setListId(list.getListId());
+		hbl.setInternalListId(list.getInternalListId());
+		hbl.setCreatedAt(list.getCreatedAt());
+		hbl.setUpdatedAt(list.getUpdatedAt());
+		hbl.setDynamic(list.getDynamic());
+		hbl.setDeleted(list.getDeleted());
+		hbl.setName(list.getName());
+		hbl.setInternal(list.getInternal());
+		hbl.setMetaData(list.getMetaData());
+		
+		if (filters != null) {
+			List<List<HubSpotListFilter>> fl = new LinkedList<List<HubSpotListFilter>>();
+			
+			for (HubSpotListFilters f : filters) {
+				if (f.getFilters() != null) {
+					fl.add(f.getFilters());
+				}
+			}
+			
+			hbl.setFilters(fl);
+		}
+		
+		
+		WebResource wr = getWebResource(uri, accessToken);
+		
+		String json = HubSpotClientUtils.transformObjectToJson(hbl);
+		
+		logger.debug("Requesting createContactList to: " + wr.toString());
+		return HubSpotClientUtils.webResourceGet(HubSpotList.class, wr, userId, HubSpotWebResourceMethods.POST, json);
+	}
 
 
 	@Override
@@ -670,4 +726,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		logger.debug("Requesting deleteCustomPropertyGroup to: " + wr.toString());
 		HubSpotClientUtils.webResourceGet(wr, userId, HubSpotWebResourceMethods.DELETE);
 	}
+
+
+	
 }

@@ -41,6 +41,11 @@
 <!-- BEGIN_INCLUDE(hubspot:get-contact-statistics) -->
     <hubspot:get-contact-statistics  userId="userId" />
 <!-- END_INCLUDE(hubspot:get-contact-statistics) -->
+<!-- BEGIN_INCLUDE(hubspot:create-contact-list) -->
+    <hubspot:create-contact-list  userId="userId">
+        <hubspot:list ref="listObj" />
+    </hubspot:create-contact-list>
+<!-- END_INCLUDE(hubspot:create-contact-list) -->
 <!-- BEGIN_INCLUDE(hubspot:get-contacts-lists) -->
     <hubspot:get-contacts-lists  userId="userId" />
 <!-- END_INCLUDE(hubspot:get-contacts-lists) -->

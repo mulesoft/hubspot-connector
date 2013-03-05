@@ -9,8 +9,6 @@
 
 package org.mule.module.hubspot.model.list;
 
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -18,8 +16,8 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class HubSpotList {
-	
+public class HubSpotNewList {
+
 	private String portalId;
 	private String listId;
 	private String internalListId;
@@ -30,7 +28,6 @@ public class HubSpotList {
 	private String name;
 	private Boolean internal;
 	private HubSpotListMetadata metaData;
-	private List<List<HubSpotListFilter>> filters;
 	
 	@JsonProperty
 	public String getPortalId() {
@@ -130,15 +127,5 @@ public class HubSpotList {
 	@JsonProperty
 	public void setMetaData(HubSpotListMetadata metaData) {
 		this.metaData = metaData;
-	}	
-	
-	@JsonProperty
-	public List<List<HubSpotListFilter>> getFilters() {
-		return filters;
-	}
-
-	@JsonProperty
-	public void setFilters(List<List<HubSpotListFilter>> filters) {
-		this.filters = filters;
 	}	
 }

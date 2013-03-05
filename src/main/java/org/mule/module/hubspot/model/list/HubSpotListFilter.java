@@ -20,17 +20,10 @@ public class HubSpotListFilter {
 
 	private String operator;
 	private String list;
+	private String value;
+	private String property;
+	private String type;
 
-	@JsonProperty
-	public String getOperator() {
-		return operator;
-	}
-	
-	@JsonProperty
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
-	
 	@JsonProperty
 	public String getList() {
 		return list;
@@ -40,4 +33,47 @@ public class HubSpotListFilter {
 	public void setList(String list) {
 		this.list = list;
 	}
+
+	@JsonProperty
+	public String getOperator() {
+		return operator;
+	}
+
+	@JsonProperty
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+
+	@JsonProperty
+	public String getValue() {
+		return value;
+	}
+	
+	@JsonProperty
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	@JsonProperty
+	public String getProperty() {
+		return property;
+	}
+
+	@JsonProperty
+	public void setProperty(String property) {
+		this.property = property;
+	}
+
+	@JsonProperty
+	public String getType() {
+		return type;
+	}
+
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
+	
 }

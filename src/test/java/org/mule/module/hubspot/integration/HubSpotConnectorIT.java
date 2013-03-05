@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -44,7 +45,10 @@ import org.mule.module.hubspot.model.contactproperty.CustomContactPropertyType;
 import org.mule.module.hubspot.model.email.EmailSubscription;
 import org.mule.module.hubspot.model.list.HubSpotList;
 import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
+import org.mule.module.hubspot.model.list.HubSpotListFilter;
+import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
+import org.mule.module.hubspot.model.list.HubSpotNewList;
 import org.mule.util.store.SimpleMemoryObjectStore;
 
 public class HubSpotConnectorIT {
@@ -322,6 +326,34 @@ public class HubSpotConnectorIT {
 		Assert.assertNotNull(cd);
 		Assert.assertTrue(cd.getDeleted());
 		Assert.assertEquals(cd.getVid(), c.getVid());		
+	}
+	
+	@Test
+	public void createContactList() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		HubSpotNewList hsnl = new HubSpotNewList();
+		long date = (new Date()).getTime();
+		hsnl.setName("test list " + date);
+		hsnl.setDynamic(true);
+		hsnl.setPortalId(connector.getHubId());
+		
+		HubSpotListFilter hblf = new HubSpotListFilter();
+		hblf.setOperator("EQ");
+		hblf.setValue("@hubspot");
+		hblf.setProperty("twitterhandle");
+		hblf.setType("string");
+		
+		List<HubSpotListFilter> lhblf = new LinkedList<HubSpotListFilter>();
+		lhblf.add(hblf);
+		
+		HubSpotListFilters hbf = new HubSpotListFilters();
+		hbf.setFilters(lhblf);
+		
+		List<HubSpotListFilters> lhblfs = new LinkedList<HubSpotListFilters>();
+		lhblfs.add(hbf);
+		
+		HubSpotList hsl = connector.createContactList(USER_ID, hsnl, lhblfs);
+		
+		Assert.assertNotNull(hsl);
 	}
 		
 	private String createNewContact() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
