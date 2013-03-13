@@ -75,7 +75,6 @@ public class HubSpotClientUtils {
 		return webResourceGet(type, wr, userId, method, null);
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	static public <T> T webResourceGet(Class<T> type, WebResource wr, String userId, HubSpotWebResourceMethods method, String requestBody) 
 			throws HubSpotConnectorAccessTokenExpiredException, HubSpotConnectorException {
@@ -95,7 +94,6 @@ public class HubSpotClientUtils {
 			if (statusCode == 204) {
 				return null;
 			} else if (statusCode == 401) {
-				// FEATURE: Add verification if it has a refresh token. If it has it call refresh process and then make again the get() call
 				throw new HubSpotConnectorAccessTokenExpiredException("The access token for the userId " + userId + "has expired", e);
 			} else {
 				throw new HubSpotConnectorException("ERROR - statusCode: " + statusCode, e);
@@ -118,6 +116,8 @@ public class HubSpotClientUtils {
 			return wr.type(MediaType.APPLICATION_JSON_TYPE).put(String.class, requestBody);
 		} else if (HubSpotWebResourceMethods.DELETE.equals(method)) {
 			return wr.type(MediaType.APPLICATION_JSON_TYPE).delete(String.class);
+		} else if (HubSpotWebResourceMethods.REFRESH.equals(method)) {
+			return wr.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE).post(String.class, requestBody);
 		} else {
 			return null;
 		}

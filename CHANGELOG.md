@@ -1,3 +1,9 @@
+2.6.3
+=====
+	* Added refresh token logic. (Requirement: offline scope) If some of the operations throws an HubSpotConnectorAccessTokenExpiredException the connector will try to get a new token using the refresh token and the refresh token endpoint 
+	* Added IT for the case
+	* Added new parameter for OAuthCredentials - offlineScope, to know if the scope enables the refresh token functionality
+
 2.6.2
 =====
 	* Added new operation createContactList from List API

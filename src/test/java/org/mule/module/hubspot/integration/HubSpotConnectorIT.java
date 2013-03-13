@@ -25,11 +25,13 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.api.ConnectionException;
+import org.mule.api.store.ObjectStoreException;
 import org.mule.module.hubspot.HubSpotConnector;
 import org.mule.module.hubspot.client.HubSpotClientsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
+import org.mule.module.hubspot.model.OAuthCredentials;
 import org.mule.module.hubspot.model.contact.Contact;
 import org.mule.module.hubspot.model.contact.ContactDeleted;
 import org.mule.module.hubspot.model.contact.ContactList;
@@ -56,6 +58,7 @@ public class HubSpotConnectorIT {
 	static final private String USER_ID = "1";
 
 	private HubSpotConnector connector;
+	private SimpleMemoryObjectStore<Serializable> credentialsMap;
 
 	@Before
 	public void setUp() throws IOException, ConnectionException,
@@ -70,12 +73,14 @@ public class HubSpotConnectorIT {
 		// Save the props in the class attributes
 		String authResult = prop.getProperty("hubspot.it.authresult");
 		
+		credentialsMap = new SimpleMemoryObjectStore<Serializable>(); 
+		
 		connector = new HubSpotConnector();
 		connector.setClientId(prop.getProperty("hubspot.it.clientid"));
 		connector.setHubId(prop.getProperty("hubspot.it.hubid"));
 		connector.setScope(prop.getProperty("hubspot.it.scope"));
 		connector.setCallbackUrl(prop.getProperty("hubspot.it.callbackurl"));
-		connector.setObjectStore(new SimpleMemoryObjectStore<Serializable>());
+		connector.setObjectStore(credentialsMap);
 		connector.initialize();
 		try {
 			connector.authenticate(USER_ID, null, null, null, null, null);
@@ -93,9 +98,28 @@ public class HubSpotConnectorIT {
 	}
 	
 	
+	/*
+	 * Test the behavior when the access token is invalid (expired) for the refresh token behavior
+	 * The case is:
+	 * 	- Connect to the service (authenticate)
+	 *  - Edit the token to be invalid
+	 *      In this part the connector should try to refresh the access token using the refresh token and then call again the same operation with
+	 *      the same parameters
+	 *  - Validate that the operation executes
+	 */
+	@Test
+	public void refreshAccessToken() throws ObjectStoreException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		OAuthCredentials credentials = (OAuthCredentials) credentialsMap.retrieve(USER_ID);
+		credentials.setAccessToken("you-will-fail-token-muajuajua");
+		
+		ContactList cl = connector.getAllContacts(USER_ID, null, null);
+		
+		Assert.assertNotNull(cl);
+		Assert.assertTrue(cl.getContacts().size() > 0);
+		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getContactProperties().getFirstname()));
+	}
 	
-	
-	/**
+	/*
 	 * 1. create a new Contact (OP: createContact)
 	 * 2. retrieve contact by email (OP: getContactByEmail)
 	 * 3. update the contact (OP: updateContact)

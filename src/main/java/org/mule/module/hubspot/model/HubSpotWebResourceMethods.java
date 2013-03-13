@@ -13,5 +13,6 @@ public enum HubSpotWebResourceMethods {
 	GET,
 	POST,
 	PUT,
-	DELETE;
+	DELETE,
+	REFRESH;	
 }

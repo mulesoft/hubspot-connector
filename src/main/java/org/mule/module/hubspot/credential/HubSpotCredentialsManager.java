@@ -97,6 +97,10 @@ public class HubSpotCredentialsManager {
 		return getCredentials(userId).getHubId();
 	}
 	
+	public Boolean getCredentialsOfflineScope(String userId) throws HubSpotConnectorNoAccessTokenException {
+		return getCredentials(userId).getOfflineScope();
+	}
+	
 	/**
 	 * Indicates if certain user has or not credentials
 	 * 

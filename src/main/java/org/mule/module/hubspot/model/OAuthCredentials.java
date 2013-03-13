@@ -21,6 +21,7 @@ public class OAuthCredentials implements Serializable {
 	private String accessToken;
 	private String expiresAt;
 	private String refreshToken;
+	private Boolean offlineScope;
 	
 	public OAuthCredentials() {
 		super();
@@ -72,5 +73,13 @@ public class OAuthCredentials implements Serializable {
 
 	public void setHubId(String hubId) {
 		this.hubId = hubId;
+	}
+
+	public Boolean getOfflineScope() {
+		return offlineScope;
+	}
+
+	public void setOfflineScope(Boolean offlineScope) {
+		this.offlineScope = offlineScope;
 	}
  }

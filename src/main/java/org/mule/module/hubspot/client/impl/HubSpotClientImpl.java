@@ -26,6 +26,7 @@ import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredExcep
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.HubSpotWebResourceMethods;
+import org.mule.module.hubspot.model.OAuthCredentials;
 import org.mule.module.hubspot.model.contact.Contact;
 import org.mule.module.hubspot.model.contact.ContactDeleted;
 import org.mule.module.hubspot.model.contact.ContactList;
@@ -46,6 +47,8 @@ import org.mule.module.hubspot.model.list.HubSpotListFilter;
 import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.mule.module.hubspot.model.list.HubSpotNewList;
+import org.mule.module.hubspot.model.token.RefreshTokenRequest;
+import org.mule.module.hubspot.model.token.RefreshTokenResponse;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -728,5 +731,37 @@ public class HubSpotClientImpl implements HubSpotClient {
 	}
 
 
-	
+	@Override
+	public void refreshToken(OAuthCredentials credentials, String userId) 
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		if (credentials == null)
+			throw new HubSpotConnectorAccessTokenExpiredException("Trying to refresh access token but the user doesn't have credentials stored");
+		
+		if (!credentials.getOfflineScope())
+			throw new HubSpotConnectorAccessTokenExpiredException("Trying to refresh access token but the user doesn't have the required scope for the operation (offline)");
+		
+		URI uri = UriBuilder.fromPath(urlAPI).path("/auth/{apiversion}/refresh").build(APIVersion);
+		
+		WebResource wr = jerseyClient.resource(uri);
+		
+		RefreshTokenRequest rtreq = new RefreshTokenRequest();
+		rtreq.setClientId(credentials.getClientId());
+		rtreq.setRefreshToken(credentials.getRefreshToken());
+		// This value MUST be "refresh_token" for now. In the future, we may enable more grant types, 
+		// but for now, please set this parameter to "refresh_token".
+		rtreq.setGrantType("refresh_token");
+		
+		String reqBody = rtreq.toString();
+		
+		logger.debug("Requesting refreshToken to: " + wr.toString());		
+		RefreshTokenResponse rtres = HubSpotClientUtils.webResourceGet(RefreshTokenResponse.class, wr, userId, HubSpotWebResourceMethods.REFRESH, reqBody);
+		
+		if (rtres == null || StringUtils.isEmpty(rtres.getRefreshToken()) || StringUtils.isEmpty(rtres.getAccessToken()))
+			throw new HubSpotConnectorAccessTokenExpiredException("Trying to refresh access token but the service don't respond with the required data");
+		
+		// Establish the credentials with the new Access Token and Refresh Token
+		credentials.setRefreshToken(rtres.getRefreshToken());
+		credentials.setAccessToken(rtres.getAccessToken());
+	}
 }
