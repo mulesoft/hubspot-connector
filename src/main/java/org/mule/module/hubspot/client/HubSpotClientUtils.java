@@ -30,6 +30,7 @@ import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
 import org.mule.module.hubspot.model.HubSpotWebResourceMethods;
 import org.mule.module.hubspot.model.OAuthCredentials;
 
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
@@ -88,7 +89,12 @@ public class HubSpotClientUtils {
 				return jacksonMapper.readValue(is, type);
 			}
 		} catch (UniformInterfaceException e) {
-			int statusCode = e.getResponse().getStatus();
+			ClientResponse cl = e.getResponse();
+			int statusCode = cl.getStatus();
+			String message = "";
+			try {
+				message = cl.getEntity(String.class);
+			} catch (Throwable ex) {}
 			
 			// The code 204 is returned as a successful operation with no response, but as the expected parameter is a String.class it throws a UniformInterfaceException.
 			if (statusCode == 204) {
@@ -96,7 +102,9 @@ public class HubSpotClientUtils {
 			} else if (statusCode == 401) {
 				throw new HubSpotConnectorAccessTokenExpiredException("The access token for the userId " + userId + "has expired", e);
 			} else {
-				throw new HubSpotConnectorException("ERROR - statusCode: " + statusCode, e);
+				throw new HubSpotConnectorException(
+						String.format("ERROR - statusCode: %d - message: %s", statusCode, message), 
+						e);
 			}
 		} catch (JsonParseException e) {
 			throw new HubSpotConnectorException("ERROR - Error Parsing the JSON", e);

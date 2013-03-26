@@ -1,3 +1,8 @@
+2.6.4
+=====
+	* Fixed javadoc for scope. Use space character instead +.
+	* Added server error messages when operation call fails
+
 2.6.3
 =====
 	* Added refresh token logic. (Requirement: offline scope) If some of the operations throws an HubSpotConnectorAccessTokenExpiredException the connector will try to get a new token using the refresh token and the refresh token endpoint 

@@ -68,7 +68,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.6.3", friendlyName="HubSpot", minMuleVersion="3.3.0")
+@Connector(name="hubspot", schemaVersion="2.6.4", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -101,7 +101,7 @@ public class HubSpotConnector
 	private String hubId;
 	
 	/**
-	 * The scopes (or permissions) you want. These should match your application settings in the Marketplace. Separate more than one scope with "+".	 * 
+	 * The scopes (or permissions) you want. These should match your application settings in the Marketplace. Separate more than one scope with an space character "Ex:scope-a offline" 
 	 * <p>
 	 * <b>Important:</b> the scope offline provides the ability to refresh the token automatically once this has expired. If you do not specify this scope, once the token
 	 * expires the call to a process will throw a HubSpotConnectorAccessTokenExpiredException
