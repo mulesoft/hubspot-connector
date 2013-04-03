@@ -24,9 +24,11 @@ import junit.framework.Assert;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mule.api.ConnectionException;
 import org.mule.api.store.ObjectStoreException;
 import org.mule.module.hubspot.HubSpotConnector;
+import org.mule.module.hubspot.client.HubSpotClient;
 import org.mule.module.hubspot.client.HubSpotClientsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
@@ -109,14 +111,24 @@ public class HubSpotConnectorIT {
 	 */
 	@Test
 	public void refreshAccessToken() throws ObjectStoreException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		// Mock the client to check how many times refresh it's invoked
+		HubSpotClientsManager hcm = connector.getClientsManager();
+		HubSpotClient hc = hcm.getClient(USER_ID);
+		hc = Mockito.spy(hc);
+		// Save the mocked client
+		hcm.addClient(USER_ID, hc);
+				
 		OAuthCredentials credentials = (OAuthCredentials) credentialsMap.retrieve(USER_ID);
 		credentials.setAccessToken("you-will-fail-token-muajuajua");
 		
 		ContactList cl = connector.getAllContacts(USER_ID, null, null);
 		
 		Assert.assertNotNull(cl);
-		Assert.assertTrue(cl.getContacts().size() > 0);
-		Assert.assertFalse(StringUtils.isEmpty(cl.getContacts().get(0).getContactProperties().getFirstname()));
+		
+		createRetrieveDeleteContact();
+		
+		// Refresh token only suppose to call one time
+		Mockito.verify(hc, Mockito.times(1)).refreshToken(Mockito.any(OAuthCredentials.class), Mockito.anyString());
 	}
 	
 	/*
@@ -217,7 +229,7 @@ public class HubSpotConnectorIT {
 		HubSpotList hsl = connector.getContactListById(USER_ID, "1");		
 		
 		Assert.assertNotNull(hsl);
-		Assert.assertEquals(hsl.getPortalId(), "237093");
+		Assert.assertEquals(hsl.getPortalId(), connector.getClientId());
 		
 		hsll = connector.getDynamicContactLists(USER_ID, null, null);
 		

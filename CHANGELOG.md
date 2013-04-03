@@ -1,3 +1,8 @@
+2.6.5
+=====
+	* Added new test to check that refresh token is not called again after a successful refresh operation	
+	* Minor fixes IT tests
+
 2.6.4
 =====
 	* Fixed javadoc for scope. Use space character instead +.
