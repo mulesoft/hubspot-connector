@@ -67,9 +67,9 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:git:git://github.com:mulesoft/hub-spot-connector.git</connection>
-		<developerConnection>scm:git:git@github.com:mulesoft/hub-spot-connector.git</developerConnection>
-		<url>http://github.com/mulesoft/hub-spot-connector</url>
+		<connection>scm:git:git://github.com:mulesoft/hubspot-connector.git</connection>
+		<developerConnection>scm:git:git@github.com:mulesoft/hubspot-connector.git</developerConnection>
+		<url>http://github.com/mulesoft/hubspot-connector</url>
 	</scm>
 
 	<repositories>
