@@ -1,3 +1,7 @@
+2.6.9
+=====
+	* Minor fix
+
 2.6.8
 =====
 	* Minor fix in refresh operation (passed object store instead credentials object)
