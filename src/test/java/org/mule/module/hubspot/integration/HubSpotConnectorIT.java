@@ -128,7 +128,7 @@ public class HubSpotConnectorIT {
 		createRetrieveDeleteContact();
 		
 		// Refresh token only suppose to call one time
-		Mockito.verify(hc, Mockito.times(1)).refreshToken(Mockito.any(OAuthCredentials.class), Mockito.anyString());
+		Mockito.verify(hc, Mockito.times(1)).refreshToken(connector.getCredentialsManager(), Mockito.any(OAuthCredentials.class), Mockito.anyString());
 	}
 	
 	/*
