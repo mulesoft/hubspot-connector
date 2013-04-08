@@ -68,7 +68,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.6.7", friendlyName="HubSpot", minMuleVersion="3.3.0")
+@Connector(name="hubspot", schemaVersion="2.6.8", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -294,7 +294,7 @@ public class HubSpotConnector
 			return client.getAllContacts(cred.getAccessToken(), userId, count, contactOffset);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);
 			return client.getAllContacts(cred.getAccessToken(), userId, count, contactOffset);
 		}
 	}
@@ -328,7 +328,7 @@ public class HubSpotConnector
 			return client.getRecentContacts(cred.getAccessToken(), userId, count, timeOffset, contactOffset);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getRecentContacts(cred.getAccessToken(), userId, count, timeOffset, contactOffset);
 		}
 	}
@@ -361,7 +361,7 @@ public class HubSpotConnector
 			return client.getContactById(cred.getAccessToken(), userId, contactId);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactById(cred.getAccessToken(), userId, contactId);
 		}
 	}
@@ -391,7 +391,7 @@ public class HubSpotConnector
 			return client.getContactByEmail(cred.getAccessToken(), userId, contactEmail);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactByEmail(cred.getAccessToken(), userId, contactEmail);
 		}
 	}
@@ -421,7 +421,7 @@ public class HubSpotConnector
 			return client.getContactByUserToken(cred.getAccessToken(), userId, contactUserToken);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactByUserToken(cred.getAccessToken(), userId, contactUserToken);
 		}
 	}
@@ -454,7 +454,7 @@ public class HubSpotConnector
 			return client.getContactsByQuery(cred.getAccessToken(), userId, query, count);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactsByQuery(cred.getAccessToken(), userId, query, count);
 		}
 	}
@@ -485,7 +485,7 @@ public class HubSpotConnector
 			return client.deleteContact(cred.getAccessToken(), userId, contactId);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);
+			client.refreshToken(credentialsManager, userId);
 			return client.deleteContact(cred.getAccessToken(), userId, contactId);
 		}
 	}
@@ -523,7 +523,7 @@ public class HubSpotConnector
 			client.updateContact(cred.getAccessToken(), userId, contactId, contactProperties);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			client.updateContact(cred.getAccessToken(), userId, contactId, contactProperties);
 		}
 		
@@ -555,7 +555,7 @@ public class HubSpotConnector
 			return client.createContact(cred.getAccessToken(), userId, contactProperties);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.createContact(cred.getAccessToken(), userId, contactProperties);
 		}
 	}
@@ -584,7 +584,7 @@ public class HubSpotConnector
 			return client.getContactStatistics(cred.getAccessToken(), userId);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactStatistics(cred.getAccessToken(), userId);
 		}
 	}
@@ -616,7 +616,7 @@ public class HubSpotConnector
 			return client.getContactsLists(cred.getAccessToken(), userId, count, offset);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactsLists(cred.getAccessToken(), userId, count, offset);
 		}
 	}
@@ -646,7 +646,7 @@ public class HubSpotConnector
 			return client.getContactListById(cred.getAccessToken(), userId, listId);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactListById(cred.getAccessToken(), userId, listId);
 		}
 	}
@@ -682,7 +682,7 @@ public class HubSpotConnector
 			return client.getDynamicContactLists(cred.getAccessToken(), userId, count, offset);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getDynamicContactLists(cred.getAccessToken(), userId, count, offset);
 		}
 	}
@@ -716,7 +716,7 @@ public class HubSpotConnector
 			return client.getContactsInAList(cred.getAccessToken(), userId, listId, count, property, offset);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getContactsInAList(cred.getAccessToken(), userId, listId, count, property, offset);
 		}
 	}
@@ -746,7 +746,7 @@ public class HubSpotConnector
 			return client.getEmailSubscriptions(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()));
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getEmailSubscriptions(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()));
 		}
 	}
@@ -777,7 +777,7 @@ public class HubSpotConnector
 			return client.getEmailSubscriptionStatus(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getEmailSubscriptionStatus(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email);
 		}
 	}
@@ -810,7 +810,7 @@ public class HubSpotConnector
 			return client.updateEmailSubscriptionStatus(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email, statuses);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.updateEmailSubscriptionStatus(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email, statuses);
 		}
 	}
@@ -842,7 +842,7 @@ public class HubSpotConnector
 			return client.updateEmailSubscriptionStatusUnsubscribeFromAll(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.updateEmailSubscriptionStatusUnsubscribeFromAll(cred.getAccessToken(), userId, (hubId != null ? hubId : cred.getHubId()), email);
 		}
 	}
@@ -873,7 +873,7 @@ public class HubSpotConnector
 			return client.getAllCustomProperties(cred.getAccessToken(), userId);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getAllCustomProperties(cred.getAccessToken(), userId);
 		}
 	}
@@ -907,7 +907,7 @@ public class HubSpotConnector
 			return client.createCustomProperty(cred.getAccessToken(), userId, contactProperty);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.createCustomProperty(cred.getAccessToken(), userId, contactProperty);
 		}
 	}
@@ -942,7 +942,7 @@ public class HubSpotConnector
 			return client.updateCustomProperty(cred.getAccessToken(), userId, propertyName, contactProperty);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);
 			return client.updateCustomProperty(cred.getAccessToken(), userId, propertyName, contactProperty);
 		}
 	}
@@ -973,7 +973,7 @@ public class HubSpotConnector
 			client.deleteCustomProperty(cred.getAccessToken(), userId, contactPropertyName);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			client.deleteCustomProperty(cred.getAccessToken(), userId, contactPropertyName);
 		}
 	}
@@ -1007,7 +1007,7 @@ public class HubSpotConnector
 			return client.getCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.getCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
 		}
 	}
@@ -1041,7 +1041,7 @@ public class HubSpotConnector
 			return client.createCustomPropertyGroup(cred.getAccessToken(), userId, customContactPropertyGroup);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.createCustomPropertyGroup(cred.getAccessToken(), userId, customContactPropertyGroup);
 		}
 	}
@@ -1076,7 +1076,7 @@ public class HubSpotConnector
 			return client.updateCustomPropertyGroup(cred.getAccessToken(), userId, groupName, customContactPropertyGroup);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.updateCustomPropertyGroup(cred.getAccessToken(), userId, groupName, customContactPropertyGroup);
 		}
 	}
@@ -1109,7 +1109,7 @@ public class HubSpotConnector
 			client.deleteCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			client.deleteCustomPropertyGroup(cred.getAccessToken(), userId, groupName);
 		}
 	}
@@ -1142,7 +1142,7 @@ public class HubSpotConnector
 			return client.addExistingContactInAList(cred.getAccessToken(), userId, listId, contactId);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);			
+			client.refreshToken(credentialsManager, userId);			
 			return client.addExistingContactInAList(cred.getAccessToken(), userId, listId, contactId);
 		}
 	}
@@ -1173,7 +1173,7 @@ public class HubSpotConnector
 			return client.createContactList(cred.getAccessToken(), userId, list, filters);
 		} catch (HubSpotConnectorAccessTokenExpiredException e) {
 			// If the operation throws a HubSpotConnectorAccessTokenExpiredException, try to refresh the access token using the refresh token
-			client.refreshToken(credentialsManager, cred, userId);
+			client.refreshToken(credentialsManager, userId);
 			return client.createContactList(cred.getAccessToken(), userId, list, filters);
 		}
 	}

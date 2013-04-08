@@ -124,6 +124,6 @@ public interface HubSpotClient {
 	public void deleteCustomPropertyGroup(String accessToken, String userId, String groupName)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public void refreshToken(HubSpotCredentialsManager objectStoreCredentials, OAuthCredentials credentials, String userId)
+	public void refreshToken(HubSpotCredentialsManager objectStoreCredentials, String userId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 }

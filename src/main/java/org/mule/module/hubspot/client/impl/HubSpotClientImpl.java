@@ -733,8 +733,11 @@ public class HubSpotClientImpl implements HubSpotClient {
 
 
 	@Override
-	public synchronized void refreshToken(HubSpotCredentialsManager objectStoreCredentials, OAuthCredentials credentials, String userId) 
+	public synchronized void refreshToken(HubSpotCredentialsManager objectStoreCredentials, String userId) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		// The credentials must be obtained and saved inside the synchronized method
+		OAuthCredentials credentials = (OAuthCredentials) objectStoreCredentials.getCredentials(userId);
 		
 		if (credentials == null)
 			throw new HubSpotConnectorAccessTokenExpiredException("Trying to refresh access token but the user doesn't have credentials stored");
@@ -767,6 +770,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		credentials.setRefreshToken(rtres.getRefreshToken());
 		credentials.setAccessToken(rtres.getAccessToken());
 		
+		// Save the credentials (the OS in CloudHub is a proxy, so it must be saved)
 		objectStoreCredentials.setCredentias(credentials);
 		
 		logger.debug(String.format("Refresh successfull for %s - Previous token was: %s - New token is: %s", userId, previousToken, rtres.getAccessToken()));

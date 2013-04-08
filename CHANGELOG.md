@@ -1,3 +1,7 @@
+2.6.8
+=====
+	* Minor fix in refresh operation (passed object store instead credentials object)
+
 2.6.7
 =====
 	* The new credentials in the refresh are stored in the ObjectStore
