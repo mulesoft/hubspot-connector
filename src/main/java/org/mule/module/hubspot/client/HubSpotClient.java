@@ -12,6 +12,7 @@ package org.mule.module.hubspot.client;
 import java.util.List;
 import java.util.Map;
 
+import org.mule.module.hubspot.credential.HubSpotCredentialsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
@@ -123,6 +124,6 @@ public interface HubSpotClient {
 	public void deleteCustomPropertyGroup(String accessToken, String userId, String groupName)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 	
-	public void refreshToken(OAuthCredentials credentials, String userId)
+	public void refreshToken(HubSpotCredentialsManager objectStoreCredentials, OAuthCredentials credentials, String userId)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException;
 }

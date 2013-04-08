@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mule.module.hubspot.client.HubSpotClient;
 import org.mule.module.hubspot.client.HubSpotClientUtils;
+import org.mule.module.hubspot.credential.HubSpotCredentialsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
@@ -732,7 +733,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 
 
 	@Override
-	public synchronized void refreshToken(OAuthCredentials credentials, String userId) 
+	public synchronized void refreshToken(HubSpotCredentialsManager objectStoreCredentials, OAuthCredentials credentials, String userId) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		if (credentials == null)
@@ -756,7 +757,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		String reqBody = rtreq.toString();
 		
-		logger.debug(String.format("Requesting refreshToken to: %s - User: %s", wr.toString(), userId));		
+		logger.debug(String.format("Requesting refreshToken to: %s - User: %s", wr.toString(), userId));
 		RefreshTokenResponse rtres = HubSpotClientUtils.webResourceGet(RefreshTokenResponse.class, wr, userId, HubSpotWebResourceMethods.REFRESH, reqBody);
 		
 		if (rtres == null || StringUtils.isEmpty(rtres.getRefreshToken()) || StringUtils.isEmpty(rtres.getAccessToken()))
@@ -765,6 +766,8 @@ public class HubSpotClientImpl implements HubSpotClient {
 		// Establish the credentials with the new Access Token and Refresh Token
 		credentials.setRefreshToken(rtres.getRefreshToken());
 		credentials.setAccessToken(rtres.getAccessToken());
+		
+		objectStoreCredentials.setCredentias(credentials);
 		
 		logger.debug(String.format("Refresh successfull for %s - Previous token was: %s - New token is: %s", userId, previousToken, rtres.getAccessToken()));
 	}

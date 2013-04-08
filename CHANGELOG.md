@@ -1,3 +1,7 @@
+2.6.7
+=====
+	* The new credentials in the refresh are stored in the ObjectStore
+
 2.6.6
 =====
 	* Added log lines in refresh
