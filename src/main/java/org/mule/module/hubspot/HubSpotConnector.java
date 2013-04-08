@@ -68,7 +68,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.6.5", friendlyName="HubSpot", minMuleVersion="3.3.0")
+@Connector(name="hubspot", schemaVersion="2.6.6", friendlyName="HubSpot", minMuleVersion="3.3.0")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -163,7 +163,7 @@ public class HubSpotConnector
 		credentialsManager = new HubSpotCredentialsManager(objectStore);
 		clientsManager = new HubSpotClientsManager();
 	}
-
+	
 	/**
 	 * /**
 	 * This process generates the URL required to authenticate against the service.

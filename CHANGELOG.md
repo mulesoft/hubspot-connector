@@ -1,3 +1,8 @@
+2.6.6
+=====
+	* Added log lines in refresh
+	* Added synchronization to the refresh operation
+
 2.6.5
 =====
 	* Added new test to check that refresh token is not called again after a successful refresh operation	

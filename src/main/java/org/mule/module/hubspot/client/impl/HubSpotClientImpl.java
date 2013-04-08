@@ -732,7 +732,7 @@ public class HubSpotClientImpl implements HubSpotClient {
 
 
 	@Override
-	public void refreshToken(OAuthCredentials credentials, String userId) 
+	public synchronized void refreshToken(OAuthCredentials credentials, String userId) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		if (credentials == null)
@@ -740,6 +740,8 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		if (!credentials.getOfflineScope())
 			throw new HubSpotConnectorAccessTokenExpiredException("Trying to refresh access token but the user doesn't have the required scope for the operation (offline)");
+		
+		String previousToken = credentials.getAccessToken();
 		
 		URI uri = UriBuilder.fromPath(urlAPI).path("/auth/{apiversion}/refresh").build(APIVersion);
 		
@@ -754,14 +756,16 @@ public class HubSpotClientImpl implements HubSpotClient {
 		
 		String reqBody = rtreq.toString();
 		
-		logger.debug("Requesting refreshToken to: " + wr.toString());		
+		logger.debug(String.format("Requesting refreshToken to: %s - User: %s", wr.toString(), userId));		
 		RefreshTokenResponse rtres = HubSpotClientUtils.webResourceGet(RefreshTokenResponse.class, wr, userId, HubSpotWebResourceMethods.REFRESH, reqBody);
 		
 		if (rtres == null || StringUtils.isEmpty(rtres.getRefreshToken()) || StringUtils.isEmpty(rtres.getAccessToken()))
 			throw new HubSpotConnectorAccessTokenExpiredException("Trying to refresh access token but the service don't respond with the required data");
-		
+						
 		// Establish the credentials with the new Access Token and Refresh Token
 		credentials.setRefreshToken(rtres.getRefreshToken());
 		credentials.setAccessToken(rtres.getAccessToken());
+		
+		logger.debug(String.format("Refresh successfull for %s - Previous token was: %s - New token is: %s", userId, previousToken, rtres.getAccessToken()));
 	}
 }
