@@ -10,14 +10,14 @@
 	<parent>
 		<groupId>org.mule.tools.devkit</groupId>
 		<artifactId>mule-devkit-parent</artifactId>
-		<version>3.3.2</version>		
+		<version>3.4.0</version>		
 	</parent>
 
 	<properties>
 		<category>Standard</category>
 		<licensePath>LICENSE.md</licensePath>
+		<mule.devkit.version>3.4.0</mule.devkit.version>
 		<devkit.studio.package.skip>false</devkit.studio.package.skip>
-		<mule.version>3.3.0</mule.version>
 	</properties>
 	
 	<build>
