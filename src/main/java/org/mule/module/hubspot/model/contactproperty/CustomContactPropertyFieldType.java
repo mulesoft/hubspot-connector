@@ -20,7 +20,7 @@ public enum CustomContactPropertyFieldType {
 	FILE("file"),
 	NUMBER("number"),
 	RADIO("radio"),
-	CHECKBOX("checkbox");
+	CHECKBOX("booleancheckbox");
 	
 	private String value;
 	
