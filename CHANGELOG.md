@@ -1,3 +1,11 @@
+2.7
+===
+	* Added new operation getRecentContactsPaginated that implements Iterable and returns an iterator that handles the Pagination on the background
+
+2.6.10
+======
+	* Added new version of the ObjectStore for Integration Tests. When an object is required from the OS the result is cloned and returned a new instance. This is to simulate the stateless OS from CloudHub.
+
 2.6.9
 =====
 	* Minor fix

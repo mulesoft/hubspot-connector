@@ -11,6 +11,8 @@
  */
 package org.mule.module.hubspot;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -54,6 +56,7 @@ import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
 import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.mule.module.hubspot.model.list.HubSpotNewList;
+import org.mule.modules.utils.pagination.PaginatedCollection;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -68,7 +71,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.6.9", friendlyName="HubSpot", minMuleVersion="3.3.2")
+@Connector(name="hubspot", schemaVersion="2.7", friendlyName="HubSpot", minMuleVersion="3.3.2")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -266,7 +269,6 @@ public class HubSpotConnector
 		return credentialsManager.hasUserAccessToken(userId);
 	}	
 	
-	//
 	/**
 	 * For a given portal, return all contacts that have been created in the portal.
 	 * A paginated list of contacts will be returned to you, with a maximum of 100 contacts per page.
@@ -286,7 +288,8 @@ public class HubSpotConnector
 	@Processor
 	public ContactList getAllContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String contactOffset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		
+
+		// ITERABLE
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);		
 		
@@ -321,6 +324,7 @@ public class HubSpotConnector
 	public ContactList getRecentContacts(String userId, @Optional @Default("") String count, @Optional @Default("") String timeOffset, @Optional @Default("") String contactOffset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
+		//ITERABLE
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
@@ -333,6 +337,73 @@ public class HubSpotConnector
 		}
 	}
 	
+	/**
+	 * This operation masks {@link getRecentContacts} with an Iterator that handles the pagination.
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-recent-contacts-paginated}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
+	 * @return A Collection of {@link Contact} that is Iterable and handles pagination in the background
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public Collection<Contact> getRecentContactsPaginated(String userId, String count) 
+		throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		
+		ContactList cl = getRecentContacts(userId, count, null, null);
+		
+		return getRecentContactsCollectionPrivate(userId, count, cl, this); 
+	}
+	
+	private Collection<Contact> getRecentContactsCollectionPrivate
+		(final String userId,  final @Optional @Default("") String count, final ContactList contactList, final HubSpotConnector connector) {
+		
+		return new PaginatedCollection<Contact, ContactList>() {
+			
+			private ContactList firstPage;
+			
+			@Override
+			public boolean isEmpty() {
+				return size() != 0;
+			}
+
+			@Override
+			public int size() {
+				return -1;
+			}
+
+			@Override
+			protected ContactList firstPage() {
+				if (firstPage == null) 
+					firstPage = contactList;
+				
+				return firstPage;
+			}
+
+			@Override
+			protected boolean hasNextPage(final ContactList contactList) {
+				return contactList.getHasMore();
+			}
+
+			@Override
+			protected ContactList nextPage(final ContactList contactList) {
+				try {
+					return connector.getRecentContacts(userId, count, contactList.getTimeOffset().toString(), contactList.getVidOffset().toString());
+				} catch (Throwable e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			@Override
+			protected Iterator<Contact> pageIterator(final ContactList contactList) {
+				return contactList.getContacts().iterator();
+			}
+			
+		};
+	}
 	
 	/**
 	 * For a given portal, return information about a single contact by its ID. The contact's unique ID's is stored in a field called 'vid' which stands for 'visitor ID'.
@@ -446,7 +517,7 @@ public class HubSpotConnector
 	@Processor
 	public ContactQuery getContactsByQuery(String userId, String query, @Optional @Default("") String count)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		
+		//ITERABLE
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
@@ -608,7 +679,7 @@ public class HubSpotConnector
 	@Processor
 	public HubSpotListLists getContactsLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset) 
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		
+		//ITERABLE
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
@@ -674,7 +745,7 @@ public class HubSpotConnector
 	@Processor
 	public HubSpotListLists getDynamicContactLists(String userId, @Optional @Default("") String count, @Optional @Default("") String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		
+		//ITERABLE
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		
@@ -708,7 +779,7 @@ public class HubSpotConnector
 	@Processor
 	public ContactList getContactsInAList(String userId, String listId, @Optional @Default("") String count, @Optional @Default("") String property, @Optional @Default("") String offset)
 			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
-		
+		//ITERABLE
 		OAuthCredentials cred = credentialsManager.getCredentials(userId);
 		HubSpotClient client = clientsManager.getOrCreateClient(userId, cred);
 		

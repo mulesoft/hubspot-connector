@@ -13,6 +13,9 @@
 <!-- BEGIN_INCLUDE(hubspot:get-recent-contacts) -->
     <hubspot:get-recent-contacts userId="userId" />
 <!-- END_INCLUDE(hubspot:get-recent-contacts) -->
+<!-- BEGIN_INCLUDE(hubspot:get-recent-contacts-paginated) -->
+    <hubspot:get-recent-contacts-paginated config-ref="HubSpot" count="20" userId="1" />
+<!-- END_INCLUDE(hubspot:get-recent-contacts-paginated) -->
 <!-- BEGIN_INCLUDE(hubspot:get-contact-by-id) -->
     <hubspot:get-contact-by-id  userId="userId" contactId="contactId" />
 <!-- END_INCLUDE(hubspot:get-contact-by-id) -->

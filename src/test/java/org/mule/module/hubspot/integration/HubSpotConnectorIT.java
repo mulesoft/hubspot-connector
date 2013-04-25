@@ -12,6 +12,7 @@ package org.mule.module.hubspot.integration;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,6 +35,7 @@ import org.mule.module.hubspot.credential.HubSpotCredentialsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
+import org.mule.module.hubspot.integration.utils.ObjectStoreWithClone;
 import org.mule.module.hubspot.model.OAuthCredentials;
 import org.mule.module.hubspot.model.contact.Contact;
 import org.mule.module.hubspot.model.contact.ContactDeleted;
@@ -54,14 +56,13 @@ import org.mule.module.hubspot.model.list.HubSpotListFilter;
 import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.mule.module.hubspot.model.list.HubSpotNewList;
-import org.mule.util.store.SimpleMemoryObjectStore;
 
 public class HubSpotConnectorIT {
 
 	static final private String USER_ID = "1";
 
 	private HubSpotConnector connector;
-	private SimpleMemoryObjectStore<Serializable> credentialsMap;
+	private ObjectStoreWithClone<Serializable> credentialsMap;
 
 	@Before
 	public void setUp() throws IOException, ConnectionException,
@@ -76,7 +77,7 @@ public class HubSpotConnectorIT {
 		// Save the props in the class attributes
 		String authResult = prop.getProperty("hubspot.it.authresult");
 		
-		credentialsMap = new SimpleMemoryObjectStore<Serializable>(); 
+		credentialsMap = new ObjectStoreWithClone<Serializable>();
 		
 		connector = new HubSpotConnector();
 		connector.setClientId(prop.getProperty("hubspot.it.clientid"));
@@ -99,7 +100,6 @@ public class HubSpotConnectorIT {
 			connector.authenticateResponse(authResult);
 		}
 	}
-	
 	
 	/*
 	 * Test the behavior when the access token is invalid (expired) for the refresh token behavior
