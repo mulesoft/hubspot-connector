@@ -1,3 +1,7 @@
+2.7.1
+=====
+	* Added new operation getAllContactsUpdatedAfter that returns all the recent contacts filtered by a waterMark
+
 2.7
 ===
 	* Added new operation getRecentContactsPaginated that implements Iterable and returns an iterator that handles the Pagination on the background

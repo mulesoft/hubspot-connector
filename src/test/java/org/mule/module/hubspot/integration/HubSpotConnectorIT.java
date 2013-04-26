@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ import org.mule.module.hubspot.model.list.HubSpotListFilter;
 import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.mule.module.hubspot.model.list.HubSpotNewList;
+import org.mule.modules.utils.pagination.PaginatedIterable;
 
 public class HubSpotConnectorIT {
 
@@ -116,11 +118,13 @@ public class HubSpotConnectorIT {
 		HubSpotClientsManager hcm = connector.getClientsManager();
 		HubSpotClient hc = hcm.getClient(USER_ID);
 		hc = Mockito.spy(hc);
+		
 		// Save the mocked client
 		hcm.addClient(USER_ID, hc);
 				
 		OAuthCredentials credentials = (OAuthCredentials) credentialsMap.retrieve(USER_ID);
 		credentials.setAccessToken("you-will-fail-token-muajuajua");
+		credentialsMap.store(USER_ID, credentials);
 		
 		ContactList cl = connector.getAllContacts(USER_ID, null, null);
 		
@@ -130,6 +134,58 @@ public class HubSpotConnectorIT {
 		
 		// Refresh token only suppose to call one time
 		Mockito.verify(hc, Mockito.times(1)).refreshToken(Mockito.any(HubSpotCredentialsManager.class), Mockito.anyString());
+	}
+	
+	/*
+	 * Test the cut point in iteration for the new iterator.
+	 * When calling stopIteration the next hasNext should return false regarding what the API says
+	 */
+	@Test
+	public void testStopIteration() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		Iterator<Contact> i = connector.getRecentContactsPaginated(USER_ID, "1").iterator();
+		
+		int contacts = 0;
+		
+		for (int x = 0 ; x < 2 ; x++) {
+			if (i.hasNext()) {
+				i.next();
+				contacts++;
+			}
+		}
+		
+		// In order that this test works we need at least two Contacts
+		if (contacts < 2) {
+			for (int x = contacts; x > 0; x--) {
+				createNewContact();
+			}
+		}
+		
+		Collection<Contact> c = connector.getRecentContactsPaginated(USER_ID, "10");
+		i = c.iterator();
+		
+		i = Mockito.spy(i); // Mock the iterator
+		
+		Contact co;
+		while (i.hasNext()) {
+			co = i.next();			
+			System.out.println(co.getVid());
+			PaginatedIterable<?,?> pi = (PaginatedIterable<?,?>) c;
+			pi.stopIteration();
+		}
+		
+		// If the cut point was correct, it must be called only one time
+		Mockito.verify(i, Mockito.times(1)).next();
+	}
+	
+	@Test
+	public void contactsUpdatedAfter() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+		List<Contact> lc = connector.getAllContactsUpdatedAfter(USER_ID, "100", 1366904770338l);
+		
+		Assert.assertNotNull(lc);
+		
+//		for (Contact c : lc) {
+//			System.out.println(String.format("%6s - %20s - %s", c.getVid(), c.getAddedAt(), c.getContactProperties().getFirstname()));
+//		}
 	}
 	
 	/*
@@ -221,26 +277,36 @@ public class HubSpotConnectorIT {
 	}
 	
 	@Test
-	public void getLists() throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
+	public void getLists() throws Exception {
 		HubSpotListLists hsll = connector.getContactsLists(USER_ID, null, null);
 		
+		String listID = null;
+		
+		for (HubSpotList hsl : hsll.getLists()) {
+			if (hsl != null && !hsl.getDeleted()) {
+				listID = hsl.getListId();
+				break;
+			}
+		}
+		
+		if (listID == null)
+			throw new Exception("It must be one List not deleted in the sandbox to complete the test case");
+			
 		Assert.assertNotNull(hsll);
 		Assert.assertTrue(hsll.getLists().size() >= 0);
 		
-		HubSpotList hsl = connector.getContactListById(USER_ID, "1");		
+		HubSpotList hsl = connector.getContactListById(USER_ID, listID);		
 		
 		Assert.assertNotNull(hsl);
-		Assert.assertEquals(hsl.getPortalId(), connector.getClientId());
 		
 		hsll = connector.getDynamicContactLists(USER_ID, null, null);
 		
 		Assert.assertNotNull(hsll);
 		Assert.assertTrue(hsll.getLists().size() > 1);
 		
-		ContactList cl = connector.getContactsInAList(USER_ID, "1", null, null, null);
+		ContactList cl = connector.getContactsInAList(USER_ID, listID, null, null, null);
 		
 		Assert.assertNotNull(cl);
-		Assert.assertTrue(cl.getContacts().size() > 0);		
 	}
 	
 	@Test

@@ -12,7 +12,7 @@
 package org.mule.module.hubspot;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -38,6 +38,7 @@ import org.mule.module.hubspot.credential.HubSpotCredentialsManager;
 import org.mule.module.hubspot.exception.HubSpotConnectorAccessTokenExpiredException;
 import org.mule.module.hubspot.exception.HubSpotConnectorException;
 import org.mule.module.hubspot.exception.HubSpotConnectorNoAccessTokenException;
+import org.mule.module.hubspot.iterable.GetRecentContactsCollection;
 import org.mule.module.hubspot.model.OAuthCredentials;
 import org.mule.module.hubspot.model.contact.Contact;
 import org.mule.module.hubspot.model.contact.ContactDeleted;
@@ -56,7 +57,6 @@ import org.mule.module.hubspot.model.list.HubSpotListAddContactToListResponse;
 import org.mule.module.hubspot.model.list.HubSpotListFilters;
 import org.mule.module.hubspot.model.list.HubSpotListLists;
 import org.mule.module.hubspot.model.list.HubSpotNewList;
-import org.mule.modules.utils.pagination.PaginatedCollection;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -71,7 +71,7 @@ import org.springframework.core.annotation.Order;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="hubspot", schemaVersion="2.7", friendlyName="HubSpot", minMuleVersion="3.3.2")
+@Connector(name="hubspot", schemaVersion="2.7.1", friendlyName="HubSpot", minMuleVersion="3.3.2")
 public class HubSpotConnector
 {
 	static final public String HUB_SPOT_URL_API 		= "http://hubapi.com";
@@ -354,55 +354,64 @@ public class HubSpotConnector
 		throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
 		ContactList cl = getRecentContacts(userId, count, null, null);
-		
-		return getRecentContactsCollectionPrivate(userId, count, cl, this); 
+
+		return new GetRecentContactsCollection(this, cl, userId, count);
 	}
 	
-	private Collection<Contact> getRecentContactsCollectionPrivate
-		(final String userId,  final @Optional @Default("") String count, final ContactList contactList, final HubSpotConnector connector) {
+	/**
+	 * This operation masks {@link getRecentContacts} recursively filtering all the contacts that were updated after the waterMark
+	 * <p>
+	 * {@sample.xml ../../../doc/HubSpot-connector.xml.sample hubspot:get-all-contacts-updated-after}
+	 * 
+	 * @param userId The UserID of the user in the HubSpot service that was obtained from the {@link authenticateResponse} process
+	 * @param count This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.
+	 * @param waterMark The waterMark used to filter the Contacts that were updated after that waterMark
+	 * @return A Collection of {@link Contact} that is Iterable and handles pagination in the background
+	 * @throws HubSpotConnectorException If the required parameters were not specified or occurs another type of error this exception will be thrown
+	 * @throws HubSpotConnectorNoAccessTokenException If the user does not have an Access Token this exception will be thrown
+	 * @throws HubSpotConnectorAccessTokenExpiredException If the user has his token already expired this exception will be thrown
+	 */
+	@Processor
+	public List<Contact> getAllContactsUpdatedAfter(String userId, @Optional @Default("") String count, Long waterMark) 
+			throws HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, HubSpotConnectorAccessTokenExpiredException {
 		
-		return new PaginatedCollection<Contact, ContactList>() {
-			
-			private ContactList firstPage;
-			
-			@Override
-			public boolean isEmpty() {
-				return size() != 0;
-			}
-
-			@Override
-			public int size() {
-				return -1;
-			}
-
-			@Override
-			protected ContactList firstPage() {
-				if (firstPage == null) 
-					firstPage = contactList;
+		List<Contact> contacts = new LinkedList<Contact>();
+		
+		boolean readNext = true;
+		String timeOffset = null, contactOffset = null;
 				
-				return firstPage;
-			}
+		while (readNext) {	
+			readNext = false;
+			ContactList cl = getRecentContacts(userId, count, timeOffset, contactOffset);
+			
+			if (cl != null) {
+				List<Contact> lc = cl.getContacts();
 
-			@Override
-			protected boolean hasNextPage(final ContactList contactList) {
-				return contactList.getHasMore();
-			}
-
-			@Override
-			protected ContactList nextPage(final ContactList contactList) {
-				try {
-					return connector.getRecentContacts(userId, count, contactList.getTimeOffset().toString(), contactList.getVidOffset().toString());
-				} catch (Throwable e) {
-					throw new RuntimeException(e);
+				if (lc != null) {
+					int x = 0, xMax = lc.size();
+					
+					Contact c;
+					for ( ; x < xMax ; x++) {
+						c = lc.get(x);
+						
+						if (c.getAddedAt() < waterMark) {
+							break;
+						}
+						
+						contacts.add(c);
+					}
+				
+					if (x >= xMax && cl.getHasMore()) {
+						// We check for possible error in the API. If the hasMore it's true there should be a timeOffset and a vidOffset, but just to be sure we double check it
+						timeOffset = cl.getTimeOffset() != null ? cl.getTimeOffset().toString() : null;
+						contactOffset = cl.getVidOffset() != null ? cl.getVidOffset().toString() : null;
+						readNext = timeOffset != null && contactOffset != null ? true : false;
+					}
 				}
 			}
-
-			@Override
-			protected Iterator<Contact> pageIterator(final ContactList contactList) {
-				return contactList.getContacts().iterator();
-			}
-			
-		};
+		}
+		
+		return contacts;
 	}
 	
 	/**

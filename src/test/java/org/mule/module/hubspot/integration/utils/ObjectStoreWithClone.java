@@ -13,7 +13,6 @@ import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.mule.api.store.ObjectAlreadyExistsException;
 import org.mule.api.store.ObjectDoesNotExistException;
 import org.mule.api.store.ObjectStore;
 import org.mule.api.store.ObjectStoreException;
@@ -51,7 +50,7 @@ public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore
 		}
 
 		if (contains(key)) {
-			throw new ObjectAlreadyExistsException();
+			remove(key);
 		}
 
 		objectStore.store(key, value);
