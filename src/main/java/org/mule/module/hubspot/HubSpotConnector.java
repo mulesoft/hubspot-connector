@@ -394,7 +394,7 @@ public class HubSpotConnector
 					for ( ; x < xMax ; x++) {
 						c = lc.get(x);
 						
-						if (c.getAddedAt() < waterMark) {
+						if (c.getAddedAt() <= waterMark) {
 							break;
 						}
 						
