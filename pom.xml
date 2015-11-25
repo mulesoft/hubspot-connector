@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.module</groupId>
 	<artifactId>mule-module-hubspot</artifactId>
-	<version>2.7.1-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>mule-module</packaging>
 	<name>HubSpot Connector</name>
 
