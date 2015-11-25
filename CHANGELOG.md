@@ -1,6 +1,7 @@
 2.7.1
 =====
 	* Added new operation getAllContactsUpdatedAfter that returns all the recent contacts filtered by a waterMark
+	* Migrate connector to DevKit 3.7.2.
 
 2.7
 ===
