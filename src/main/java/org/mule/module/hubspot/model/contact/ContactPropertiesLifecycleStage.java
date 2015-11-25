@@ -11,34 +11,33 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonValue;
 
 public enum ContactPropertiesLifecycleStage {
-	SUBSCRIBER("subscriber"),
-	LEAD("lead"),
-	MARKETING_QUALIFIED_LEAD("marketingqualifiedlead"),
-	SALES_QUALIFIED_LEAD("salesqualifiedlead"),
-	OPORTUNITY("opportunity"),
-	CUSTOMER("customer"),
-	EVANGELIST("evangelist"),
-	OTHER("other");
-	
-	private String value;
-	
-	private ContactPropertiesLifecycleStage(String value) {
-		this.value = value;
-	}
-	
-	@JsonValue
-	public String getValue() {
-		return value;
-	}
-	
-	
-	@JsonCreator
-	static public ContactPropertiesLifecycleStage getFromString(String value) {
-		for (ContactPropertiesLifecycleStage obj : ContactPropertiesLifecycleStage.values()) {
-			if (obj.getValue().equalsIgnoreCase(value)) {
-				return obj;
-			}
-		}
-		return null;
-	}
+    SUBSCRIBER("subscriber"),
+    LEAD("lead"),
+    MARKETING_QUALIFIED_LEAD("marketingqualifiedlead"),
+    SALES_QUALIFIED_LEAD("salesqualifiedlead"),
+    OPORTUNITY("opportunity"),
+    CUSTOMER("customer"),
+    EVANGELIST("evangelist"),
+    OTHER("other");
+
+    private String value;
+
+    private ContactPropertiesLifecycleStage(final String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @JsonCreator
+    static public ContactPropertiesLifecycleStage getFromString(final String value) {
+        for (final ContactPropertiesLifecycleStage obj : ContactPropertiesLifecycleStage.values()) {
+            if (obj.getValue().equalsIgnoreCase(value)) {
+                return obj;
+            }
+        }
+        return null;
+    }
 }

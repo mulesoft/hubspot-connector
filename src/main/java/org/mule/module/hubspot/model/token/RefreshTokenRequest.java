@@ -15,42 +15,43 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RefreshTokenRequest {
-	
-	private String refreshToken;
-	private String clientId;
-	private String grantType;
-	
-	@JsonProperty("refresh_token")
-	public String getRefreshToken() {
-		return refreshToken;
-	}
-	
-	@JsonProperty("refresh_token")
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
 
-	@JsonProperty("client_id")
-	public String getClientId() {
-		return clientId;
-	}
+    private String refreshToken;
+    private String clientId;
+    private String grantType;
 
-	@JsonProperty("client_id")
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
+    @JsonProperty("refresh_token")
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-	@JsonProperty("grant_type")
-	public String getGrantType() {
-		return grantType;
-	}
+    @JsonProperty("refresh_token")
+    public void setRefreshToken(final String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
-	@JsonProperty("grant_type")
-	public void setGrantType(String grantType) {
-		this.grantType = grantType;
-	}
-	
-	public String toString() {
-		return String.format("refresh_token=%s&client_id=%s&grant_type=%s", refreshToken, clientId, grantType);
-	}
+    @JsonProperty("client_id")
+    public String getClientId() {
+        return clientId;
+    }
+
+    @JsonProperty("client_id")
+    public void setClientId(final String clientId) {
+        this.clientId = clientId;
+    }
+
+    @JsonProperty("grant_type")
+    public String getGrantType() {
+        return grantType;
+    }
+
+    @JsonProperty("grant_type")
+    public void setGrantType(final String grantType) {
+        this.grantType = grantType;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("refresh_token=%s&client_id=%s&grant_type=%s", refreshToken, clientId, grantType);
+    }
 }

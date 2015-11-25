@@ -15,26 +15,27 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ContactStatistics {
-	private Long lastNewContactAt;
-	private Long contacts;
-	
-	@JsonProperty
-	public Long getLastNewContactAt() {
-		return lastNewContactAt;
-	}
-	
-	@JsonProperty
-	public void setLastNewContactAt(Long lastNewContactAt) {
-		this.lastNewContactAt = lastNewContactAt;
-	}
-	
-	@JsonProperty
-	public Long getContacts() {
-		return contacts;
-	}
-	
-	@JsonProperty
-	public void setContacts(Long contacts) {
-		this.contacts = contacts;
-	}
+
+    private Long lastNewContactAt;
+    private Long contacts;
+
+    @JsonProperty
+    public Long getLastNewContactAt() {
+        return lastNewContactAt;
+    }
+
+    @JsonProperty
+    public void setLastNewContactAt(final Long lastNewContactAt) {
+        this.lastNewContactAt = lastNewContactAt;
+    }
+
+    @JsonProperty
+    public Long getContacts() {
+        return contacts;
+    }
+
+    @JsonProperty
+    public void setContacts(final Long contacts) {
+        this.contacts = contacts;
+    }
 }

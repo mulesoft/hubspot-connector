@@ -10,14 +10,14 @@ package org.mule.module.hubspot.model.list;
 import java.util.List;
 
 public class HubSpotListFilters {
-	
-	private List<HubSpotListFilter> filters;
 
-	public List<HubSpotListFilter> getFilters() {
-		return filters;
-	}
+    private List<HubSpotListFilter> filters;
 
-	public void setFilters(List<HubSpotListFilter> filters) {
-		this.filters = filters;
-	}
+    public List<HubSpotListFilter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(final List<HubSpotListFilter> filters) {
+        this.filters = filters;
+    }
 }

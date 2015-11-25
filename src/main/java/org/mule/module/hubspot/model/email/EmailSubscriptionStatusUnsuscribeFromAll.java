@@ -16,15 +16,15 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmailSubscriptionStatusUnsuscribeFromAll {
 
-	private Boolean unsubscribeFromAll;
+    private Boolean unsubscribeFromAll;
 
-	@JsonProperty
-	public Boolean getUnsubscribeFromAll() {
-		return unsubscribeFromAll;
-	}
+    @JsonProperty
+    public Boolean getUnsubscribeFromAll() {
+        return unsubscribeFromAll;
+    }
 
-	@JsonProperty
-	public void setUnsubscribeFromAll(Boolean unsubscribeFromAll) {
-		this.unsubscribeFromAll = unsubscribeFromAll;
-	}
+    @JsonProperty
+    public void setUnsubscribeFromAll(final Boolean unsubscribeFromAll) {
+        this.unsubscribeFromAll = unsubscribeFromAll;
+    }
 }

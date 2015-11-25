@@ -16,48 +16,48 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RefreshTokenResponse {
 
-	private String portalId;
-	private Long expiresIn;
-	private String refreshToken;
-	private String accessToken;
-	
-	@JsonProperty("portal_id")
-	public String getPortalId() {
-		return portalId;
-	}
-	
-	@JsonProperty("portal_id")
-	public void setPortalId(String portalId) {
-		this.portalId = portalId;
-	}
-	
-	@JsonProperty("expires_in")
-	public Long getExpiresIn() {
-		return expiresIn;
-	}
-	
-	@JsonProperty("expires_in")
-	public void setExpiresIn(Long expiresIn) {
-		this.expiresIn = expiresIn;
-	}
-	
-	@JsonProperty("refresh_token")
-	public String getRefreshToken() {
-		return refreshToken;
-	}
-	
-	@JsonProperty("refresh_token")
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
-	
-	@JsonProperty("access_token")
-	public String getAccessToken() {
-		return accessToken;
-	}
-	
-	@JsonProperty("access_token")
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}	
+    private String portalId;
+    private Long expiresIn;
+    private String refreshToken;
+    private String accessToken;
+
+    @JsonProperty("portal_id")
+    public String getPortalId() {
+        return portalId;
+    }
+
+    @JsonProperty("portal_id")
+    public void setPortalId(final String portalId) {
+        this.portalId = portalId;
+    }
+
+    @JsonProperty("expires_in")
+    public Long getExpiresIn() {
+        return expiresIn;
+    }
+
+    @JsonProperty("expires_in")
+    public void setExpiresIn(final Long expiresIn) {
+        this.expiresIn = expiresIn;
+    }
+
+    @JsonProperty("refresh_token")
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    @JsonProperty("refresh_token")
+    public void setRefreshToken(final String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    @JsonProperty("access_token")
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    @JsonProperty("access_token")
+    public void setAccessToken(final String accessToken) {
+        this.accessToken = accessToken;
+    }
 }

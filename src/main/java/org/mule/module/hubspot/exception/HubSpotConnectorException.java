@@ -9,21 +9,21 @@ package org.mule.module.hubspot.exception;
 
 public class HubSpotConnectorException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public HubSpotConnectorException() {
-		super();
-	}
-	
-	public HubSpotConnectorException(String message) {
-		super(message);
-	}
-	
-	public HubSpotConnectorException(Throwable causedBy) {
-		super(causedBy);
-	}
-	
-	public HubSpotConnectorException(String message, Throwable causedBy) {
-		super(message, causedBy);
-	}
+    public HubSpotConnectorException() {
+        super();
+    }
+
+    public HubSpotConnectorException(final String message) {
+        super(message);
+    }
+
+    public HubSpotConnectorException(final Throwable causedBy) {
+        super(causedBy);
+    }
+
+    public HubSpotConnectorException(final String message, final Throwable causedBy) {
+        super(message, causedBy);
+    }
 }

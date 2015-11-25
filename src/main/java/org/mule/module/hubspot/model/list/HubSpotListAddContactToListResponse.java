@@ -17,27 +17,27 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HubSpotListAddContactToListResponse {
-	
-	private List<Integer> discarded;
-	private List<Integer> updated;
-	
-	@JsonProperty
-	public List<Integer> getDiscarded() {
-		return discarded;
-	}
-	
-	@JsonProperty
-	public void setDiscarded(List<Integer> discarded) {
-		this.discarded = discarded;
-	}
-	
-	@JsonProperty
-	public List<Integer> getUpdated() {
-		return updated;
-	}
-	
-	@JsonProperty
-	public void setUpdated(List<Integer> updated) {
-		this.updated = updated;
-	}
+
+    private List<Integer> discarded;
+    private List<Integer> updated;
+
+    @JsonProperty
+    public List<Integer> getDiscarded() {
+        return discarded;
+    }
+
+    @JsonProperty
+    public void setDiscarded(final List<Integer> discarded) {
+        this.discarded = discarded;
+    }
+
+    @JsonProperty
+    public List<Integer> getUpdated() {
+        return updated;
+    }
+
+    @JsonProperty
+    public void setUpdated(final List<Integer> updated) {
+        this.updated = updated;
+    }
 }

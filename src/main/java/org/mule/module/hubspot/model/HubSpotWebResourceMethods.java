@@ -8,9 +8,9 @@
 package org.mule.module.hubspot.model;
 
 public enum HubSpotWebResourceMethods {
-	GET,
-	POST,
-	PUT,
-	DELETE,
-	REFRESH;	
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    REFRESH;
 }

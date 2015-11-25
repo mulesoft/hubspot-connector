@@ -15,29 +15,28 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ContactDeleted {
-	
-	private Boolean deleted;
-	private String vid;
-	
-	@JsonProperty
-	public Boolean getDeleted() {
-		return deleted;
-	}
-	
-	@JsonProperty
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-	
-	@JsonProperty
-	public String getVid() {
-		return vid;
-	}
-	
-	@JsonProperty
-	public void setVid(String vid) {
-		this.vid = vid;
-	}
-	
-	
+
+    private Boolean deleted;
+    private String vid;
+
+    @JsonProperty
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    @JsonProperty
+    public void setDeleted(final Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @JsonProperty
+    public String getVid() {
+        return vid;
+    }
+
+    @JsonProperty
+    public void setVid(final String vid) {
+        this.vid = vid;
+    }
+
 }

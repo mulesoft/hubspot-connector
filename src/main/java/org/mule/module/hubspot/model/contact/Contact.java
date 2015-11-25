@@ -21,96 +21,97 @@ import org.mule.module.hubspot.serialization.ContactJacksonSerializer;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class Contact {
 
-	private ContactProperties contactProperties;
-	private List<ContactListMembership> listMemberships;
-	private List<ContactIdentityProfiles> identityProfiles;
-	private String vid;
-	private Long addedAt;
-	private Long portalId;
-	private String profileToken;
-	private String profileUrl;
-	
-	public Contact() {}
+    private ContactProperties contactProperties;
+    private List<ContactListMembership> listMemberships;
+    private List<ContactIdentityProfiles> identityProfiles;
+    private String vid;
+    private Long addedAt;
+    private Long portalId;
+    private String profileToken;
+    private String profileUrl;
 
-	@JsonProperty("properties")
-	@JsonSerialize(using = ContactJacksonSerializer.class)
-	public ContactProperties getContactProperties() {
-		return contactProperties;
-	}
+    public Contact() {
+    }
 
-	@JsonProperty("properties")	
-	@JsonDeserialize(using = ContactJacksonDeserializer.class)
-	public void setContactProperties(ContactProperties contactProperties) {
-		this.contactProperties = contactProperties;
-	}
+    @JsonProperty("properties")
+    @JsonSerialize(using = ContactJacksonSerializer.class)
+    public ContactProperties getContactProperties() {
+        return contactProperties;
+    }
 
-	@JsonProperty
-	public String getVid() {
-		return vid;
-	}
+    @JsonProperty("properties")
+    @JsonDeserialize(using = ContactJacksonDeserializer.class)
+    public void setContactProperties(final ContactProperties contactProperties) {
+        this.contactProperties = contactProperties;
+    }
 
-	@JsonProperty
-	public void setVid(String vid) {
-		this.vid = vid;
-	}
+    @JsonProperty
+    public String getVid() {
+        return vid;
+    }
 
-	@JsonProperty
-	public Long getAddedAt() {
-		return addedAt;
-	}
+    @JsonProperty
+    public void setVid(final String vid) {
+        this.vid = vid;
+    }
 
-	@JsonProperty
-	public void setAddedAt(Long addedAt) {
-		this.addedAt = addedAt;
-	}
+    @JsonProperty
+    public Long getAddedAt() {
+        return addedAt;
+    }
 
-	@JsonProperty("list-memberships")
-	public List<ContactListMembership> getListMemberships() {
-		return listMemberships;
-	}
+    @JsonProperty
+    public void setAddedAt(final Long addedAt) {
+        this.addedAt = addedAt;
+    }
 
-	@JsonProperty("list-memberships")
-	public void setListMemberships(List<ContactListMembership> listMemberships) {
-		this.listMemberships = listMemberships;
-	}
+    @JsonProperty("list-memberships")
+    public List<ContactListMembership> getListMemberships() {
+        return listMemberships;
+    }
 
-	@JsonProperty("identity-profiles")
-	public List<ContactIdentityProfiles> getIdentityProfiles() {
-		return identityProfiles;
-	}
+    @JsonProperty("list-memberships")
+    public void setListMemberships(final List<ContactListMembership> listMemberships) {
+        this.listMemberships = listMemberships;
+    }
 
-	@JsonProperty("identity-profiles")
-	public void setIdentityProfiles(List<ContactIdentityProfiles> identityProfiles) {
-		this.identityProfiles = identityProfiles;
-	}
+    @JsonProperty("identity-profiles")
+    public List<ContactIdentityProfiles> getIdentityProfiles() {
+        return identityProfiles;
+    }
 
-	@JsonProperty("portal-id")
-	public Long getPortalId() {
-		return portalId;
-	}
+    @JsonProperty("identity-profiles")
+    public void setIdentityProfiles(final List<ContactIdentityProfiles> identityProfiles) {
+        this.identityProfiles = identityProfiles;
+    }
 
-	@JsonProperty("portal-id")
-	public void setPortalId(Long portalId) {
-		this.portalId = portalId;
-	}
+    @JsonProperty("portal-id")
+    public Long getPortalId() {
+        return portalId;
+    }
 
-	@JsonProperty("profile-token")
-	public String getProfileToken() {
-		return profileToken;
-	}
+    @JsonProperty("portal-id")
+    public void setPortalId(final Long portalId) {
+        this.portalId = portalId;
+    }
 
-	@JsonProperty("profile-token")
-	public void setProfileToken(String profileToken) {
-		this.profileToken = profileToken;
-	}
+    @JsonProperty("profile-token")
+    public String getProfileToken() {
+        return profileToken;
+    }
 
-	@JsonProperty("profile-url")
-	public String getProfileUrl() {
-		return profileUrl;
-	}
+    @JsonProperty("profile-token")
+    public void setProfileToken(final String profileToken) {
+        this.profileToken = profileToken;
+    }
 
-	@JsonProperty("profile-url")
-	public void setProfileUrl(String profileUrl) {
-		this.profileUrl = profileUrl;
-	}	
+    @JsonProperty("profile-url")
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    @JsonProperty("profile-url")
+    public void setProfileUrl(final String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
 }

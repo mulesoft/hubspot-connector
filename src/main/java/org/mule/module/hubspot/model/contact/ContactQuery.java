@@ -17,60 +17,61 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ContactQuery {
-	private List<Contact> contacts;
-	private Boolean hasMore;
-	private Long offset;
-	private Integer results;
-	private String query;
 
-	@JsonProperty("has-more")
-	public Boolean getHasMore() {
-		return hasMore;
-	}
+    private List<Contact> contacts;
+    private Boolean hasMore;
+    private Long offset;
+    private Integer results;
+    private String query;
 
-	@JsonProperty("has-more")
-	public void setHasMore(Boolean hasMore) {
-		this.hasMore = hasMore;
-	}
+    @JsonProperty("has-more")
+    public Boolean getHasMore() {
+        return hasMore;
+    }
 
-	@JsonProperty
-	public List<Contact> getContacts() {
-		return contacts;
-	}
+    @JsonProperty("has-more")
+    public void setHasMore(final Boolean hasMore) {
+        this.hasMore = hasMore;
+    }
 
-	@JsonProperty
-	public void setContacts(List<Contact> contacts) {
-		this.contacts = contacts;
-	}
+    @JsonProperty
+    public List<Contact> getContacts() {
+        return contacts;
+    }
 
-	@JsonProperty
-	public Long getOffset() {
-		return offset;
-	}
+    @JsonProperty
+    public void setContacts(final List<Contact> contacts) {
+        this.contacts = contacts;
+    }
 
-	@JsonProperty
-	public void setOffset(Long offset) {
-		this.offset = offset;
-	}
+    @JsonProperty
+    public Long getOffset() {
+        return offset;
+    }
 
-	@JsonProperty
-	public Integer getResults() {
-		return results;
-	}
+    @JsonProperty
+    public void setOffset(final Long offset) {
+        this.offset = offset;
+    }
 
-	@JsonProperty
-	public void setResults(Integer results) {
-		this.results = results;
-	}
+    @JsonProperty
+    public Integer getResults() {
+        return results;
+    }
 
-	@JsonProperty
-	public String getQuery() {
-		return query;
-	}
+    @JsonProperty
+    public void setResults(final Integer results) {
+        this.results = results;
+    }
 
-	@JsonProperty
-	public void setQuery(String query) {
-		this.query = query;
-	}
-	
+    @JsonProperty
+    public String getQuery() {
+        return query;
+    }
+
+    @JsonProperty
+    public void setQuery(final String query) {
+        this.query = query;
+    }
+
 }

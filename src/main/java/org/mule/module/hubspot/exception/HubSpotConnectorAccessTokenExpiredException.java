@@ -9,22 +9,21 @@ package org.mule.module.hubspot.exception;
 
 public class HubSpotConnectorAccessTokenExpiredException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public HubSpotConnectorAccessTokenExpiredException() {
-		super();
-	}
+    public HubSpotConnectorAccessTokenExpiredException() {
+        super();
+    }
 
-	public HubSpotConnectorAccessTokenExpiredException(String message,
-			Throwable cause) {
-		super(message, cause);
-	}
+    public HubSpotConnectorAccessTokenExpiredException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	public HubSpotConnectorAccessTokenExpiredException(String message) {
-		super(message);
-	}
+    public HubSpotConnectorAccessTokenExpiredException(final String message) {
+        super(message);
+    }
 
-	public HubSpotConnectorAccessTokenExpiredException(Throwable cause) {
-		super(cause);
-	}
+    public HubSpotConnectorAccessTokenExpiredException(final Throwable cause) {
+        super(cause);
+    }
 }

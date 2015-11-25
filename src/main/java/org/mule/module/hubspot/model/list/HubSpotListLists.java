@@ -18,37 +18,37 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class HubSpotListLists {
 
-	private Integer offset;
-	private Boolean hasMore;
-	private List<HubSpotList> lists;
-	
-	@JsonProperty
-	public Integer getOffset() {
-		return offset;
-	}
-	
-	@JsonProperty
-	public void setOffset(Integer offset) {
-		this.offset = offset;
-	}
-	
-	@JsonProperty("has-more")
-	public Boolean getHasMore() {
-		return hasMore;
-	}
-	
-	@JsonProperty("has-more")
-	public void setHasMore(Boolean hasMore) {
-		this.hasMore = hasMore;
-	}
-	
-	@JsonProperty
-	public List<HubSpotList> getLists() {
-		return lists;
-	}
-	
-	@JsonProperty
-	public void setLists(List<HubSpotList> lists) {
-		this.lists = lists;
-	}
+    private Integer offset;
+    private Boolean hasMore;
+    private List<HubSpotList> lists;
+
+    @JsonProperty
+    public Integer getOffset() {
+        return offset;
+    }
+
+    @JsonProperty
+    public void setOffset(final Integer offset) {
+        this.offset = offset;
+    }
+
+    @JsonProperty("has-more")
+    public Boolean getHasMore() {
+        return hasMore;
+    }
+
+    @JsonProperty("has-more")
+    public void setHasMore(final Boolean hasMore) {
+        this.hasMore = hasMore;
+    }
+
+    @JsonProperty
+    public List<HubSpotList> getLists() {
+        return lists;
+    }
+
+    @JsonProperty
+    public void setLists(final List<HubSpotList> lists) {
+        this.lists = lists;
+    }
 }

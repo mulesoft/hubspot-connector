@@ -15,60 +15,60 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmailSubscriptionDefinitions {
-	
-	private Boolean active;
-	private Long portalId;
-	private String description;
-	private Long id;
-	private String name;
-	
-	@JsonProperty
-	public Boolean getActive() {
-		return active;
-	}
-	
-	@JsonProperty
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-	
-	@JsonProperty
-	public Long getPortalId() {
-		return portalId;
-	}
-	
-	@JsonProperty
-	public void setPortalId(Long portalId) {
-		this.portalId = portalId;
-	}
-	
-	@JsonProperty
-	public String getDescription() {
-		return description;
-	}
-	
-	@JsonProperty
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	@JsonProperty
-	public Long getId() {
-		return id;
-	}
-	
-	@JsonProperty
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	@JsonProperty
-	public String getName() {
-		return name;
-	}
-	
-	@JsonProperty
-	public void setName(String name) {
-		this.name = name;
-	}
+
+    private Boolean active;
+    private Long portalId;
+    private String description;
+    private Long id;
+    private String name;
+
+    @JsonProperty
+    public Boolean getActive() {
+        return active;
+    }
+
+    @JsonProperty
+    public void setActive(final Boolean active) {
+        this.active = active;
+    }
+
+    @JsonProperty
+    public Long getPortalId() {
+        return portalId;
+    }
+
+    @JsonProperty
+    public void setPortalId(final Long portalId) {
+        this.portalId = portalId;
+    }
+
+    @JsonProperty
+    public String getDescription() {
+        return description;
+    }
+
+    @JsonProperty
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    @JsonProperty
+    public Long getId() {
+        return id;
+    }
+
+    @JsonProperty
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    @JsonProperty
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty
+    public void setName(final String name) {
+        this.name = name;
+    }
 }

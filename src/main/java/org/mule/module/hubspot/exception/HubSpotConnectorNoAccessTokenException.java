@@ -9,22 +9,22 @@ package org.mule.module.hubspot.exception;
 
 public class HubSpotConnectorNoAccessTokenException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public HubSpotConnectorNoAccessTokenException() {
-		super();
-	}
+    public HubSpotConnectorNoAccessTokenException() {
+        super();
+    }
 
-	public HubSpotConnectorNoAccessTokenException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public HubSpotConnectorNoAccessTokenException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	public HubSpotConnectorNoAccessTokenException(String message) {
-		super(message);
-	}
+    public HubSpotConnectorNoAccessTokenException(final String message) {
+        super(message);
+    }
 
-	public HubSpotConnectorNoAccessTokenException(Throwable cause) {
-		super(cause);
-	}
-	
+    public HubSpotConnectorNoAccessTokenException(final Throwable cause) {
+        super(cause);
+    }
+
 }
