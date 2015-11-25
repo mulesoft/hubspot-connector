@@ -1,12 +1,10 @@
 /**
+ * Copyright (c) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
  *
- * (c) 2003-2012 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.md file.
  */
-
 package org.mule.module.hubspot.unit;
 
 import java.io.Serializable;
@@ -24,7 +22,7 @@ import org.mule.transformer.simple.SerializableToByteArray;
 import org.mule.util.store.SimpleMemoryObjectStore;
 
 public class HubSpotConnectorTest {
-	
+
 	@Test
 	public void checkContactPropertiesNumberOfEmployees_getValueFrom() {
 		Assert.assertEquals(null, ContactPropertiesNumberOfEmployees.getFromInteger(0));
@@ -42,10 +40,10 @@ public class HubSpotConnectorTest {
 		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1001));
 		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1000001));
 	}
-	
+
 	@Test
 	public void serializeObjectStore() throws TransformerException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, ObjectStoreException {
-		
+
 		HubSpotConnector connector = new HubSpotConnector();
 		connector.setClientId("");
 		connector.setHubId("");
@@ -56,12 +54,12 @@ public class HubSpotConnectorTest {
 		try {
 			connector.authenticate("1", null, null, null, null, null);
 		} catch (Throwable e) {} // Expected exception because we are not passing a map for the headers. Only intention is to initialize the client
-		
+
 		connector.authenticateResponse("http://localhost:8090/authresponse?userid=1&access_token=9&expires_in=28800");
-				
+
 		SerializableToByteArray serializer = new SerializableToByteArray();
 		Object result = serializer.doTransform(connector.getObjectStore().retrieve("1"), "UTF-8");
-		
+
 		Assert.assertNotNull(result);
 	}
 }
