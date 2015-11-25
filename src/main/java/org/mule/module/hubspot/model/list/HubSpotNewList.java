@@ -16,114 +16,114 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class HubSpotNewList {
 
-	private String portalId;
-	private String listId;
-	private String internalListId;
-	private Long createdAt;
-	private Long updatedAt;
-	private Boolean dynamic;
-	private Boolean deleted;
-	private String name;
-	private Boolean internal;
-	private HubSpotListMetadata metaData;
-	
-	@JsonProperty
-	public String getPortalId() {
-		return portalId;
-	}
-	
-	@JsonProperty
-	public void setPortalId(String portalId) {
-		this.portalId = portalId;
-	}
-	
-	@JsonProperty
-	public String getListId() {
-		return listId;
-	}
-	
-	@JsonProperty
-	public void setListId(String listId) {
-		this.listId = listId;
-	}
-	
-	@JsonProperty
-	public String getInternalListId() {
-		return internalListId;
-	}
-	
-	@JsonProperty
-	public void setInternalListId(String internalListId) {
-		this.internalListId = internalListId;
-	}
-	
-	@JsonProperty
-	public Long getCreatedAt() {
-		return createdAt;
-	}
-	
-	@JsonProperty
-	public void setCreatedAt(Long createdAt) {
-		this.createdAt = createdAt;
-	}
-	
-	@JsonProperty
-	public Long getUpdatedAt() {
-		return updatedAt;
-	}
-	
-	@JsonProperty
-	public void setUpdatedAt(Long updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-	
-	@JsonProperty
-	public Boolean getDynamic() {
-		return dynamic;
-	}
-	
-	@JsonProperty
-	public void setDynamic(Boolean dynamic) {
-		this.dynamic = dynamic;
-	}
-	
-	@JsonProperty
-	public Boolean getDeleted() {
-		return deleted;
-	}
-	
-	@JsonProperty
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
-	
-	@JsonProperty
-	public String getName() {
-		return name;
-	}
-	
-	@JsonProperty
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@JsonProperty
-	public Boolean getInternal() {
-		return internal;
-	}
-	
-	@JsonProperty
-	public void setInternal(Boolean internal) {
-		this.internal = internal;
-	}
+    private String portalId;
+    private String listId;
+    private String internalListId;
+    private Long createdAt;
+    private Long updatedAt;
+    private Boolean dynamic;
+    private Boolean deleted;
+    private String name;
+    private Boolean internal;
+    private HubSpotListMetadata metaData;
 
-	@JsonProperty
-	public HubSpotListMetadata getMetaData() {
-		return metaData;
-	}
+    @JsonProperty
+    public String getPortalId() {
+        return portalId;
+    }
 
-	@JsonProperty
-	public void setMetaData(HubSpotListMetadata metaData) {
-		this.metaData = metaData;
-	}	
+    @JsonProperty
+    public void setPortalId(final String portalId) {
+        this.portalId = portalId;
+    }
+
+    @JsonProperty
+    public String getListId() {
+        return listId;
+    }
+
+    @JsonProperty
+    public void setListId(final String listId) {
+        this.listId = listId;
+    }
+
+    @JsonProperty
+    public String getInternalListId() {
+        return internalListId;
+    }
+
+    @JsonProperty
+    public void setInternalListId(final String internalListId) {
+        this.internalListId = internalListId;
+    }
+
+    @JsonProperty
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    @JsonProperty
+    public void setCreatedAt(final Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @JsonProperty
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @JsonProperty
+    public void setUpdatedAt(final Long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @JsonProperty
+    public Boolean getDynamic() {
+        return dynamic;
+    }
+
+    @JsonProperty
+    public void setDynamic(final Boolean dynamic) {
+        this.dynamic = dynamic;
+    }
+
+    @JsonProperty
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    @JsonProperty
+    public void setDeleted(final Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @JsonProperty
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    @JsonProperty
+    public Boolean getInternal() {
+        return internal;
+    }
+
+    @JsonProperty
+    public void setInternal(final Boolean internal) {
+        this.internal = internal;
+    }
+
+    @JsonProperty
+    public HubSpotListMetadata getMetaData() {
+        return metaData;
+    }
+
+    @JsonProperty
+    public void setMetaData(final HubSpotListMetadata metaData) {
+        this.metaData = metaData;
+    }
 }

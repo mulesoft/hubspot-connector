@@ -18,51 +18,51 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ContactList {
 
-	private List<Contact> contacts;
-	private Boolean hasMore;
-	private Long vidOffset;
-	private Long timeOffset;
+    private List<Contact> contacts;
+    private Boolean hasMore;
+    private Long vidOffset;
+    private Long timeOffset;
 
-	public ContactList() {
-	}
+    public ContactList() {
+    }
 
-	@JsonProperty("has-more")
-	public Boolean getHasMore() {
-		return hasMore;
-	}
+    @JsonProperty("has-more")
+    public Boolean getHasMore() {
+        return hasMore;
+    }
 
-	@JsonProperty("has-more")
-	public void setHasMore(Boolean hasMore) {
-		this.hasMore = hasMore;
-	}
+    @JsonProperty("has-more")
+    public void setHasMore(final Boolean hasMore) {
+        this.hasMore = hasMore;
+    }
 
-	@JsonProperty("vid-offset")
-	public Long getVidOffset() {
-		return vidOffset;
-	}
+    @JsonProperty("vid-offset")
+    public Long getVidOffset() {
+        return vidOffset;
+    }
 
-	@JsonProperty("vid-offset")
-	public void setVidOffset(Long vidOffset) {
-		this.vidOffset = vidOffset;
-	}
+    @JsonProperty("vid-offset")
+    public void setVidOffset(final Long vidOffset) {
+        this.vidOffset = vidOffset;
+    }
 
-	@JsonProperty
-	public List<Contact> getContacts() {
-		return contacts;
-	}
+    @JsonProperty
+    public List<Contact> getContacts() {
+        return contacts;
+    }
 
-	@JsonProperty
-	public void setContacts(List<Contact> contacts) {
-		this.contacts = contacts;
-	}
+    @JsonProperty
+    public void setContacts(final List<Contact> contacts) {
+        this.contacts = contacts;
+    }
 
-	@JsonProperty("time-offset")
-	public Long getTimeOffset() {
-		return timeOffset;
-	}
+    @JsonProperty("time-offset")
+    public Long getTimeOffset() {
+        return timeOffset;
+    }
 
-	@JsonProperty("time-offset")
-	public void setTimeOffset(Long timeOffset) {
-		this.timeOffset = timeOffset;
-	}
+    @JsonProperty("time-offset")
+    public void setTimeOffset(final Long timeOffset) {
+        this.timeOffset = timeOffset;
+    }
 }

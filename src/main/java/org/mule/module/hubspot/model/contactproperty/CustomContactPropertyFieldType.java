@@ -11,35 +11,34 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonValue;
 
 public enum CustomContactPropertyFieldType {
-	TEXTAREA("textarea"),
-	SELECT("select"),
-	TEXT("text"),
-	DATE("date"),
-	FILE("file"),
-	NUMBER("number"),
-	RADIO("radio"),
-	BOOLEANCHECKBOX("booleancheckbox"),
+    TEXTAREA("textarea"),
+    SELECT("select"),
+    TEXT("text"),
+    DATE("date"),
+    FILE("file"),
+    NUMBER("number"),
+    RADIO("radio"),
+    BOOLEANCHECKBOX("booleancheckbox"),
     CHECKBOX("checkbox");
-	
-	private String value;
-	
-	private CustomContactPropertyFieldType(String value) {
-		this.value = value;
-	}
-	
-	@JsonValue
-	public String getValue() {
-		return value;
-	}
-	
-	
-	@JsonCreator
-	static public CustomContactPropertyFieldType getFromString(String value) {
-		for (CustomContactPropertyFieldType obj : CustomContactPropertyFieldType.values()) {
-			if (obj.getValue().equalsIgnoreCase(value)) {
-				return obj;
-			}
-		}
-		return null;
-	}
+
+    private String value;
+
+    private CustomContactPropertyFieldType(final String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @JsonCreator
+    static public CustomContactPropertyFieldType getFromString(final String value) {
+        for (final CustomContactPropertyFieldType obj : CustomContactPropertyFieldType.values()) {
+            if (obj.getValue().equalsIgnoreCase(value)) {
+                return obj;
+            }
+        }
+        return null;
+    }
 }

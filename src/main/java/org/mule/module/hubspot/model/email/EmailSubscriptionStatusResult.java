@@ -15,15 +15,16 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmailSubscriptionStatusResult {
-	private String status;
 
-	@JsonProperty
-	public String getStatus() {
-		return status;
-	}
+    private String status;
 
-	@JsonProperty
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    @JsonProperty
+    public String getStatus() {
+        return status;
+    }
+
+    @JsonProperty
+    public void setStatus(final String status) {
+        this.status = status;
+    }
 }

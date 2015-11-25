@@ -16,37 +16,37 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class CustomContactPropertyOptions {
 
-	private String label;
-	private String value;
-	private Integer displayOrder;
-	
-	@JsonProperty
-	public String getLabel() {
-		return label;
-	}
-	
-	@JsonProperty
-	public void setLabel(String label) {
-		this.label = label;
-	}
-	
-	@JsonProperty
-	public String getValue() {
-		return value;
-	}
-	
-	@JsonProperty
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	@JsonProperty
-	public Integer getDisplayOrder() {
-		return displayOrder;
-	}
-	
-	@JsonProperty
-	public void setDisplayOrder(Integer displayOrder) {
-		this.displayOrder = displayOrder;
-	}
+    private String label;
+    private String value;
+    private Integer displayOrder;
+
+    @JsonProperty
+    public String getLabel() {
+        return label;
+    }
+
+    @JsonProperty
+    public void setLabel(final String label) {
+        this.label = label;
+    }
+
+    @JsonProperty
+    public String getValue() {
+        return value;
+    }
+
+    @JsonProperty
+    public void setValue(final String value) {
+        this.value = value;
+    }
+
+    @JsonProperty
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    @JsonProperty
+    public void setDisplayOrder(final Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
 }

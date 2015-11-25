@@ -18,59 +18,59 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class CustomContactPropertyGroup {
 
-	private String name;
-	private String displayName;
-	private Integer displayOrder;
-	private Long portalId;
-	private List<CustomContactProperty> properties;
-	
-	@JsonProperty
-	public String getName() {
-		return name;
-	}
-	
-	@JsonProperty
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@JsonProperty
-	public String getDisplayName() {
-		return displayName;
-	}
-	
-	@JsonProperty
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-	
-	@JsonProperty
-	public Integer getDisplayOrder() {
-		return displayOrder;
-	}
-	
-	@JsonProperty
-	public void setDisplayOrder(Integer displayOrder) {
-		this.displayOrder = displayOrder;
-	}
-	
-	@JsonProperty
-	public Long getPortalId() {
-		return portalId;
-	}
-	
-	@JsonProperty
-	public void setPortalId(Long portalId) {
-		this.portalId = portalId;
-	}
-	
-	@JsonProperty
-	public List<CustomContactProperty> getProperties() {
-		return properties;
-	}
-	
-	@JsonProperty
-	public void setProperties(List<CustomContactProperty> properties) {
-		this.properties = properties;
-	}
+    private String name;
+    private String displayName;
+    private Integer displayOrder;
+    private Long portalId;
+    private List<CustomContactProperty> properties;
+
+    @JsonProperty
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    @JsonProperty
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    @JsonProperty
+    public void setDisplayName(final String displayName) {
+        this.displayName = displayName;
+    }
+
+    @JsonProperty
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    @JsonProperty
+    public void setDisplayOrder(final Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    @JsonProperty
+    public Long getPortalId() {
+        return portalId;
+    }
+
+    @JsonProperty
+    public void setPortalId(final Long portalId) {
+        this.portalId = portalId;
+    }
+
+    @JsonProperty
+    public List<CustomContactProperty> getProperties() {
+        return properties;
+    }
+
+    @JsonProperty
+    public void setProperties(final List<CustomContactProperty> properties) {
+        this.properties = properties;
+    }
 }

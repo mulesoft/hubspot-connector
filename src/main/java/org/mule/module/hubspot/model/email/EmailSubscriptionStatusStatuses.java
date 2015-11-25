@@ -16,26 +16,26 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmailSubscriptionStatusStatuses {
 
-	private Long id;
-	private Boolean subscribed;
-	
-	@JsonProperty
-	public Long getId() {
-		return id;
-	}
-	
-	@JsonProperty
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	@JsonProperty
-	public Boolean getSubscribed() {
-		return subscribed;
-	}
-	
-	@JsonProperty
-	public void setSubscribed(Boolean subscribed) {
-		this.subscribed = subscribed;
-	}	
+    private Long id;
+    private Boolean subscribed;
+
+    @JsonProperty
+    public Long getId() {
+        return id;
+    }
+
+    @JsonProperty
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    @JsonProperty
+    public Boolean getSubscribed() {
+        return subscribed;
+    }
+
+    @JsonProperty
+    public void setSubscribed(final Boolean subscribed) {
+        this.subscribed = subscribed;
+    }
 }

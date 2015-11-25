@@ -17,26 +17,27 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ContactIdentityProfiles {
-	private Long vid;
-	private List<ContactIdentity> identities;
-	
-	@JsonProperty
-	public Long getVid() {
-		return vid;
-	}
-	
-	@JsonProperty
-	public void setVid(Long vid) {
-		this.vid = vid;
-	}
-	
-	@JsonProperty
-	public List<ContactIdentity> getIdentities() {
-		return identities;
-	}
-	
-	@JsonProperty
-	public void setIdentities(List<ContactIdentity> identities) {
-		this.identities = identities;
-	}
+
+    private Long vid;
+    private List<ContactIdentity> identities;
+
+    @JsonProperty
+    public Long getVid() {
+        return vid;
+    }
+
+    @JsonProperty
+    public void setVid(final Long vid) {
+        this.vid = vid;
+    }
+
+    @JsonProperty
+    public List<ContactIdentity> getIdentities() {
+        return identities;
+    }
+
+    @JsonProperty
+    public void setIdentities(final List<ContactIdentity> identities) {
+        this.identities = identities;
+    }
 }

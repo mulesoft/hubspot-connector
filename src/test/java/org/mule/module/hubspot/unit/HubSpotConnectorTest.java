@@ -23,43 +23,44 @@ import org.mule.util.store.SimpleMemoryObjectStore;
 
 public class HubSpotConnectorTest {
 
-	@Test
-	public void checkContactPropertiesNumberOfEmployees_getValueFrom() {
-		Assert.assertEquals(null, ContactPropertiesNumberOfEmployees.getFromInteger(0));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1_5, ContactPropertiesNumberOfEmployees.getFromInteger(1));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1_5, ContactPropertiesNumberOfEmployees.getFromInteger(5));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._5_25, ContactPropertiesNumberOfEmployees.getFromInteger(7));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._5_25, ContactPropertiesNumberOfEmployees.getFromInteger(23));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._25_50, ContactPropertiesNumberOfEmployees.getFromInteger(47));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._50_100, ContactPropertiesNumberOfEmployees.getFromInteger(68));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._50_100, ContactPropertiesNumberOfEmployees.getFromInteger(100));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._100_500, ContactPropertiesNumberOfEmployees.getFromInteger(200));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._100_500, ContactPropertiesNumberOfEmployees.getFromInteger(500));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._500_1000, ContactPropertiesNumberOfEmployees.getFromInteger(750));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._500_1000, ContactPropertiesNumberOfEmployees.getFromInteger(1000));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1001));
-		Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1000001));
-	}
+    @Test
+    public void checkContactPropertiesNumberOfEmployees_getValueFrom() {
+        Assert.assertEquals(null, ContactPropertiesNumberOfEmployees.getFromInteger(0));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._1_5, ContactPropertiesNumberOfEmployees.getFromInteger(1));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._1_5, ContactPropertiesNumberOfEmployees.getFromInteger(5));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._5_25, ContactPropertiesNumberOfEmployees.getFromInteger(7));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._5_25, ContactPropertiesNumberOfEmployees.getFromInteger(23));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._25_50, ContactPropertiesNumberOfEmployees.getFromInteger(47));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._50_100, ContactPropertiesNumberOfEmployees.getFromInteger(68));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._50_100, ContactPropertiesNumberOfEmployees.getFromInteger(100));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._100_500, ContactPropertiesNumberOfEmployees.getFromInteger(200));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._100_500, ContactPropertiesNumberOfEmployees.getFromInteger(500));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._500_1000, ContactPropertiesNumberOfEmployees.getFromInteger(750));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._500_1000, ContactPropertiesNumberOfEmployees.getFromInteger(1000));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1001));
+        Assert.assertEquals(ContactPropertiesNumberOfEmployees._1000plus, ContactPropertiesNumberOfEmployees.getFromInteger(1000001));
+    }
 
-	@Test
-	public void serializeObjectStore() throws TransformerException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, ObjectStoreException {
+    @Test
+    public void serializeObjectStore() throws TransformerException, HubSpotConnectorException, HubSpotConnectorNoAccessTokenException, ObjectStoreException {
 
-		HubSpotConnector connector = new HubSpotConnector();
-		connector.setClientId("");
-		connector.setHubId("");
-		connector.setScope("");
-		connector.setCallbackUrl("");
-		connector.setObjectStore(new SimpleMemoryObjectStore<Serializable>());
-		connector.initialize();
-		try {
-			connector.authenticate("1", null, null, null, null, null);
-		} catch (Throwable e) {} // Expected exception because we are not passing a map for the headers. Only intention is to initialize the client
+        final HubSpotConnector connector = new HubSpotConnector();
+        connector.setClientId("");
+        connector.setHubId("");
+        connector.setScope("");
+        connector.setCallbackUrl("");
+        connector.setObjectStore(new SimpleMemoryObjectStore<Serializable>());
+        connector.initialize();
+        try {
+            connector.authenticate("1", null, null, null, null, null);
+        } catch (final Throwable e) {
+        } // Expected exception because we are not passing a map for the headers. Only intention is to initialize the client
 
-		connector.authenticateResponse("http://localhost:8090/authresponse?userid=1&access_token=9&expires_in=28800");
+        connector.authenticateResponse("http://localhost:8090/authresponse?userid=1&access_token=9&expires_in=28800");
 
-		SerializableToByteArray serializer = new SerializableToByteArray();
-		Object result = serializer.doTransform(connector.getObjectStore().retrieve("1"), "UTF-8");
+        final SerializableToByteArray serializer = new SerializableToByteArray();
+        final Object result = serializer.doTransform(connector.getObjectStore().retrieve("1"), "UTF-8");
 
-		Assert.assertNotNull(result);
-	}
+        Assert.assertNotNull(result);
+    }
 }

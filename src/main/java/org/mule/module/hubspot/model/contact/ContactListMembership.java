@@ -15,38 +15,38 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ContactListMembership {
-	private Integer internalListId;
-	private Long timestamp;
-	private Long vid;
-	
-	
-	@JsonProperty("internal-list-id")
-	public Integer getInternalListId() {
-		return internalListId;
-	}
-	
-	@JsonProperty("internal-list-id")
-	public void setInternalListId(Integer internalListId) {
-		this.internalListId = internalListId;
-	}
-	
-	@JsonProperty
-	public Long getTimestamp() {
-		return timestamp;
-	}
-	
-	@JsonProperty
-	public void setTimestamp(Long timestamp) {
-		this.timestamp = timestamp;
-	}
-	
-	@JsonProperty
-	public Long getVid() {
-		return vid;
-	}
-	
-	@JsonProperty
-	public void setVid(Long vid) {
-		this.vid = vid;
-	}
+
+    private Integer internalListId;
+    private Long timestamp;
+    private Long vid;
+
+    @JsonProperty("internal-list-id")
+    public Integer getInternalListId() {
+        return internalListId;
+    }
+
+    @JsonProperty("internal-list-id")
+    public void setInternalListId(final Integer internalListId) {
+        this.internalListId = internalListId;
+    }
+
+    @JsonProperty
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    @JsonProperty
+    public void setTimestamp(final Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @JsonProperty
+    public Long getVid() {
+        return vid;
+    }
+
+    @JsonProperty
+    public void setVid(final Long vid) {
+        this.vid = vid;
+    }
 }

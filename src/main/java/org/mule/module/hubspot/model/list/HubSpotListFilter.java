@@ -16,62 +16,59 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class HubSpotListFilter {
 
-	private String operator;
-	private String list;
-	private String value;
-	private String property;
-	private String type;
+    private String operator;
+    private String list;
+    private String value;
+    private String property;
+    private String type;
 
-	@JsonProperty
-	public String getList() {
-		return list;
-	}
-	
-	@JsonProperty
-	public void setList(String list) {
-		this.list = list;
-	}
+    @JsonProperty
+    public String getList() {
+        return list;
+    }
 
-	@JsonProperty
-	public String getOperator() {
-		return operator;
-	}
+    @JsonProperty
+    public void setList(final String list) {
+        this.list = list;
+    }
 
-	@JsonProperty
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
+    @JsonProperty
+    public String getOperator() {
+        return operator;
+    }
 
-	@JsonProperty
-	public String getValue() {
-		return value;
-	}
-	
-	@JsonProperty
-	public void setValue(String value) {
-		this.value = value;
-	}
+    @JsonProperty
+    public void setOperator(final String operator) {
+        this.operator = operator;
+    }
 
-	@JsonProperty
-	public String getProperty() {
-		return property;
-	}
+    @JsonProperty
+    public String getValue() {
+        return value;
+    }
 
-	@JsonProperty
-	public void setProperty(String property) {
-		this.property = property;
-	}
+    @JsonProperty
+    public void setValue(final String value) {
+        this.value = value;
+    }
 
-	@JsonProperty
-	public String getType() {
-		return type;
-	}
+    @JsonProperty
+    public String getProperty() {
+        return property;
+    }
 
-	
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	
-	
+    @JsonProperty
+    public void setProperty(final String property) {
+        this.property = property;
+    }
+
+    @JsonProperty
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
 }

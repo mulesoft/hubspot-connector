@@ -18,16 +18,15 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmailSubscription {
 
-	private List<EmailSubscriptionDefinitions> subscriptionDefinitions;
+    private List<EmailSubscriptionDefinitions> subscriptionDefinitions;
 
-	@JsonProperty
-	public List<EmailSubscriptionDefinitions> getSubscriptionDefinitions() {
-		return subscriptionDefinitions;
-	}
+    @JsonProperty
+    public List<EmailSubscriptionDefinitions> getSubscriptionDefinitions() {
+        return subscriptionDefinitions;
+    }
 
-	@JsonProperty
-	public void setSubscriptionDefinitions(
-			List<EmailSubscriptionDefinitions> subscriptionDefinitions) {
-		this.subscriptionDefinitions = subscriptionDefinitions;
-	}
+    @JsonProperty
+    public void setSubscriptionDefinitions(final List<EmailSubscriptionDefinitions> subscriptionDefinitions) {
+        this.subscriptionDefinitions = subscriptionDefinitions;
+    }
 }

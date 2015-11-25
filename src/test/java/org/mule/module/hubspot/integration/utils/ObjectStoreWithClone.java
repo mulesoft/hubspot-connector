@@ -15,81 +15,80 @@ import org.mule.api.store.ObjectDoesNotExistException;
 import org.mule.api.store.ObjectStore;
 import org.mule.api.store.ObjectStoreException;
 import org.mule.config.i18n.CoreMessages;
+import org.mule.config.i18n.MessageFactory;
 import org.mule.util.store.SimpleMemoryObjectStore;
 
 /**
- * This class uses the SimpleObjectStore class, but instead returning an instance of the object
- * contained in the store, it clones it and returns the new instance.
- * This is to simulate the behavior of the ObjectStore in CloudHub (stateless)
+ * This class uses the SimpleObjectStore class, but instead returning an instance of the object contained in the store, it clones it and returns the new instance. This is to
+ * simulate the behavior of the ObjectStore in CloudHub (stateless)
  *
  * @author gustavoalberola
  *
  */
 public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore<T> {
 
-	private SimpleMemoryObjectStore<T> objectStore;
+    private final SimpleMemoryObjectStore<T> objectStore;
 
-	public ObjectStoreWithClone() {
-		objectStore = new SimpleMemoryObjectStore<T>();
-	}
+    public ObjectStoreWithClone() {
+        objectStore = new SimpleMemoryObjectStore<T>();
+    }
 
-	protected final Log logger = LogFactory.getLog(getClass());
+    protected final Log logger = LogFactory.getLog(getClass());
 
-	@Override
+    @Override
     public boolean contains(final Serializable key) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
-		return objectStore.contains(key);
-	}
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
+        return objectStore.contains(key);
+    }
 
-	@Override
+    @Override
     public void store(final Serializable key, final T value) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
 
-		if (contains(key)) {
-			remove(key);
-		}
+        if (contains(key)) {
+            remove(key);
+        }
 
-		objectStore.store(key, value);
-	}
+        objectStore.store(key, value);
+    }
 
-	@Override
+    @Override
     @SuppressWarnings("unchecked")
-	public T retrieve(final Serializable key) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
+    public T retrieve(final Serializable key) throws ObjectStoreException {
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
 
-		if (contains(key) == false) {
-			String message = "Key does not exist: " + key;
-			throw new ObjectDoesNotExistException(CoreMessages.createStaticMessage(message));
-		}
+        if (contains(key) == false) {
+            final String message = "Key does not exist: " + key;
+            throw new ObjectDoesNotExistException(MessageFactory.createStaticMessage(message));
+        }
 
+        final T obj = objectStore.retrieve(key);
+        return obj != null ? (T) CloneGenerator.clone(obj) : null;
+    }
 
-		T obj = objectStore.retrieve(key);
-		return obj != null ? (T) CloneGenerator.clone(obj) : null;
-	}
-
-	@Override
+    @Override
     public T remove(final Serializable key) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
 
-		if (contains(key) == false) {
-			throw new ObjectDoesNotExistException();
-		}
+        if (contains(key) == false) {
+            throw new ObjectDoesNotExistException();
+        }
 
-		return objectStore.remove(key);
-	}
+        return objectStore.remove(key);
+    }
 
-	@Override
-	public boolean isPersistent() {
-		return false;
-	}
+    @Override
+    public boolean isPersistent() {
+        return false;
+    }
 
     @Override
     public void clear() throws ObjectStoreException {

@@ -17,16 +17,16 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class HubSpotListAddContactToList {
-	
-	private List<Integer> vids;
 
-	@JsonProperty
-	public List<Integer> getVids() {
-		return vids;
-	}
+    private List<Integer> vids;
 
-	@JsonProperty
-	public void setVids(List<Integer> vids) {
-		this.vids = vids;
-	}
+    @JsonProperty
+    public List<Integer> getVids() {
+        return vids;
+    }
+
+    @JsonProperty
+    public void setVids(final List<Integer> vids) {
+        this.vids = vids;
+    }
 }

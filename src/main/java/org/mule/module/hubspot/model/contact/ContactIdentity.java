@@ -15,37 +15,38 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ContactIdentity {
-	private String type;
-	private String value;
-	private Long timestamp;
-	
-	@JsonProperty
-	public String getType() {
-		return type;
-	}
-	
-	@JsonProperty
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	@JsonProperty
-	public String getValue() {
-		return value;
-	}
-	
-	@JsonProperty
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	@JsonProperty
-	public Long getTimestamp() {
-		return timestamp;
-	}
-	
-	@JsonProperty
-	public void setTimestamp(Long timestamp) {
-		this.timestamp = timestamp;
-	}
+
+    private String type;
+    private String value;
+    private Long timestamp;
+
+    @JsonProperty
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty
+    public void setType(final String type) {
+        this.type = type;
+    }
+
+    @JsonProperty
+    public String getValue() {
+        return value;
+    }
+
+    @JsonProperty
+    public void setValue(final String value) {
+        this.value = value;
+    }
+
+    @JsonProperty
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    @JsonProperty
+    public void setTimestamp(final Long timestamp) {
+        this.timestamp = timestamp;
+    }
 }
