@@ -1,12 +1,10 @@
 /**
+ * Copyright (c) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
  *
- * (c) 2003-2012 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.md file.
  */
-
 package org.mule.module.hubspot.integration.utils;
 
 import java.io.Serializable;
@@ -23,9 +21,9 @@ import org.mule.util.store.SimpleMemoryObjectStore;
  * This class uses the SimpleObjectStore class, but instead returning an instance of the object
  * contained in the store, it clones it and returns the new instance.
  * This is to simulate the behavior of the ObjectStore in CloudHub (stateless)
- * 
+ *
  * @author gustavoalberola
- * 
+ *
  */
 public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore<T> {
 
@@ -37,14 +35,16 @@ public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	public boolean contains(Serializable key) throws ObjectStoreException {
+	@Override
+    public boolean contains(final Serializable key) throws ObjectStoreException {
 		if (key == null) {
 			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
 		}
 		return objectStore.contains(key);
 	}
 
-	public void store(Serializable key, T value) throws ObjectStoreException {
+	@Override
+    public void store(final Serializable key, final T value) throws ObjectStoreException {
 		if (key == null) {
 			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
 		}
@@ -56,8 +56,9 @@ public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore
 		objectStore.store(key, value);
 	}
 
-	@SuppressWarnings("unchecked")
-	public T retrieve(Serializable key) throws ObjectStoreException {
+	@Override
+    @SuppressWarnings("unchecked")
+	public T retrieve(final Serializable key) throws ObjectStoreException {
 		if (key == null) {
 			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
 		}
@@ -66,13 +67,14 @@ public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore
 			String message = "Key does not exist: " + key;
 			throw new ObjectDoesNotExistException(CoreMessages.createStaticMessage(message));
 		}
-		
-		
+
+
 		T obj = objectStore.retrieve(key);
 		return obj != null ? (T) CloneGenerator.clone(obj) : null;
 	}
 
-	public T remove(Serializable key) throws ObjectStoreException {
+	@Override
+    public T remove(final Serializable key) throws ObjectStoreException {
 		if (key == null) {
 			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
 		}
@@ -88,4 +90,9 @@ public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore
 	public boolean isPersistent() {
 		return false;
 	}
+
+    @Override
+    public void clear() throws ObjectStoreException {
+        objectStore.clear();
+    }
 }
