@@ -1,7 +1,7 @@
 Hubspot Connector Change Log
 ============================
 
-## [2.7.1] - 2015-11-26
+## [3.0.0] - 2015-11-26
 - Added new operation getAllContactsUpdatedAfter that returns all the recent contacts filtered by a waterMark
 - Migrate connector to DevKit 3.7.2.
 
@@ -99,13 +99,13 @@ Hubspot Connector Change Log
 - Created POJOs structure. Does not affect Connector Process signatures neither configuration
 - Added custom Serializer/Deserializer for ContactProperties
 
-## [1.1] - 2023-02-05
+## [1.1] - 2013-02-05
 - Mass refactor. Does not affect Connector Process signatures neither configuration
 
-## [1.0.1] - 2023-02-05
+## [1.0.1] - 2013-02-05
 - Added new process Get Contacts in a List
 	
-## [1.0] - 2023-12-07
+## [1.0] - 2013-12-07
 - First Release. Alpha version
 - Implementation of the Contact API
 - OAuth2 implementation through authenticate and authenticateResponse methods (see demo for a example flow)
