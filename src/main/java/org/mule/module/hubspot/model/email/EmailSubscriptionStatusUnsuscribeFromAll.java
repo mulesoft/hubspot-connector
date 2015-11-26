@@ -1,12 +1,10 @@
 /**
+ * Copyright (c) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
  *
- * (c) 2003-2012 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.md file.
  */
-
 package org.mule.module.hubspot.model.email;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -18,15 +16,15 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmailSubscriptionStatusUnsuscribeFromAll {
 
-	private Boolean unsubscribeFromAll;
+    private Boolean unsubscribeFromAll;
 
-	@JsonProperty
-	public Boolean getUnsubscribeFromAll() {
-		return unsubscribeFromAll;
-	}
+    @JsonProperty
+    public Boolean getUnsubscribeFromAll() {
+        return unsubscribeFromAll;
+    }
 
-	@JsonProperty
-	public void setUnsubscribeFromAll(Boolean unsubscribeFromAll) {
-		this.unsubscribeFromAll = unsubscribeFromAll;
-	}
+    @JsonProperty
+    public void setUnsubscribeFromAll(final Boolean unsubscribeFromAll) {
+        this.unsubscribeFromAll = unsubscribeFromAll;
+    }
 }

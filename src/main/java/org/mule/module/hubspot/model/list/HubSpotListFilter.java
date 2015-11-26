@@ -1,12 +1,10 @@
 /**
+ * Copyright (c) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
  *
- * (c) 2003-2012 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.md file.
  */
-
 package org.mule.module.hubspot.model.list;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -18,62 +16,59 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class HubSpotListFilter {
 
-	private String operator;
-	private String list;
-	private String value;
-	private String property;
-	private String type;
+    private String operator;
+    private String list;
+    private String value;
+    private String property;
+    private String type;
 
-	@JsonProperty
-	public String getList() {
-		return list;
-	}
-	
-	@JsonProperty
-	public void setList(String list) {
-		this.list = list;
-	}
+    @JsonProperty
+    public String getList() {
+        return list;
+    }
 
-	@JsonProperty
-	public String getOperator() {
-		return operator;
-	}
+    @JsonProperty
+    public void setList(final String list) {
+        this.list = list;
+    }
 
-	@JsonProperty
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
+    @JsonProperty
+    public String getOperator() {
+        return operator;
+    }
 
-	@JsonProperty
-	public String getValue() {
-		return value;
-	}
-	
-	@JsonProperty
-	public void setValue(String value) {
-		this.value = value;
-	}
+    @JsonProperty
+    public void setOperator(final String operator) {
+        this.operator = operator;
+    }
 
-	@JsonProperty
-	public String getProperty() {
-		return property;
-	}
+    @JsonProperty
+    public String getValue() {
+        return value;
+    }
 
-	@JsonProperty
-	public void setProperty(String property) {
-		this.property = property;
-	}
+    @JsonProperty
+    public void setValue(final String value) {
+        this.value = value;
+    }
 
-	@JsonProperty
-	public String getType() {
-		return type;
-	}
+    @JsonProperty
+    public String getProperty() {
+        return property;
+    }
 
-	
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	
-	
+    @JsonProperty
+    public void setProperty(final String property) {
+        this.property = property;
+    }
+
+    @JsonProperty
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
 }

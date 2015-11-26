@@ -1,85 +1,83 @@
 /**
+ * Copyright (c) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
  *
- * (c) 2003-2012 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.md file.
  */
-
 package org.mule.module.hubspot.model;
 
 import java.io.Serializable;
 
 public class OAuthCredentials implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
 
-	private String clientId;
-	private String hubId;
-	private String userId;
-	private String accessToken;
-	private String expiresAt;
-	private String refreshToken;
-	private Boolean offlineScope;
-	
-	public OAuthCredentials() {
-		super();
-	}
+    private static final long serialVersionUID = 1L;
 
-	public String getUserId() {
-		return userId;
-	}
+    private String clientId;
+    private String hubId;
+    private String userId;
+    private String accessToken;
+    private String expiresAt;
+    private String refreshToken;
+    private Boolean offlineScope;
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public OAuthCredentials() {
+        super();
+    }
 
-	public String getAccessToken() {
-		return accessToken;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
+    public void setUserId(final String userId) {
+        this.userId = userId;
+    }
 
-	public String getRefreshToken() {
-		return refreshToken;
-	}
+    public String getAccessToken() {
+        return accessToken;
+    }
 
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
+    public void setAccessToken(final String accessToken) {
+        this.accessToken = accessToken;
+    }
 
-	public String getExpiresAt() {
-		return expiresAt;
-	}
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-	public void setExpiresAt(String expiresAt) {
-		this.expiresAt = expiresAt;
-	}
+    public void setRefreshToken(final String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
-	public String getClientId() {
-		return clientId;
-	}
+    public String getExpiresAt() {
+        return expiresAt;
+    }
 
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
+    public void setExpiresAt(final String expiresAt) {
+        this.expiresAt = expiresAt;
+    }
 
-	public String getHubId() {
-		return hubId;
-	}
+    public String getClientId() {
+        return clientId;
+    }
 
-	public void setHubId(String hubId) {
-		this.hubId = hubId;
-	}
+    public void setClientId(final String clientId) {
+        this.clientId = clientId;
+    }
 
-	public Boolean getOfflineScope() {
-		return offlineScope;
-	}
+    public String getHubId() {
+        return hubId;
+    }
 
-	public void setOfflineScope(Boolean offlineScope) {
-		this.offlineScope = offlineScope;
-	}
- }
+    public void setHubId(final String hubId) {
+        this.hubId = hubId;
+    }
+
+    public Boolean getOfflineScope() {
+        return offlineScope;
+    }
+
+    public void setOfflineScope(final Boolean offlineScope) {
+        this.offlineScope = offlineScope;
+    }
+}

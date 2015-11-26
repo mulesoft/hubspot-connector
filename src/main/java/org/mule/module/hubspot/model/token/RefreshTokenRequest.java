@@ -1,12 +1,10 @@
 /**
+ * Copyright (c) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
  *
- * (c) 2003-2012 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.md file.
  */
-
 package org.mule.module.hubspot.model.token;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -17,42 +15,43 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RefreshTokenRequest {
-	
-	private String refreshToken;
-	private String clientId;
-	private String grantType;
-	
-	@JsonProperty("refresh_token")
-	public String getRefreshToken() {
-		return refreshToken;
-	}
-	
-	@JsonProperty("refresh_token")
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
 
-	@JsonProperty("client_id")
-	public String getClientId() {
-		return clientId;
-	}
+    private String refreshToken;
+    private String clientId;
+    private String grantType;
 
-	@JsonProperty("client_id")
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
+    @JsonProperty("refresh_token")
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-	@JsonProperty("grant_type")
-	public String getGrantType() {
-		return grantType;
-	}
+    @JsonProperty("refresh_token")
+    public void setRefreshToken(final String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
-	@JsonProperty("grant_type")
-	public void setGrantType(String grantType) {
-		this.grantType = grantType;
-	}
-	
-	public String toString() {
-		return String.format("refresh_token=%s&client_id=%s&grant_type=%s", refreshToken, clientId, grantType);
-	}
+    @JsonProperty("client_id")
+    public String getClientId() {
+        return clientId;
+    }
+
+    @JsonProperty("client_id")
+    public void setClientId(final String clientId) {
+        this.clientId = clientId;
+    }
+
+    @JsonProperty("grant_type")
+    public String getGrantType() {
+        return grantType;
+    }
+
+    @JsonProperty("grant_type")
+    public void setGrantType(final String grantType) {
+        this.grantType = grantType;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("refresh_token=%s&client_id=%s&grant_type=%s", refreshToken, clientId, grantType);
+    }
 }

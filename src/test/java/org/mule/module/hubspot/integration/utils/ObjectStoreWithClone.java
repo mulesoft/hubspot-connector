@@ -1,12 +1,10 @@
 /**
+ * Copyright (c) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
  *
- * (c) 2003-2012 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.md file.
  */
-
 package org.mule.module.hubspot.integration.utils;
 
 import java.io.Serializable;
@@ -17,75 +15,83 @@ import org.mule.api.store.ObjectDoesNotExistException;
 import org.mule.api.store.ObjectStore;
 import org.mule.api.store.ObjectStoreException;
 import org.mule.config.i18n.CoreMessages;
+import org.mule.config.i18n.MessageFactory;
 import org.mule.util.store.SimpleMemoryObjectStore;
 
 /**
- * This class uses the SimpleObjectStore class, but instead returning an instance of the object
- * contained in the store, it clones it and returns the new instance.
- * This is to simulate the behavior of the ObjectStore in CloudHub (stateless)
- * 
+ * This class uses the SimpleObjectStore class, but instead returning an instance of the object contained in the store, it clones it and returns the new instance. This is to
+ * simulate the behavior of the ObjectStore in CloudHub (stateless)
+ *
  * @author gustavoalberola
- * 
+ *
  */
 public class ObjectStoreWithClone<T extends Serializable> implements ObjectStore<T> {
 
-	private SimpleMemoryObjectStore<T> objectStore;
+    private final SimpleMemoryObjectStore<T> objectStore;
 
-	public ObjectStoreWithClone() {
-		objectStore = new SimpleMemoryObjectStore<T>();
-	}
+    public ObjectStoreWithClone() {
+        objectStore = new SimpleMemoryObjectStore<T>();
+    }
 
-	protected final Log logger = LogFactory.getLog(getClass());
+    protected final Log logger = LogFactory.getLog(getClass());
 
-	public boolean contains(Serializable key) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
-		return objectStore.contains(key);
-	}
+    @Override
+    public boolean contains(final Serializable key) throws ObjectStoreException {
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
+        return objectStore.contains(key);
+    }
 
-	public void store(Serializable key, T value) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
+    @Override
+    public void store(final Serializable key, final T value) throws ObjectStoreException {
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
 
-		if (contains(key)) {
-			remove(key);
-		}
+        if (contains(key)) {
+            remove(key);
+        }
 
-		objectStore.store(key, value);
-	}
+        objectStore.store(key, value);
+    }
 
-	@SuppressWarnings("unchecked")
-	public T retrieve(Serializable key) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
+    @Override
+    @SuppressWarnings("unchecked")
+    public T retrieve(final Serializable key) throws ObjectStoreException {
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
 
-		if (contains(key) == false) {
-			String message = "Key does not exist: " + key;
-			throw new ObjectDoesNotExistException(CoreMessages.createStaticMessage(message));
-		}
-		
-		
-		T obj = objectStore.retrieve(key);
-		return obj != null ? (T) CloneGenerator.clone(obj) : null;
-	}
+        if (contains(key) == false) {
+            final String message = "Key does not exist: " + key;
+            throw new ObjectDoesNotExistException(MessageFactory.createStaticMessage(message));
+        }
 
-	public T remove(Serializable key) throws ObjectStoreException {
-		if (key == null) {
-			throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
-		}
+        final T obj = objectStore.retrieve(key);
+        return obj != null ? (T) CloneGenerator.clone(obj) : null;
+    }
 
-		if (contains(key) == false) {
-			throw new ObjectDoesNotExistException();
-		}
+    @Override
+    public T remove(final Serializable key) throws ObjectStoreException {
+        if (key == null) {
+            throw new ObjectStoreException(CoreMessages.objectIsNull("key"));
+        }
 
-		return objectStore.remove(key);
-	}
+        if (contains(key) == false) {
+            throw new ObjectDoesNotExistException();
+        }
 
-	@Override
-	public boolean isPersistent() {
-		return false;
-	}
+        return objectStore.remove(key);
+    }
+
+    @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
+    public void clear() throws ObjectStoreException {
+        objectStore.clear();
+    }
 }

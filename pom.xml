@@ -4,20 +4,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.module</groupId>
 	<artifactId>mule-module-hubspot</artifactId>
-	<version>2.7.1-SNAPSHOT</version>
+	<version>3.0.0</version>
 	<packaging>mule-module</packaging>
-	<name>HubSpot Cloud Connector</name>
+	<name>HubSpot Connector</name>
 
 	<parent>
 		<groupId>org.mule.tools.devkit</groupId>
 		<artifactId>mule-devkit-parent</artifactId>
-		<version>3.4.0</version>
+		<version>3.7.2</version>
 	</parent>
 
 	<properties>
-		<category>Standard</category>
+		<category>Community</category>
 		<licensePath>LICENSE.md</licensePath>
-		<mule.devkit.version>3.4.0</mule.devkit.version>
+		<mule.devkit.version>3.7.2</mule.devkit.version>
 		<devkit.studio.package.skip>false</devkit.studio.package.skip>
 	</properties>
 
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>com.mulesoft.modules</groupId>
 			<artifactId>mule-modules-utils</artifactId>
-			<version>1.1.4-SNAPSHOT</version>
+			<version>1.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -82,19 +82,14 @@
 		<repository>
 			<id>mulesoft-releases</id>
 			<name>MuleSoft Releases Repository</name>
-			<url>http://repository.mulesoft.org/releases/</url>
+			<url>http://repository-master.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
 		<repository>
 			<id>mulesoft-snapshots</id>
 			<name>MuleSoft Snapshots Repository</name>
-			<url>http://repository.mulesoft.org/snapshots/</url>
+			<url>http://repository-master.mulesoft.org/snapshots/</url>
 			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>codehaus-releases</id>
-			<name>CodeHaus Releases</name>
-			<url>http://repository.codehaus.org/</url>
 		</repository>
 	</repositories>
 </project>
