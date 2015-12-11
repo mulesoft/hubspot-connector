@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='file:/Users/marianoquintela/Documents/ClonedRepos/hubspot-connector/target/update-site/ - artifacts' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
+  <properties size='2'>
+    <property name='p2.timestamp' value='1449865294390'/>
+    <property name='p2.compressed' value='false'/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='2'>
+    <artifact classifier='org.eclipse.update.feature' id='org.mule.tooling.ui.extension.hubspot.3.7.0' version='3.0.0.201512111721'>
+      <properties size='4'>
+        <property name='artifact.size' value='15940'/>
+        <property name='download.size' value='15940'/>
+        <property name='download.md5' value='693b9bbeb9a1809289f99b4e53f5dbe1'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.mule.tooling.ui.contribution.hubspot.3.7.0' version='3.0.0.201512111721'>
+      <properties size='3'>
+        <property name='artifact.size' value='2523433'/>
+        <property name='download.size' value='2523433'/>
+        <property name='download.md5' value='2bd51804bf9f5d826f4a34d9bf5f36b5'/>
+      </properties>
+    </artifact>
+  </artifacts>
+</repository>

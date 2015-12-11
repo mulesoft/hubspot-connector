@@ -1,0 +1,21 @@
+{
+   "portalId":237093,
+   "listId":1,
+   "internalListId":1,
+   "createdAt":1359987108949,
+   "updatedAt":1359987108949,
+   "dynamic":false,
+   "deleted":false,
+   "name":"First Contact List",
+   "internal":false,
+   "filters":[
+
+   ],
+   "metaData":{
+      "size":1,
+      "lastSizeChangeAt":1360098576069,
+      "processing":"DONE",
+      "lastProcessingStateChangeAt":1359987108949,
+      "error":""
+   }
+}

@@ -1,0 +1,74 @@
+{
+   "lists":[
+      {
+         "portalId":237093,
+         "listId":1,
+         "internalListId":1,
+         "createdAt":1359987108949,
+         "updatedAt":1359987108949,
+         "dynamic":false,
+         "deleted":false,
+         "name":"First Contact List",
+         "internal":false,
+         "filters":[
+
+         ],
+         "metaData":{
+            "size":1,
+            "lastSizeChangeAt":1360098576069,
+            "processing":"DONE",
+            "lastProcessingStateChangeAt":1359987108949,
+            "error":""
+         }
+      },
+      {
+         "portalId":237093,
+         "listId":2,
+         "internalListId":2,
+         "createdAt":1360098355039,
+         "updatedAt":1360098664971,
+         "dynamic":true,
+         "deleted":false,
+         "name":"Im a cool list",
+         "internal":false,
+         "filters":[
+            [
+               {
+                  "operator":"IN_LIST",
+                  "list":1
+               }
+            ]
+         ],
+         "metaData":{
+            "size":1,
+            "lastSizeChangeAt":1360101104650,
+            "processing":"DONE",
+            "lastProcessingStateChangeAt":1360098437659,
+            "error":""
+         }
+      },
+      {
+         "portalId":237093,
+         "listId":3,
+         "internalListId":3,
+         "createdAt":1360098534588,
+         "updatedAt":1360098534588,
+         "dynamic":false,
+         "deleted":false,
+         "name":"Great list",
+         "internal":false,
+         "filters":[
+
+         ],
+         "metaData":{
+            "size":1,
+            "lastSizeChangeAt":1360098576700,
+            "processing":"DONE",
+            "lastProcessingStateChangeAt":1360098534588,
+            "error":""
+         }
+      }
+   ],
+   "offset":20,
+   "has-more":false
+}

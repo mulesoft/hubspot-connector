@@ -1,0 +1,2828 @@
+[
+   {
+      "name":"billing_address1",
+      "label":"Billing Street 1",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_address2",
+      "label":"Billing Street 2",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_company",
+      "label":"Billing Company",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_country",
+      "label":"Billing Country",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_first_name",
+      "label":"Billing First Name",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_last_name",
+      "label":"Billing Last Name",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_phone",
+      "label":"Billing Phone Number",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_postal_code",
+      "label":"Billing Postal code",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_state",
+      "label":"Billing State / Province",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_street1",
+      "label":"Billing Street 1",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_street2",
+      "label":"Billing Street 2",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"billing_town_city",
+      "label":"Billing Town / City",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"company",
+      "label":"Company Name",
+      "description":"A company's name",
+      "groupName":"companyinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":6,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_address1",
+      "label":"Delivery Street 1",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_address2",
+      "label":"Delivery Street 2",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_company",
+      "label":"Delivery Company",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_country",
+      "label":"Delivery Country",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_first_name",
+      "label":"Delivery First Name",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_last_name",
+      "label":"Delivery Last Name",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_phone",
+      "label":"Delivery Phone Number",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_postal_code",
+      "label":"Delivery Postal code",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_state",
+      "label":"Delivery State / Province",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_street1",
+      "label":"Delivery Street 1",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_street2",
+      "label":"Delivery Street 2",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"delivery_town_city",
+      "label":"Delivery Town / City",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"docalyticstrackeduserid",
+      "label":"Docalytics Tracked User ID",
+      "description":"The searchable ID for this tracked user in your Docalytics system",
+      "groupName":"docalyticsdata",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"firstname",
+      "label":"First Name",
+      "description":"A contact's first name",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":0,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_first_url",
+      "label":"First Page Seen",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":0,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_email_delivered",
+      "label":"Emails Delivered",
+      "description":"",
+      "groupName":"emailinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":0,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"i_wish_to_receive_nimble_newsletter",
+      "label":"I wish to receive Nimble newsletter",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"checkbox",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"I wish to receive Nimble newsletter",
+            "value":"I wish to receive Nimble newsletter",
+            "displayOrder":0
+         }
+      ]
+   },
+   {
+      "name":"klpz_status",
+      "label":"Klpz Status",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"No Klpz Status",
+            "value":"No Klpz Status",
+            "displayOrder":0
+         },
+         {
+            "label":"Send to Klpz",
+            "value":"Send to Klpz",
+            "displayOrder":1
+         },
+         {
+            "label":"Sent to Klpz",
+            "value":"Sent to Klpz",
+            "displayOrder":2
+         },
+         {
+            "label":"Klpz Success",
+            "value":"Klpz Success",
+            "displayOrder":3
+         },
+         {
+            "label":"Klpz Recycle",
+            "value":"Klpz Recycle",
+            "displayOrder":4
+         },
+         {
+            "label":"Klpz Remove",
+            "value":"Klpz Remove",
+            "displayOrder":5
+         }
+      ]
+   },
+   {
+      "name":"name",
+      "label":"Name",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"order_id",
+      "label":"Order ID",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"order_line_items",
+      "label":"Order Line Items",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"order_products",
+      "label":"Order Products",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"order_shipping_fees",
+      "label":"Order shipping fees",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"order_status",
+      "label":"Order Status",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"order_total",
+      "label":"Order Total",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"parentusername",
+      "label":"Parent User Name",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforcecampaignids",
+      "label":"Campaign IDs",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"significant_other",
+      "label":"Significant Other",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"test",
+      "label":"test",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"testname1",
+      "label":"Test Name",
+      "description":"The test name of the contact",
+      "groupName":"newcustomgroup",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"twitterhandle",
+      "label":"Twitter Username",
+      "description":"A contact's twitter information",
+      "groupName":"socialmediainformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":8,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"type",
+      "label":"type",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"uid",
+      "label":"User ID",
+      "description":"Used by Ubercart order form submissions",
+      "groupName":"ubercartorder",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":0,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"docalyticsleadactivityurl",
+      "label":"View Docalytics Lead Engagement",
+      "description":"View the engagement and activity for this lead in your Docalytics system",
+      "groupName":"docalyticsdata",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":1,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"followercount",
+      "label":"Follower Count",
+      "description":"The number of followers a contact has",
+      "groupName":"socialmediainformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":1,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_last_url",
+      "label":"Last Page Seen",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":1,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_email_open",
+      "label":"Emails Opened",
+      "description":"",
+      "groupName":"emailinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":1,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"lastname",
+      "label":"Last Name",
+      "description":"A contact's last name",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":1,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"product1",
+      "label":"Product1",
+      "description":"",
+      "groupName":"newcustomgroup",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":1,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforceleadid",
+      "label":"Lead ID",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":1,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"website",
+      "label":"Website URL",
+      "description":"A company's website",
+      "groupName":"companyinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":1,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":7,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"email",
+      "label":"Email",
+      "description":"A contact's email address",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":2,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":3,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_num_page_views",
+      "label":"Number of Pageviews",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":2,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_email_click",
+      "label":"Emails Clicked",
+      "description":"",
+      "groupName":"emailinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":2,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"leadstatus",
+      "label":"Status",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":true,
+      "displayOrder":2,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"Contacted",
+            "value":"Contacted",
+            "displayOrder":0
+         },
+         {
+            "label":"Open",
+            "value":"Open",
+            "displayOrder":1
+         },
+         {
+            "label":"Qualified",
+            "value":"Qualified",
+            "displayOrder":2
+         },
+         {
+            "label":"Unqualified",
+            "value":"Unqualified",
+            "displayOrder":3
+         },
+         {
+            "label":"Open - Not Contacted",
+            "value":"Open - Not Contacted",
+            "displayOrder":-1
+         }
+      ]
+   },
+   {
+      "name":"numemployees",
+      "label":"Number of Employees",
+      "description":"The number of company employees",
+      "groupName":"companyinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":true,
+      "displayOrder":2,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"1-5",
+            "value":"1-5",
+            "displayOrder":0
+         },
+         {
+            "label":"5-25",
+            "value":"5-25",
+            "displayOrder":1
+         },
+         {
+            "label":"25-50",
+            "value":"25-50",
+            "displayOrder":2
+         },
+         {
+            "label":"50-100",
+            "value":"50-100",
+            "displayOrder":3
+         },
+         {
+            "label":"100-500",
+            "value":"100-500",
+            "displayOrder":4
+         },
+         {
+            "label":"500-1000",
+            "value":"500-1000",
+            "displayOrder":5
+         },
+         {
+            "label":"1000+",
+            "value":"1000+",
+            "displayOrder":6
+         }
+      ]
+   },
+   {
+      "name":"twitterprofilephoto",
+      "label":"Twitter Profile Photo",
+      "description":"A contact's twitter profile photo",
+      "groupName":"socialmediainformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":2,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"annualrevenue",
+      "label":"Annual Revenue",
+      "description":"Annual company revenue",
+      "groupName":"companyinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":3,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"firstconversionpagename",
+      "label":"First Conversion Page Name",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":3,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_num_visits",
+      "label":"Number of Visits",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":3,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_email_bounce",
+      "label":"Emails Bounced",
+      "description":"",
+      "groupName":"emailinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":3,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_social_last_engagement",
+      "label":"Most Recent Social Click",
+      "description":"Date of most recent social engagement",
+      "groupName":"socialmediainformation",
+      "type":"datetime",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":3,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforcecontactid",
+      "label":"Contact ID",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":3,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"grade",
+      "label":"Grade",
+      "description":"Custom Contact Grade",
+      "groupName":"contactinformation",
+      "type":"number",
+      "fieldType":"number",
+      "formField":true,
+      "displayOrder":4,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_first_timestamp",
+      "label":"Time First Seen",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"datetime",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":4,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_social_twitter_clicks",
+      "label":"Twitter Clicks",
+      "description":"The number clicks on links shared on Twitter",
+      "groupName":"socialmediainformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":4,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"industry",
+      "label":"Industry",
+      "description":"A company's industry",
+      "groupName":"companyinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":4,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforceopportunitystage",
+      "label":"Opportunity Stage",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":4,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"another_custom",
+      "label":"New Custom Property 2",
+      "description":"A new custom property again",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":5,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_last_timestamp",
+      "label":"Time Last Seen",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"datetime",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":5,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_social_facebook_clicks",
+      "label":"Facebook Clicks",
+      "description":"The number clicks on links shared on Facebook",
+      "groupName":"socialmediainformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":5,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"ns_campaignid",
+      "label":"NS_CampaignId",
+      "description":"",
+      "groupName":"companyinformation",
+      "type":"number",
+      "fieldType":"number",
+      "formField":true,
+      "displayOrder":5,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"numberofemployees",
+      "label":"Employees",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":5,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_source",
+      "label":"Original Source Type",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"enumeration",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":6,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"Organic Search",
+            "value":"ORGANIC_SEARCH",
+            "displayOrder":0
+         },
+         {
+            "label":"Paid Search",
+            "value":"PAID_SEARCH",
+            "displayOrder":1
+         },
+         {
+            "label":"Email Marketing",
+            "value":"EMAIL_MARKETING",
+            "displayOrder":2
+         },
+         {
+            "label":"Social Media",
+            "value":"SOCIAL_MEDIA",
+            "displayOrder":3
+         },
+         {
+            "label":"Referrals",
+            "value":"REFERRALS",
+            "displayOrder":4
+         },
+         {
+            "label":"Other Campaigns",
+            "value":"OTHER_CAMPAIGNS",
+            "displayOrder":5
+         },
+         {
+            "label":"Direct Traffic",
+            "value":"DIRECT_TRAFFIC",
+            "displayOrder":6
+         },
+         {
+            "label":"Offline Sources",
+            "value":"OFFLINE",
+            "displayOrder":7
+         }
+      ]
+   },
+   {
+      "name":"hs_social_linkedin_clicks",
+      "label":"LinkedIn Clicks",
+      "description":"The number clicks on links shared on LinkedIn",
+      "groupName":"socialmediainformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":6,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforcelastsynctime",
+      "label":"Last Salesforce Sync Time",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"datetime",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":6,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salutation",
+      "label":"Salutation",
+      "description":"The title used to address a contact",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":6,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_source_data_1",
+      "label":"Original Source Data 1",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":7,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"phone",
+      "label":"Phone Number",
+      "description":"A contact's primary phone number",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":7,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":4,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforceowneremail",
+      "label":"Owner Email",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":7,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"fax",
+      "label":"Fax Number",
+      "description":"A contact's primary fax number",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":8,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_source_data_2",
+      "label":"Original Source Data 2",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":8,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforceownerid",
+      "label":"Owner ID",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":8,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"blarggggggg",
+      "label":"Blarggggg Fu",
+      "description":"A new blargggg for you",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":9,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_first_referrer",
+      "label":"First Referring Site",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":9,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"salesforceownername",
+      "label":"Owner Name",
+      "description":"",
+      "groupName":"salesforceinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":9,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hs_analytics_last_referrer",
+      "label":"Last Referring Site",
+      "description":"",
+      "groupName":"analyticsinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":10,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"newcustomproperty",
+      "label":"A New Custom Property",
+      "description":"A new property for you",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":10,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"address",
+      "label":"Street Address",
+      "description":"A contact's street address, including apartment or unit #",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":11,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"city",
+      "label":"City",
+      "description":"A contact's city of residence",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":12,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"state",
+      "label":"State/Region",
+      "description":"A contact's state of residence",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":13,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"zip",
+      "label":"Postal Code",
+      "description":"A contact's zip code",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":14,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"country",
+      "label":"Country",
+      "description":"A contact's country of residence",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":15,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"jobtitle",
+      "label":"Job Title",
+      "description":"A contact's job title",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":16,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"message",
+      "label":"Notes",
+      "description":"A field for any additional user input or comments",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"textarea",
+      "formField":true,
+      "displayOrder":17,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"closedate",
+      "label":"Close Date",
+      "description":"The date that a contact became a customer",
+      "groupName":"contactinformation",
+      "type":"datetime",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":18,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"lifecyclestage",
+      "label":"Lifecycle Stage",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"radio",
+      "formField":true,
+      "displayOrder":19,
+      "readOnlyValue":false,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"Subscriber",
+            "value":"subscriber",
+            "displayOrder":0
+         },
+         {
+            "label":"Lead",
+            "value":"lead",
+            "displayOrder":1
+         },
+         {
+            "label":"Marketing Qualified Lead",
+            "value":"marketingqualifiedlead",
+            "displayOrder":2
+         },
+         {
+            "label":"Sales Qualified Lead",
+            "value":"salesqualifiedlead",
+            "displayOrder":3
+         },
+         {
+            "label":"Opportunity",
+            "value":"opportunity",
+            "displayOrder":4
+         },
+         {
+            "label":"Customer",
+            "value":"customer",
+            "displayOrder":5
+         },
+         {
+            "label":"Evangelist",
+            "value":"evangelist",
+            "displayOrder":6
+         },
+         {
+            "label":"Other",
+            "value":"other",
+            "displayOrder":7
+         }
+      ]
+   },
+   {
+      "name":"new_custom",
+      "label":"New Custom Property",
+      "description":"A new custom property",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":20,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"ipaddress",
+      "label":"IP Address",
+      "description":"A contact's IP Address",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":21,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"createdate",
+      "label":"Create Date",
+      "description":"The date that a contact entered the system",
+      "groupName":"contactinformation",
+      "type":"datetime",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":22,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":true,
+      "favoritedOrder":5,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"hubspotscore",
+      "label":"HubSpot Score",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"number",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":23,
+      "readOnlyValue":true,
+      "readOnlyDefinition":true,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":true,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"leadsource",
+      "label":"Lead Source",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":true,
+      "displayOrder":24,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"OnlineStore",
+            "value":"OnlineStore",
+            "displayOrder":0
+         },
+         {
+            "label":"6 Tips Strategies",
+            "value":"6 Tips Strategies",
+            "displayOrder":1
+         },
+         {
+            "label":"Web Download",
+            "value":"Web Download",
+            "displayOrder":2
+         }
+      ]
+   },
+   {
+      "name":"created_from_learning_studio",
+      "label":"Created From Learning Studio",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"checkbox",
+      "formField":false,
+      "displayOrder":25,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"system_generated_password",
+      "label":"System Generated Password",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":26,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"test_user",
+      "label":"Test User",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"checkbox",
+      "formField":false,
+      "displayOrder":27,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"test_date",
+      "label":"Test Date",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"datetime",
+      "fieldType":"date",
+      "formField":true,
+      "displayOrder":28,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"requested_live_demo_date",
+      "label":"Requested Live Demo Date",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"datetime",
+      "fieldType":"date",
+      "formField":true,
+      "displayOrder":29,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"requested_live_demo_time",
+      "label":"Requested Live Demo Time",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":30,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"requested_live_demo_timezone",
+      "label":"Requested Live Demo Timezone",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":31,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"is_learner",
+      "label":"Is Learner",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":32,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_system_admin",
+      "label":"Is System Admin",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"radio",
+      "formField":false,
+      "displayOrder":33,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_trial_course_builder",
+      "label":"Is Trial Course Builder",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":34,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_user_group_creator",
+      "label":"Is User Group Creator",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"radio",
+      "formField":false,
+      "displayOrder":35,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_user_group_manager",
+      "label":"Is User Group Manager",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"radio",
+      "formField":false,
+      "displayOrder":36,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_activation_code_creator",
+      "label":"Is Activation Code Creator",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"radio",
+      "formField":false,
+      "displayOrder":37,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_activation_code_manager",
+      "label":"Is Activation Code Manager",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":38,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_author",
+      "label":"Is Author",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":39,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_course_reseller",
+      "label":"Is Course Reseller",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":40,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_payment_entity",
+      "label":"Is Payment Entity",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":41,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_platform_reseller",
+      "label":"Is Platform Reseller",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":42,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_pro_course_builder",
+      "label":"Is Pro Course builder",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":43,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"is_store_owner",
+      "label":"Is Store Owner",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"enumeration",
+      "fieldType":"select",
+      "formField":false,
+      "displayOrder":44,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+         {
+            "label":"True",
+            "value":"true",
+            "displayOrder":0
+         },
+         {
+            "label":"False",
+            "value":"false",
+            "displayOrder":1
+         }
+      ]
+   },
+   {
+      "name":"xyzcustomproperty",
+      "label":"A New XYZ Custom Property",
+      "description":"A new property for you",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":45,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"optin",
+      "label":"詳細を知りたいですか？",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":46,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"field_checkboxes_8",
+      "label":"プライバシーポリシー",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":false,
+      "displayOrder":47,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"comments",
+      "label":"Comments",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":48,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"how_did_you_hear_about_us",
+      "label":"How did you hear about us?",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":49,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"title",
+      "label":"Title",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":50,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   },
+   {
+      "name":"newsletter_receive",
+      "label":"newsletter receive",
+      "description":"",
+      "groupName":"contactinformation",
+      "type":"string",
+      "fieldType":"text",
+      "formField":true,
+      "displayOrder":51,
+      "readOnlyValue":false,
+      "readOnlyDefinition":false,
+      "hidden":false,
+      "mutableDefinitionNotDeletable":false,
+      "favorited":false,
+      "favoritedOrder":-1,
+      "options":[
+
+      ]
+   }
+]
