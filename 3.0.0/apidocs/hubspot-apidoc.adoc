@@ -1,0 +1,2005 @@
+
+:toc:               left
+:toc-title:         Connector Summary
+:toclevels:         2
+:last-update-label!:
+:docinfo:
+:source-highlighter: coderay
+:icons: font
+
+
+= HubSpot Connector API Reference
+
++++
+HubSpot all-in-one marketing software helps more than 8,000 companies in 56 countries attract leads and convert them into customers. A pioneer in inbound marketing, HubSpot aims
+to help its customers make marketing that people actually love.
+<p>
+The connector is using the version "v1" of the HubSpot API.
+<p>
+The documentation of the API can be found in this <a href="http://developers.hubspot.com/docs">link</a>
+<p>
+The main flow of the connector is "authentication" ---> HubSpot Login Page ----> "authenticationResponse" ----> Any other process of the connector
++++
+
+*Additional Info*
+[width="50", cols=".<60%,^40%" ]
+|======================
+| Requires Mule Enterprise License |  No icon:remove[]  {nbsp}
+| Requires Entitlement |  No icon:remove[]  {nbsp}
+| Mule Version | 3.7.0 or higher
+|======================
+
+
+== Configs
+
+
+
+== Processors
+
+---
+
+=== Authenticate
+`<hubspot:authenticate>`
+
+
+
+
++++
+/** This process generates the URL required to authenticate against the service.
+<p>
+<b>Important:</b> in order for the full authentication to work, the callbackUrl in the configuration must be pointing to another flow that has the authenticateResponse
+process to handle the reception of the token
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:authenticate
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:authenticate userId="userId" />
+----
+
+    
+                        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This user identifier it is the one that will we used from now on to the successive calls to the process of this connector for this user+++ |  | *x*{nbsp}
+
+
+
+
+| 
+callbackUrl  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Use this callback instead the one in the configuration+++ |  | {nbsp}
+
+
+
+
+| 
+clientId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Use this clientId instead the one in the configuration+++ |  | {nbsp}
+
+
+
+
+| 
+hubId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Use this hubId instead the one in the configuration+++ |  | {nbsp}
+
+
+
+
+| 
+scope  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Use this scope instead the one in the configuration+++ |  | {nbsp}
+
+
+
+
+| 
+headers  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Map.html">Map</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html">Object</a>>+++ | +++This are added implicitly by Studio. The headers of the HTTP inbound, so it can establish a redirect code (302)+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The URL where the user will be redirected+++
+|======================
+
+
+
+
+---
+
+=== Authenticate response
+`<hubspot:authenticate-response>`
+
+
+
+
++++
+This process is the one that handles the response of the authentication process. It should be inside an HTTP inbound which url must be the same that the one pointed by the
+callbackUrl in the configuration in order to get the access_token provided by the service.
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:authenticate-response
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:authenticate-response inputRequest="#[payload]" />
+----
+
+    
+    
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+inputRequest  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The input parameters that came with the response to the authenticate process+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID that you provided in the call to the authenticate process and that is the one that the user is going to provide in order than the connector use their+++
+|======================
+
+
+
+
+---
+
+=== Has user access token
+`<hubspot:has-user-access-token>`
+
+
+
+
++++
+Check if the User has an Access Token. This indicate that this User can start calling the process of the connector without any problems
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:has-user-access-token
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:has-user-access-token userId="userId"  />
+----
+
+    
+    
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++boolean+++ | +++A boolean that indicates if the user has an access token. Id does not check if the token is or not expired+++
+|======================
+
+
+
+
+---
+
+=== Get all contacts
+`<hubspot:get-all-contacts>`
+
+
+
+
++++
+For a given portal, return all contacts that have been created in the portal. A paginated list of contacts will be returned to you, with a maximum of 100 contacts per page.
+<p>
+API Link: <a href="http://developers.hubspot.com/docs/methods/contacts/get_contacts">http://developers.hubspot.com/docs/methods/contacts/get_contacts</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-all-contacts
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-all-contacts userId="userId" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.+++ |  | {nbsp}
+
+
+
+
+| 
+contactOffset  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter will offset the contacts returned to you, based on the unique ID of the contacts in a given portal. Contact unique IDs are assigned by the order that they are created in the system. This means for instance, if you specify a vidOffset offset of 5, and you have 20 contacts in the portal you're working in, the contacts with IDs 6-20 will be returned to you.+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactList.html">ContactList</a>+++ | +++A ContactList containing all the contacts+++
+|======================
+
+
+
+
+---
+
+=== Get recent contacts
+`<hubspot:get-recent-contacts>`
+
+
+
+
++++
+For a given portal, return all contacts that have been recently updated or created. A paginated list of contacts will be returned to you, with a maximum of 100 contacts per
+page, as specified by the "count" parameter.
+<p>
+API link: <a
+href="http://developers.hubspot.com/docs/methods/contacts/get_recently_updated_contacts">http://developers.hubspot.com/docs/methods/contacts/get_recently_updated_contacts
+</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-recent-contacts
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-recent-contacts userId="userId" />
+----
+
+    
+                
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.+++ |  | {nbsp}
+
+
+
+
+| 
+timeOffset  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Used in conjunction with the vidOffset paramter to page through the recent contacts. Every call to this endpoint will return a time-offset value. This value is used in the timeOffset parameter of the next call to get the next page of contacts.+++ |  | {nbsp}
+
+
+
+
+| 
+contactOffset  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Used in conjunction with the timeOffset paramter to page through the recent contacts. Every call to this endpoint will return a vid-offset value. This value is used in the vidOffset parameter of the next call to get the next page of contacts.+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactList.html">ContactList</a>+++ | +++A ContactList containing all the contacts+++
+|======================
+
+
+
+
+---
+
+=== Get recent contacts paginated
+`<hubspot:get-recent-contacts-paginated>`
+
+
+
+
++++
+This operation masks getRecentContacts with an Iterator that handles the pagination.
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-recent-contacts-paginated
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-recent-contacts-paginated config-ref="HubSpot" count="20" userId="1" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Collection.html">Collection</a><<a href="javadocs/org/mule/module/hubspot/model/contact/Contact.html">Contact</a>>+++ | +++A Collection of Contact that is Iterable and handles pagination in the background+++
+|======================
+
+
+
+
+---
+
+=== Get all contacts updated after
+`<hubspot:get-all-contacts-updated-after>`
+
+
+
+
++++
+This operation masks getRecentContacts recursively filtering all the contacts that were updated after the waterMark
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-all-contacts-updated-after
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-all-contacts-updated-after userId="userId" waterMark="1261651651" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.+++ |  | {nbsp}
+
+
+
+
+| 
+waterMark  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Long.html">Long</a>+++ | +++The waterMark used to filter the Contacts that were updated after that waterMark+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="javadocs/org/mule/module/hubspot/model/contact/Contact.html">Contact</a>>+++ | +++A Collection of Contact that is Iterable and handles pagination in the background+++
+|======================
+
+
+
+
+---
+
+=== Get contact by id
+`<hubspot:get-contact-by-id>`
+
+
+
+
++++
+For a given portal, return information about a single contact by its ID. The contact's unique ID's is stored in a field called 'vid' which stands for 'visitor ID'. This
+method will also return you much of the HubSpot lead "intelligence" that you may be accustomed to getting from the leads API, as properties in this new API. More of this
+intelligence will be available as time passes, but this call is where you can expect to find it.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/get_contact">http://developers.hubspot.com/docs/methods/contacts/get_contact</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contact-by-id
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contact-by-id  userId="userId" contactId="contactId" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Unique identifier for a particular contact. In HubSpot's contact system, contact ID's are called "vid".+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/Contact.html">Contact</a>+++ | +++The Contact representation+++
+|======================
+
+
+
+
+---
+
+=== Get contact by email
+`<hubspot:get-contact-by-email>`
+
+
+
+
++++
+For a given portal, return information about a single contact by its email address.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/get_contact_by_email">http://developers.hubspot.com/docs/methods/contacts/get_contact_by_email</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contact-by-email
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contact-by-email  userId="userId" contactEmail="contactEmail" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactEmail  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The email address for the contact that you're searching for.+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/Contact.html">Contact</a>+++ | +++The Contact representation+++
+|======================
+
+
+
+
+---
+
+=== Get contact by user token
+`<hubspot:get-contact-by-user-token>`
+
+
+
+
++++
+For a given portal, return information about a single contact by its User Token (hubspotutk)
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/get_contact_by_utk">http://developers.hubspot.com/docs/methods/contacts/get_contact_by_utk</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contact-by-user-token
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contact-by-user-token  userId="userId" contactUserToken="contactToken" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactUserToken  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The user token (HubSpot cookie) for the contact that you're searching for.+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/Contact.html">Contact</a>+++ | +++The Contact representation+++
+|======================
+
+
+
+
+---
+
+=== Get contacts by query
+`<hubspot:get-contacts-by-query>`
+
+
+
+
++++
+For a given portal, return contacts and some data associated with those contacts by the contact's email address or name. Please note that you should expect this method to
+only return a small subset of data about the contact. One piece of data that the method will return is the contact ID (vid) that you can then use to look up much more data
+about that particular contact by its ID.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/search_contacts">http://developers.hubspot.com/docs/methods/contacts/search_contacts</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contacts-by-query
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contacts-by-query  userId="userId" query="query" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+query  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The search term for what you're searching for. You can use all of a word or just parts of a word as well. For example, if you we're searching for contacts with "hubspot" in their name or email, searching for "hub" would also return contacts with "hubspot" in their email address.+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactQuery.html">ContactQuery</a>+++ | +++A ContactQuery with the contacts+++
+|======================
+
+
+
+
+---
+
+=== Delete contact
+`<hubspot:delete-contact>`
+
+
+
+
++++
+Archive an existing contact from a particular HubSpot portal. Archiving will not hard delete a contact from a portal, but will remove that contact from the HubSpot user
+interface.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/delete_contact">http://developers.hubspot.com/docs/methods/contacts/delete_contact</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:delete-contact
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:delete-contact  userId="userId" contactId="contactId" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++You must pass the Contact's ID that you're archiving in the request URL.+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactDeleted.html">ContactDeleted</a>+++ | +++A ContactDeleted representing the data when the contact is deleted+++
+|======================
+
+
+
+
+---
+
+=== Update contact
+`<hubspot:update-contact>`
+
+
+
+
++++
+Update an existing contact in HubSpot. This method lets you update one of many fields of a contact in HubSpot.
+<p>
+To update a contact, you should make an HTTP POST call to this endpoint with some JSON in the request payload. This JSON should contain properties from the contact that you
+want to add to or update. See the sample JSON below for an example of this snippet of JSON.
+<p>
+If you are trying to close a contact into a customer via the API, you should be updating the 'lifecyclestage' property and setting the value of this property to 'customer'.
+<p>
+Remember, if a property doesn't yet exist, you can create a new custom property through the API by using the 'Create Property' method.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/update_contact">http://developers.hubspot.com/docs/methods/contacts/update_contact</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:update-contact
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:update-contact  userId="userId" contactId="contactId">
+        <hubspot:contact-properties email="user@mulesoft.com" />
+    </hubspot:update-contact>
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++You must pass the Contact's ID that you're updating in the request URL+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactProperties  | +++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactProperties.html">ContactProperties</a>+++ | +++The properties of the Contact that will have the one to be created+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactProperties.html">ContactProperties</a>+++ | +++The ContactProperties that was provided as input param+++
+|======================
+
+
+
+
+---
+
+=== Create contact
+`<hubspot:create-contact>`
+
+
+
+
++++
+Create a new contact in HubSpot with a simple HTTP POST to the Contacts API.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/create_contact">http://developers.hubspot.com/docs/methods/contacts/create_contact</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:create-contact
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:create-contact  userId="userId">
+        <hubspot:contact-properties email="user@mulesoft.com" />
+    </hubspot:create-contact>
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactProperties  | +++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactProperties.html">ContactProperties</a>+++ | +++The properties that want to modify of an existing contact+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/Contact.html">Contact</a>+++ | +++The Contact newly created+++
+|======================
+
+
+
+
+---
+
+=== Get contact statistics
+`<hubspot:get-contact-statistics>`
+
+
+
+
++++
+For a given portal, return statistics about that portal's contacts.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/contacts/get_contact_statistics">http://developers.hubspot.com/docs/methods/contacts/get_contact_statistics</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contact-statistics
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contact-statistics  userId="userId" />
+----
+
+    
+    
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactStatistics.html">ContactStatistics</a>+++ | +++A ContactStatistics representation of the response of statistics+++
+|======================
+
+
+
+
+---
+
+=== Get contacts lists
+`<hubspot:get-contacts-lists>`
+
+
+
+
++++
+For a given portal, return a set of contact lists that you specify with the count parameter. By default, we will only return up to 20 lists to you at a time.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/lists/get_lists">http://developers.hubspot.com/docs/methods/lists/get_lists</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contacts-lists
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contacts-lists  userId="userId" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++An integer that represents the number of lists that you want returned to your call. By default, this call will return 20 lists to you. If you want more or different list returned to you, you'll want to use the "offset" parameter.+++ |  | {nbsp}
+
+
+
+
+| 
+offset  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++An integer that represents where to start your list pull from. For instance, if you want to return numbered lists: 50-60, your offset should be "50" and your count parameter (seen above) should be 10. You should also note that the returned JSON (seen below) includes a "has-more" field, which lets you know if there are more lists that you can pull. If "has-more" is true, you can use this offset parameter to pull lists that weren't in your initial call.+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/list/HubSpotListLists.html">HubSpotListLists</a>+++ | +++A HubSpotListLists with the lists+++
+|======================
+
+
+
+
+---
+
+=== Get contact list by id
+`<hubspot:get-contact-list-by-id>`
+
+
+
+
++++
+For a given portal, return a contact list by its unique ID.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/lists/get_list">http://developers.hubspot.com/docs/methods/lists/get_list</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contact-list-by-id
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contact-list-by-id  userId="userId" listId="listId" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+listId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Unique identifier for the list that you're looking for.+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/list/HubSpotList.html">HubSpotList</a>+++ | +++A HubSpotList with the list+++
+|======================
+
+
+
+
+---
+
+=== Get dynamic contact lists
+`<hubspot:get-dynamic-contact-lists>`
+
+
+
+
++++
+For a given portal, return a set of dynamic contact lists that you specify with the count parameter.
+<p>
+Dynamic lists are lists that can only be edited by the contacts app - they are meant to update themselves when new contacts are created or are updated, meaning that you
+can't manually add contacts to dynamic lists.
+<p>
+By default, we will only return 20 lists to you via this API call.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/lists/get_dynamic_lists">http://developers.hubspot.com/docs/methods/lists/get_dynamic_lists</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-dynamic-contact-lists
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-dynamic-contact-lists  userId="userId" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++An integer that represents the number of lists that you want returned to your call. By default, this call will return 20 lists to you. If you want more or different list returned to you, you'll want to use the "offset" parameter.+++ |  | {nbsp}
+
+
+
+
+| 
+offset  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++An integer that represents where to start your list pull from. For instance, if you want to return numbered lists: 50-60, your offset should be "50" and your count parameter (seen above) should be 10. You should also note that the returned JSON (seen below) includes a "has-more" field, which lets you know if there are more lists that you can pull. If "has-more" is true, you can use this offset parameter to pull lists that weren't in your initial call.+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/list/HubSpotListLists.html">HubSpotListLists</a>+++ | +++A HubSpotListLists with the lists+++
+|======================
+
+
+
+
+---
+
+=== Get contacts in a list
+`<hubspot:get-contacts-in-a-list>`
+
+
+
+
++++
+For a given portal and a given list, identified by its unique ID, return a list of contacts that are in that list.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/lists/get_list_contacts">http://developers.hubspot.com/docs/methods/lists/get_list_contacts</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-contacts-in-a-list
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-contacts-in-a-list  userId="userId" listId="listId" />
+----
+
+    
+                    
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+listId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++Unique identifier for the list that you're looking for.+++ |  | *x*{nbsp}
+
+
+
+
+| 
+count  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter lets you specify the amount of contacts to return in your API call. The default for this parameter (if it isn't specified) is 20 contacts. The maximum amount of contacts you can have returned to you via this parameter is 100.+++ |  | {nbsp}
+
+
+
+
+| 
+property  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++If you include the "property" parameter, then the properties in the "contact" object in the returned data will only include the property or properties that you request.+++ |  | {nbsp}
+
+
+
+
+| 
+offset  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++This parameter will offset the contacts returned to you, based on the unique ID of the contacts in a given portal. Contact unique IDs are assigned by the order that they are created in the system. This means for instance, if you specify a vidOffset offset of 5, and you have 20 contacts in the portal you're working in, the contacts with IDs 6-20 will be returned to you.+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contact/ContactList.html">ContactList</a>+++ | +++A ContactList whit the contact list+++
+|======================
+
+
+
+
+---
+
+=== Get email subscriptions
+`<hubspot:get-email-subscriptions>`
+
+
+
+
++++
+For a given portal, return all email subscription types that have been created in the portal.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/email/get_subscriptions">http://developers.hubspot.com/docs/methods/email/get_subscriptions</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-email-subscriptions
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-email-subscriptions userId="userId" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+hubId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++(portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/email/EmailSubscription.html">EmailSubscription</a>+++ | +++A EmailSubscription with the subscriptions data+++
+|======================
+
+
+
+
+---
+
+=== Get email subscription status
+`<hubspot:get-email-subscription-status>`
+
+
+
+
++++
+For a given portal, return all email subscription information for the given email address and portal.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/email/get_status">http://developers.hubspot.com/docs/methods/email/get_status</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-email-subscription-status
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-email-subscription-status userId="userId" email="email" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+hubId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++(portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)+++ |  | {nbsp}
+
+
+
+
+| 
+email  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The email to check the current status subscription+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/email/EmailSubscriptionStatus.html">EmailSubscriptionStatus</a>+++ | +++A EmailSubscriptionStatus with the status subscription+++
+|======================
+
+
+
+
+---
+
+=== Update email subscription status
+`<hubspot:update-email-subscription-status>`
+
+
+
+
++++
+For a given email address and portal, update the email type subscription status. <b>NOTE: it is only possible to opt email addresses OUT of subscription and there is NO UNDO
+for this operation.</b>
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/email/update_status">http://developers.hubspot.com/docs/methods/email/update_status</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:update-email-subscription-status
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:update-email-subscription-status userId="userId" email="email">
+        <hubspot:statuses ref="statuses" />
+    </hubspot:update-email-subscription-status>
+----
+
+    
+                
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+hubId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++(portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)+++ |  | {nbsp}
+
+
+
+
+| 
+email  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The email to update the current status subscription+++ |  | *x*{nbsp}
+
+
+
+
+| 
+statuses  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="javadocs/org/mule/module/hubspot/model/email/EmailSubscriptionStatusStatuses.html">EmailSubscriptionStatusStatuses</a>>+++ | +++A List of EmailSubscriptionStatusStatuses to be modified+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/email/EmailSubscriptionStatusResult.html">EmailSubscriptionStatusResult</a>+++ | +++The status of the operation EmailSubscriptionStatusResult+++
+|======================
+
+
+
+
+---
+
+=== Update email subscription status unsubscribe from all
+`<hubspot:update-email-subscription-status-unsubscribe-from-all>`
+
+
+
+
++++
+For a given email address and portal, update the email type subscription unsuscribing from all emails <b>NOTE: it is only possible to opt email addresses OUT of subscription
+and there is NO UNDO for this operation.</b>
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/email/update_status">http://developers.hubspot.com/docs/methods/email/update_status</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:update-email-subscription-status-unsubscribe-from-all
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:update-email-subscription-status-unsubscribe-from-all userId="userId" email="email" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+hubId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++(portalId) The HubSpot Portal ID for the portal that you're making the call for. <b>If left empty</b> it will use the one stored in the credentials (authenticate operation)+++ |  | {nbsp}
+
+
+
+
+| 
+email  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The email to update the current status subscription+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/email/EmailSubscriptionStatusResult.html">EmailSubscriptionStatusResult</a>+++ | +++The status of the operation EmailSubscriptionStatusResult+++
+|======================
+
+
+
+
+---
+
+=== Get all custom properties
+`<hubspot:get-all-custom-properties>`
+
+
+
+
++++
+Properties in HubSpot are fields that have been created. By default, there are many fields that come "out of the box" in a HubSpot portal, but users can also create new,
+custom properties as they please. This method returns all of those properties to you.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/get_properties">https://developers.hubspot.com/docs/methods/contacts/get_properties</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-all-custom-properties
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-all-custom-properties userId="userId" />
+----
+
+    
+    
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactProperty.html">CustomContactProperty</a>>+++ | +++A List of CustomContactProperty+++
+|======================
+
+
+
+
+---
+
+=== Create custom property
+`<hubspot:create-custom-property>`
+
+
+
+
++++
+Create a new property in HubSpot. Properties in HubSpot are fields that have been created. By default, there are many fields that come "out of the box" in a HubSpot portal,
+but users can also create new, custom properties as they please.
+<p>
+This method enables you to create a new property. If you try to create a property whose name already exists in the system, you'll get an HTTP 409 exception thrown from the
+API.
+<p>
+Currently, there is a 1,000 property limit that you can have in any given portal.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/create_property">https://developers.hubspot.com/docs/methods/contacts/create_property</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:create-custom-property
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:create-custom-property userId="userId">
+        <hubspot:contact-property ref="customProperty" />
+    </hubspot:create-custom-property>
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactProperty  | +++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactProperty.html">CustomContactProperty</a>+++ | +++The CustomContactProperty to be created+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactProperty.html">CustomContactProperty</a>+++ | +++The CustomContactProperty created+++
+|======================
+
+
+
+
+---
+
+=== Update custom property
+`<hubspot:update-custom-property>`
+
+
+
+
++++
+Update an existing property in HubSpot. This method lets you update one of many properties of a contact in HubSpot.T
+<p>
+To update a contact property, you should make an HTTP POST call to this endpoint with some JSON in the request payload. This JSON should contain property attributes that you
+want to add to or update. See the sample JSON below for an example of this snippet of JSON.
+<p>
+Remember, if a property doesn't yet exist, you can create a new custom property through the API by using the 'Create Property' method.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/update_property">https://developers.hubspot.com/docs/methods/contacts/update_property</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:update-custom-property
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:update-custom-property userId="userId" propertyName="propertyName">
+        <hubspot:contact-property ref="customProperty" />
+    </hubspot:update-custom-property>
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+propertyName  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The name of the Custom Property to be updated+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactProperty  | +++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactProperty.html">CustomContactProperty</a>+++ | +++The contactProperty to be created+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactProperty.html">CustomContactProperty</a>+++ | +++The contactProperty recently created+++
+|======================
+
+
+
+
+---
+
+=== Delete custom property
+`<hubspot:delete-custom-property>`
+
+
+
+
++++
+Delete an existing property in HubSpot. This method lets you delete one of many properties of a contact in HubSpot.
+<p>
+To delete a contact property, you should make an HTTP DELETE call to this endpoint with the name of the property you're deleting in the request URL.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/delete_property">https://developers.hubspot.com/docs/methods/contacts/delete_property</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:delete-custom-property
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:delete-custom-property userId="userId" contactPropertyName="propertyName" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactPropertyName  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The name of the custom property to be deleted+++ |  | *x*{nbsp}
+
+
+|======================
+
+
+
+
+
+---
+
+=== Get custom property group
+`<hubspot:get-custom-property-group>`
+
+
+
+
++++
+For a given portal, return all contact property groups that have been created in the portal.
+<p>
+Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more
+flexible way.
+<p>
+There are certain property groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email
+Inforamtion' are examples.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/get_groups">https://developers.hubspot.com/docs/methods/contacts/get_groups</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:get-custom-property-group
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:get-custom-property-group userId="userId" groupName="groupName" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+groupName  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The name of the group to be retrieved+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactPropertyGroup.html">CustomContactPropertyGroup</a>+++ | +++A CustomContactPropertyGroup+++
+|======================
+
+
+
+
+---
+
+=== Create custom property group
+`<hubspot:create-custom-property-group>`
+
+
+
+
++++
+For a given portal, create a new contact proprerty group.
+<p>
+Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more
+flexible way.
+<p>
+There are certain propery groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email
+Inforamtion' are examples. This method lets you create your own custom property group in a portal.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/create_group">https://developers.hubspot.com/docs/methods/contacts/create_group</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:create-custom-property-group
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:create-custom-property-group userId="userId">
+        <hubspot:custom-contact-property-group ref="customContactPropertyGroup" />
+    </hubspot:create-custom-property-group>
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+customContactPropertyGroup  | +++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactPropertyGroup.html">CustomContactPropertyGroup</a>+++ | +++A CustomContactPropertyGroup to be created+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactPropertyGroup.html">CustomContactPropertyGroup</a>+++ | +++The CustomContactPropertyGroup recently created+++
+|======================
+
+
+
+
+---
+
+=== Update custom property group
+`<hubspot:update-custom-property-group>`
+
+
+
+
++++
+For a given portal, update a contact property group.
+<p>
+Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more
+flexible way.
+<p>
+There are certain property groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email
+Inforamtion' are examples. This method lets you update your own custom property group in a portal.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/update_group">https://developers.hubspot.com/docs/methods/contacts/update_group</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:update-custom-property-group
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:update-custom-property-group userId="userId" groupName="groupName">
+        <hubspot:custom-contact-property-group ref="customContactPropertyGroup" />
+    </hubspot:update-custom-property-group>
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+groupName  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The name of the Custom Contact Property Group to be updated+++ |  | *x*{nbsp}
+
+
+
+
+| 
+customContactPropertyGroup  | +++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactPropertyGroup.html">CustomContactPropertyGroup</a>+++ | +++A CustomContactPropertyGroup to be created+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/contactproperty/CustomContactPropertyGroup.html">CustomContactPropertyGroup</a>+++ | +++The CustomContactPropertyGroup recently created+++
+|======================
+
+
+
+
+---
+
+=== Delete custom property group
+`<hubspot:delete-custom-property-group>`
+
+
+
+
++++
+For a given portal, delete a contact property group based on the name of the group.
+<p>
+Property groups allow you to more easily manage properties in a given portal. They also let you organize the user interface of the contacts web application in a more
+flexible way.
+<p>
+There are certain property groups that are in place for each portal by default: 'Contact Information', 'Social Media Information', 'Company Information' and 'Email
+Inforamtion' are examples. This method lets you delete your own custom property group in a portal. You can also create new groups, update existing groups, or just get group
+and the properties in each group.
+<p>
+API link: <a href="https://developers.hubspot.com/docs/methods/contacts/delete_group">https://developers.hubspot.com/docs/methods/contacts/delete_group</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:delete-custom-property-group
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:delete-custom-property-group userId="userId" groupName="groupName" />
+----
+
+    
+        
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+groupName  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The name of the group to be deleted+++ |  | *x*{nbsp}
+
+
+|======================
+
+
+
+
+
+---
+
+=== Add existing contact in a list
+`<hubspot:add-existing-contact-in-a-list>`
+
+
+
+
++++
+Add a contact record that has already been created in the system to a contact list.
+<p>
+Please note that you cannot manually add (via this API call) contacts to dynamic lists - they can only be updated by the contacts app.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/lists/add_contact_to_list">http://developers.hubspot.com/docs/methods/lists/add_contact_to_list</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:add-existing-contact-in-a-list
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:add-existing-contact-in-a-list  userId="userId" listId="listId" contactId="contactId" />
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+listId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++You need to include the ID for the list you're adding the lead to. You can search for lists using the get lists method.+++ |  | *x*{nbsp}
+
+
+
+
+| 
+contactId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The contact ID of the contact that you're adding to the list.+++ |  | *x*{nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/list/HubSpotListAddContactToListResponse.html">HubSpotListAddContactToListResponse</a>+++ | +++A HubSpotListAddContactToListResponse In the "updated" attribute, you'll also get the contact ID of the contact that you've just added to the list+++
+|======================
+
+
+
+
+---
+
+=== Create contact list
+`<hubspot:create-contact-list>`
+
+
+
+
++++
+Create a new list in a given HubSpot portal to populate with contacts.
+<p>
+API link: <a href="http://developers.hubspot.com/docs/methods/lists/create_list">http://developers.hubspot.com/docs/methods/lists/create_list</a>
+<p>
+../../../doc/HubSpot-connector.xml.sample hubspot:create-contact-list
++++
+
+==== XML Sample
+[source,xml]
+----
+<hubspot:create-contact-list  userId="userId">
+        <hubspot:list ref="listObj" />
+    </hubspot:create-contact-list>
+----
+
+    
+            
+==== Attributes
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+|Name |Java Type | Description | Default Value | Required
+| config-ref | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | Specify which config to use | |*x*{nbsp}
+
+
+
+| 
+userId  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>+++ | +++The UserID of the user in the HubSpot service that was obtained from the authenticateResponse process+++ |  | *x*{nbsp}
+
+
+
+
+| 
+list  | +++<a href="javadocs/org/mule/module/hubspot/model/list/HubSpotNewList.html">HubSpotNewList</a>+++ | +++the new HubSpotNewList to be created. <b>Required fields:</b>name, portalId.+++ |  | *x*{nbsp}
+
+
+
+
+| 
+filters  | +++<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="javadocs/org/mule/module/hubspot/model/list/HubSpotListFilters.html">HubSpotListFilters</a>>+++ | +++the list of HubSpotListFilters that the list can have+++ |  | {nbsp}
+
+
+|======================
+
+==== Returns
+[cols=".^40%,.^60%", options="header"]
+|======================
+|Return Java Type | Description
+|+++<a href="javadocs/org/mule/module/hubspot/model/list/HubSpotList.html">HubSpotList</a>+++ | +++The newly created instance of HubSpotList+++
+|======================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
