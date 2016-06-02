@@ -1,0 +1,13 @@
+org.mule.module.hubspot
+org.mule.module.hubspot.client
+org.mule.module.hubspot.client.impl
+org.mule.module.hubspot.credential
+org.mule.module.hubspot.exception
+org.mule.module.hubspot.iterable
+org.mule.module.hubspot.model
+org.mule.module.hubspot.model.contact
+org.mule.module.hubspot.model.contactproperty
+org.mule.module.hubspot.model.email
+org.mule.module.hubspot.model.list
+org.mule.module.hubspot.model.token
+org.mule.module.hubspot.serialization
